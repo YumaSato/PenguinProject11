@@ -36,7 +36,7 @@
     <ClCompile Include="LiquidGod.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="MuscleMan.cpp">
+    <ClCompile Include="Bull.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="PenguinKids.cpp">

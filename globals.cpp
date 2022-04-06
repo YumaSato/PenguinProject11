@@ -14,16 +14,19 @@ int turnNum = 0;
 
 
 
-Creature mobs[1024];
-vector<PenguinKids> kids;//ペンギンキッズのインスタンスを生成毎に入れていく可変長配列。
-PenguinKids sampleKids;
+//Creature mobs[1024];
+//vector<PenguinKids> kids;//ペンギンキッズのインスタンスを生成毎に入れていく可変長配列。
+//PenguinKids sampleKids;
 
 
 PenguinKids mobs_PenguinKids[mobLimit];
-
+Bull mobs_Bull[mobLimit];
 
 int mobNumber = 0;
-Creature* mobsSpeedOrder[mobLimit];
+int num_penguinKids = 0;
+int num_bull = 0;
+
+//Creature* mobsSpeedOrder[mobLimit];
 
 string mainMsg;
 string actionMsg;

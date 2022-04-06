@@ -18,7 +18,7 @@ using namespace std;
 
 void turnFinal();//ターンの最後にまとめて行われる操作。
 
-//bool speedOrder(Creature* a, Creature* b);
+bool speedOrder(Creature* a, Creature* b);
 
 
 
@@ -71,61 +71,87 @@ void turnFinal();//ターンの最後にまとめて行われる操作。
 		string numSpeed;
 		string numX;
 		string numY;
-		int sortSpeedOrder[mobLimit];
-		int mobNumberNow;
+		Creature* mobsSpeedOrder[2048];
 
+		int mobNumberNow;
 		mobNumberNow = mobNumber;
 
-		for (int i = 0; i < mobNumber; i++) {
-			sortSpeedOrder[i] = mobs_PenguinKids[i].speed;//まず素早さ順で素早さを入れるint配列に、mobsのnum順で素早さ値を代入。
-
-			
-
-			/*if (sortSpeedOrder[i] == NULL) {
-				sortSpeedOrder[i] = -1;
-			}*/
-			/*numSpeed = (to_string(sortSpeedOrder[i]));
-			DrawString(800, 560 + i*20, numSpeed.c_str(), WHITE);
-			WaitKey();*/
-		}	
-
-		sort(sortSpeedOrder, sortSpeedOrder + mobNumber, greater<>());//降順で並べ替え。
-		//素早さ順で素早さを入れるint配列の中身を、ちゃんと素早さ順に並べ替える。
-
+		for (int i = 0; i < num_penguinKids; i++) {//いったん代入する。
+			mobsSpeedOrder[i] = &mobs_PenguinKids[i];
+		}
+		/*for (int i = 0; i < num_bull; i++) {
+			mobsSpeedOrder[i + num_penguinKids] = &mobs_Bull[num_bull];
+		}*/
 
 		string s = "";
 		for (int i = 0; i < mobNumber; i++) {
-			s += " " + to_string(sortSpeedOrder[i]);
+			s += "アドレス" + to_string(mobsSpeedOrder[i]->speed);//素早さ順アドレス配列のスピードを表示。
 		}
-		DrawString(770, 550, s.c_str(), WHITE);
+		DrawString(800, 570, s.c_str(), WHITE);
 		WaitKey();
 
 
-		for (int sort_i = 0; sort_i < mobNumber; sort_i++) {//素早さ順int配列ごとに、
-
-			if (sortSpeedOrder[sort_i] == NULL) {
-				continue;
-			}
-
-			for (int mobs_i = 0; mobs_i < mobNumber; mobs_i++) {//各mobsを調べて、
 
 
-				//numSpeed = (to_string(mobs_PenguinKids[mobs_i].speed));
-				//DrawString(800, 660 + mobs_i*20, numSpeed.c_str(), WHITE);
-				//WaitKey();
+		sort(mobsSpeedOrder, mobsSpeedOrder + mobNumber, speedOrder);
 
-				if (sortSpeedOrder[sort_i] == mobs_PenguinKids[mobs_i].speed) {//素早さ順intの素早さとmobsの素早さが一致したら
-					mobsSpeedOrder[sort_i] = &mobs_PenguinKids[mobs_i];//素早さ順アドレス配列に代入。
-				}
-			}
-		}
 
-		//s = "";
+
+
+
+		//int sortSpeedOrder[mobLimit];
+		
+
 		//for (int i = 0; i < mobNumber; i++) {
-		//	s += "アドレス" + to_string(mobsSpeedOrder[i]->speed);//素早さ順アドレス配列のスピードを表示。
+		//	sortSpeedOrder[i] = mobs_PenguinKids[i].speed;//まず素早さ順で素早さを入れるint配列に、mobsのnum順で素早さ値を代入。
+
+		//	
+
+		//	/*if (sortSpeedOrder[i] == NULL) {
+		//		sortSpeedOrder[i] = -1;
+		//	}*/
+		//	/*numSpeed = (to_string(sortSpeedOrder[i]));
+		//	DrawString(800, 560 + i*20, numSpeed.c_str(), WHITE);
+		//	WaitKey();*/
+		//}	
+
+		//sort(sortSpeedOrder, sortSpeedOrder + mobNumber, greater<>());//降順で並べ替え。
+		////素早さ順で素早さを入れるint配列の中身を、ちゃんと素早さ順に並べ替える。
+
+
+		
+		//for (int i = 0; i < mobNumber; i++) {
+		//	s += " " + to_string(sortSpeedOrder[i]);
 		//}
-		//DrawString(800, 570, s.c_str(), WHITE);
+		//DrawString(770, 550, s.c_str(), WHITE);
 		//WaitKey();
+
+
+		//for (int sort_i = 0; sort_i < mobNumber; sort_i++) {//素早さ順int配列ごとに、
+
+		//	if (sortSpeedOrder[sort_i] == NULL) {
+		//		continue;
+		//	}
+
+		//	for (int mobs_i = 0; mobs_i < mobNumber; mobs_i++) {//各mobsを調べて、
+
+
+		//		//numSpeed = (to_string(mobs_PenguinKids[mobs_i].speed));
+		//		//DrawString(800, 660 + mobs_i*20, numSpeed.c_str(), WHITE);
+		//		//WaitKey();
+
+		//		if (sortSpeedOrder[sort_i] == mobs_PenguinKids[mobs_i].speed) {//素早さ順intの素早さとmobsの素早さが一致したら
+		//			mobsSpeedOrder[sort_i] = &mobs_PenguinKids[mobs_i];//素早さ順アドレス配列に代入。
+		//		}
+		//	}
+		//}
+
+		s = "";
+		for (int i = 0; i < mobNumber; i++) {
+			s += "アドレス" + to_string(mobsSpeedOrder[i]->speed);//素早さ順アドレス配列のスピードを表示。
+		}
+		DrawString(800, 570, s.c_str(), WHITE);
+		WaitKey();
 
 
 
@@ -180,19 +206,25 @@ void turnFinal();//ターンの最後にまとめて行われる操作。
 
 
 
-
-
-
-	/*bool speedOrder(Creature* a, Creature* b) {
-
-		if (a->speed == b->speed) {
-			return a->speed < b->speed;
+	bool speedOrder(Creature* a, Creature* b) {
+		if (a->speed == NULL) {
+			a->speed == -1;
 		}
-		else {
-			return a->speed > b->speed;
+		if (b->speed == NULL) {
+			b->speed == -1;
 		}
-		
-	}*/
+		return a->speed > b->speed;
+	}
+
+
+	//bool speedOrder(Creature* a, Creature* b) {
+	//	if (a->speed == b->speed) {
+	//		return a->speed < b->speed;
+	//	}
+	//	else {
+	//		return a->speed > b->speed;
+	//	}	
+	//}
 
 
 

@@ -11,20 +11,25 @@ class PenguinKids;//ƒRƒ“ƒpƒCƒ‰‚É“{‚ç‚ê‚È‚¢‚½‚ß‚Ì‚¨‚Ü‚¶‚È‚¢BuPenguinKids‚Á‚Ä‚¢‚
 class Grid;
 class Creature;
 class Character;
+class Bull;
 
 
 extern bool debug_mode;
 extern int gameMode;
 extern int turnNum;
 
-extern Creature mobs[1024];
-extern vector<PenguinKids> kids;//ƒyƒ“ƒMƒ“ƒLƒbƒY‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬–ˆ‚É“ü‚ê‚Ä‚¢‚­‰Â•Ï’·”z—ñB
+//extern Creature mobs[1024];
+//extern vector<PenguinKids> kids;//ƒyƒ“ƒMƒ“ƒLƒbƒY‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬–ˆ‚É“ü‚ê‚Ä‚¢‚­‰Â•Ï’·”z—ñB
 
 
 extern PenguinKids mobs_PenguinKids[mobLimit];
+extern Bull mobs_Bull[mobLimit];
 
 extern int mobNumber;
-extern Creature* mobsSpeedOrder[mobLimit];//‘f‘‚³‡‚Éƒ‚ƒuƒLƒƒƒ‰‚ÌƒAƒhƒŒƒX‚ğŠi”[‚·‚é•Ï”B
+extern int num_penguinKids;
+extern int num_bull;
+
+//extern Creature* mobsSpeedOrder[mobLimit];//‘f‘‚³‡‚Éƒ‚ƒuƒLƒƒƒ‰‚ÌƒAƒhƒŒƒX‚ğŠi”[‚·‚é•Ï”B
 
 extern string mainMsg;
 extern string actionMsg;

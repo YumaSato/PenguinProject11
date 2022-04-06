@@ -115,8 +115,15 @@ class LiquidGod : public Character {
 };
 
 
-class MuscleMan : public Character {
-
+class Bull : public Character {
+public:
+	Bull();
+	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed)override;
+	void test();
+	bool specialMovement1(int size) override;
+	bool specialMovement2(int size) override;
+	bool attack(int size) override;
+	bool selectAction() override;
 };
 
 class Item {//マス目に落ちてるアイテム

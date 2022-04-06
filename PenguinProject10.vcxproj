@@ -155,7 +155,7 @@
     <ClCompile Include="FireGod.cpp" />
     <ClCompile Include="globals.cpp" />
     <ClCompile Include="LiquidGod.cpp" />
-    <ClCompile Include="MuscleMan.cpp" />
+    <ClCompile Include="Bull.cpp" />
     <ClCompile Include="PenguinKids.cpp" />
     <ClCompile Include="PenguinSource.cpp" />
   </ItemGroup>

@@ -112,9 +112,10 @@ bool PenguinKids::specialMovement1(int size) {//ŽY—‘
 			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, speed);
 
 
-			mobs_PenguinKids[mobNumber] = penguinKids;
-			board[ix][iy].creature = &mobs_PenguinKids[mobNumber];
+			mobs_PenguinKids[num_penguinKids] = penguinKids;
+			board[ix][iy].creature = &mobs_PenguinKids[num_penguinKids];
 			mobNumber += 1;
+			num_penguinKids += 1;
 			status = ELDER;//˜V‰»‚·‚é
 
 			exhibitScreen();
