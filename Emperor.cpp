@@ -77,7 +77,7 @@ bool Emperor::specialMovement1(int size) {//特殊技：産卵
 			//board[checkX][checkY].creature = &kids.back();
 
 			
-			mobs_PenguinKids[mobNumber] = penguinKids;
+			mobs_PenguinKids[mobNumber] = penguinKids;//生まれたキッズを配列に入れる。
 			board[checkX][checkY].creature = &mobs_PenguinKids[mobNumber];
 			mobNumber += 1;
 			

@@ -79,7 +79,7 @@ void turnFinal();//ターンの最後にまとめて行われる操作。
 		for (int i = 0; i < mobNumber; i++) {
 			sortSpeedOrder[i] = mobs_PenguinKids[i].speed;//まず素早さ順で素早さを入れるint配列に、mobsのnum順で素早さ値を代入。
 
-
+			
 
 			/*if (sortSpeedOrder[i] == NULL) {
 				sortSpeedOrder[i] = -1;
@@ -97,7 +97,7 @@ void turnFinal();//ターンの最後にまとめて行われる操作。
 		for (int i = 0; i < mobNumber; i++) {
 			s += " " + to_string(sortSpeedOrder[i]);
 		}
-		DrawString(800, 550, s.c_str(), WHITE);
+		DrawString(770, 550, s.c_str(), WHITE);
 		WaitKey();
 
 
@@ -147,9 +147,12 @@ void turnFinal();//ターンの最後にまとめて行われる操作。
 			//	continue;
 			//}
 			
-			if (mobsSpeedOrder[i]->status == NORMAL or mobsSpeedOrder[i]->status == ELDER) {
+			if (mobsSpeedOrder[i]->status == NORMAL or mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
 				reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction();
+
+				mobsSpeedOrder[i]->skip = FALSE;//行動が終わってから（つまりモブ行動終了後）、孵化したばかりのペンギンのスキップが解除される。
 			}
+
 			
 			//mobsSpeedOrder[i]->specialMovement2(FIELDSIZE);
 			//mobsSpeedOrder[i]->attack();

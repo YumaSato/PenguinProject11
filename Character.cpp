@@ -12,7 +12,7 @@ using std::string;
 Character::Character() : Creature() {}
 
 bool Character::selectAction() {
-	string msg = "‚Í‰½‚·‚é?\n1:•à‚­ 2:Y—‘ 3:›z‰» 4:R‚é";
+	string msg = "‚Í‰½‚·‚é?\n1:•à‚­ 2:Y—‘ 3:›z‰» 4:UŒ‚ 5:R‚é";
 	mainMsg = name + msg;
 	exhibitScreen();
 	WaitKey();
@@ -100,6 +100,7 @@ bool Character::selectAction() {
 	}
 	DrawString(800, 150, "s“®I—¹BƒXƒ^ƒ~ƒi‚ª‰ñ•œ‚µ‚Ü‚·B", GetColor(255, 200, 255));
 	WaitKey();
+	mainMsg = "";
 	return TRUE;
 };
 

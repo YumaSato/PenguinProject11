@@ -42,13 +42,13 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	if (speed < 1) { speed = 1;}
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
-	pass = TRUE;//ペンギンキッズが生まれた時点では、こいつは行動をパスする（まだ動かない）
+	skip = TRUE;//ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
 
-	DrawString(800, 180, "ペンギンキッズのコンストラクタ起動。", GetColor(255, 200, 255));
+	DrawString(800, 180, "ペンギンキッズのSetMobs実行。", GetColor(255, 200, 255));
 	numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));
-	mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの俊敏さは、" + numSpeed;
+	mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの素早さは、" + numSpeed;
 	DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
 	WaitKey();
 
@@ -60,8 +60,9 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 
 bool PenguinKids::selectAction() {
-	if (pass == TRUE) {
-		pass = FALSE;
+
+
+	if (skip == TRUE) {//skipする状態なら、即終了。
 		return TRUE;
 	}
 
@@ -117,7 +118,8 @@ bool PenguinKids::specialMovement1(int size) {//産卵
 			status = ELDER;//老化する
 
 			exhibitScreen();
-			DrawString(800, 180, "産卵", WHITE);
+			DrawString(800, 180, "産卵完了", WHITE);
+			WaitKey();
 
 			//board[ix][iy].creature = &penguinKids;
 
@@ -142,14 +144,17 @@ bool PenguinKids::specialMovement2(int size) {
 		ix = ix + tmpx;
 		iy = iy + tmpy;
 
-		if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
-			if (board[ix][iy].creature->status == EGG) {
-				board[ix][iy].creature->status = NORMAL;
+		if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
-				exhibitScreen();
-				DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
-				WaitKey();
-				return TRUE;
+			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
+				if (board[ix][iy].creature->status == EGG) {
+					board[ix][iy].creature->status = NORMAL;
+
+					exhibitScreen();
+					DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
+					WaitKey();
+					return TRUE;
+				}
 			}
 		}
 		return FALSE;

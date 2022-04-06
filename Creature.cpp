@@ -23,7 +23,7 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 	memset(&this->speed, NULL, sizeof(this->speed));
 	memset(&this->staminaRecoverAbility, NULL, sizeof(this->staminaRecoverAbility));
 	memset(&this->num, NULL, sizeof(this->num));
-	pass = FALSE;
+	skip = FALSE;
 	//this->team = NULL;
 	//this->status = NULL;
 	//this->directionX = NULL;
@@ -50,6 +50,10 @@ bool Creature::selectAction() {
 }
 
 bool Creature::walk(int size) {
+	return FALSE;
+}
+
+bool Creature::kick(int size) {
 	return FALSE;
 }
 

@@ -46,7 +46,7 @@ public:
 	int speed;
 	int staminaRecoverAbility;
 	int num;//ƒLƒƒƒ‰ƒNƒ^¯•Ê”Ô†
-	bool pass;
+	bool skip;
 
 	
 	Creature();
@@ -55,6 +55,7 @@ public:
 	virtual bool walk(int size);
 	virtual void changeDirection();
 	virtual bool attack(int size);
+	virtual bool kick(int size);
 	virtual bool specialMovement1(int size);
 	virtual bool specialMovement2(int size);
 	virtual int useItem(int size);
@@ -65,6 +66,7 @@ public:
 	Direction GETdirection();
 	void DeleteCharacter();
 };
+
 
 
 class PenguinKids : public Creature {
