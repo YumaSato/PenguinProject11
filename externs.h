@@ -1,0 +1,43 @@
+#pragma once
+#include <string>
+#include <vector>
+#include "consts.h"
+#include "MyClasses.h"
+
+using std::vector;
+using std::string;
+
+class PenguinKids;//コンパイラに怒られないためのおまじない。「PenguinKidsっていうクラスがあるんだよ。内容はあとで定義するよ。」という意味。
+class Grid;
+class Creature;
+class Character;
+
+
+extern bool debug_mode;
+extern int gameMode;
+extern int turnNum;
+
+extern Creature mobs[1024];
+extern vector<PenguinKids> kids;//ペンギンキッズのインスタンスを生成毎に入れていく可変長配列。
+
+
+extern PenguinKids mobs_PenguinKids[mobLimit];
+
+extern int mobNumber;
+extern Creature* mobsSpeedOrder[mobLimit];//素早さ順にモブキャラのアドレスを格納する変数。
+
+extern string mainMsg;
+extern string actionMsg;
+extern string statusMsg;
+
+extern int HandleBoard;
+extern int handle[3][5][8];
+
+extern Grid board[FIELDSIZE][FIELDSIZE];//そのマスに何がいるか
+
+extern Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレスを格納する変数。配列インデックスは、キャラ番号。
+//extern vector<Character*> handledCharacters(CHARACTERNUM);
+
+
+void exhibitScreen();
+void exhibitStatusMsg();
