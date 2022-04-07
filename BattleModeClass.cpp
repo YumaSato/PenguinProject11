@@ -74,7 +74,8 @@ bool speedOrder(Creature* a, Creature* b);
 		Creature* mobsSpeedOrder[2048];
 
 		int mobNumberNow;
-		mobNumberNow = mobNumber;
+		mobNumberNow = mobNumber;//このターンで実行するペンギンキッズ行動の回数を入れるローカル変数に、ターン末尾行動開始時点でのモブ数を代入。
+		//これにより実行中にモブ数が増えてループ中にループ回数が変わりバグが発生することを防げる。多分。
 
 		for (int i = 0; i < num_penguinKids; i++) {//いったん代入する。
 			mobsSpeedOrder[i] = &mobs_PenguinKids[i];
@@ -208,10 +209,10 @@ bool speedOrder(Creature* a, Creature* b);
 
 	bool speedOrder(Creature* a, Creature* b) {
 		if (a->speed == NULL) {
-			a->speed == -1;
+			a->speed = -1;
 		}
 		if (b->speed == NULL) {
-			b->speed == -1;
+			b->speed = -1;
 		}
 		return a->speed > b->speed;
 	}

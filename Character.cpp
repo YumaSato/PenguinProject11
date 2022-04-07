@@ -85,10 +85,19 @@ bool Character::selectAction() {
 			if (specialMovement1(FIELDSIZE) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
-
 		}
 		if (CheckHitKey(KEY_INPUT_3) == TRUE) {
 			if (specialMovement2(FIELDSIZE) == TRUE) {
+				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
+			}
+		}
+		if (CheckHitKey(KEY_INPUT_4) == TRUE) {
+			if (attack(FIELDSIZE) == TRUE) {
+				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
+			}
+		}
+		if (CheckHitKey(KEY_INPUT_5) == TRUE) {
+			if (kick(FIELDSIZE) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}

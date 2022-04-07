@@ -12,7 +12,7 @@ enum Status {
 	EMPEROR = 4,    //皇帝ペンギン
 	FIREGOD = 5,    //火の神
 	LIQUIDGOD = 6,  //酒の神
-	MUSCLEMAN = 7,  //筋肉男
+	BULL = 7,  //筋肉男
 	SPRINTER = 8    //速足男
 };
 

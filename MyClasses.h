@@ -99,9 +99,11 @@ public:
 
 class Emperor : public Character {
 public:
+	Emperor(Team team, int num);
 	bool specialMovement1(int size);
 	bool specialMovement2(int size);
-	Emperor(Team team, int num);
+	bool attack(int size) override;
+	bool kick(int size);
 };
 
 

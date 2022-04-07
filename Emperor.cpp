@@ -122,3 +122,63 @@ bool Emperor::specialMovement2(int size) {//特殊技：孵化
 		}
 	}
 }
+
+
+
+bool Emperor::attack(int size) {
+	return FALSE;
+}
+
+
+
+
+bool Emperor::kick(int size) {
+	int checkX = 0;
+	int checkY;
+	int drctnX, drctnY;
+
+	GETdirectionXY(&drctnX, &drctnY);
+	checkX = x + drctnX;
+	checkY = y + drctnY;
+
+	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+		if (board[checkX][checkY].creature == NULL) {
+			return FALSE;
+		}
+
+		if (board[checkX][checkY].creature->status != EGG) {//押したマスの方向に卵以外があれば処理を終了。
+			return FALSE;
+		}else{
+
+			while (1) {
+				checkX = checkX + drctnX;//転がる方向のマスをひとつづつ調べる。
+				checkY = checkY + drctnX;
+
+				if (checkX <= 0 && checkX > size && checkY <= 0 && checkY > size) {//マス目の端っこまで調べたら、卵が消える。
+					board[x + drctnX][y + drctnY].creature = NULL;
+				}
+
+
+				if (board[checkX][checkY].creature != NULL) {//転がる方向に何か居たらループ抜け。
+
+					if (board[checkX][checkY].creature->status <= 2 && board[checkX][checkY].creature->status >= 4) {//大人ペンギンが見つかったら
+						board[checkX - drctnX][checkY - drctnY].creature = board[x + drctnX][y + drctnY].creature;//新しいますに卵アドレスを代入。
+						board[x + drctnX][y + drctnY].creature = NULL;//元の位置の卵アドレスを削除。
+					}
+
+					if (board[checkX][checkY].creature->status == EGG) {
+					}
+
+					if (board[checkX][checkY].creature->status == BULL) {
+					}
+
+
+					break;
+				}
+
+
+			}
+		}
+	}
+	return TRUE;
+}
