@@ -71,6 +71,8 @@ bool speedOrder(Creature* a, Creature* b);
 		string numSpeed;
 		string numX;
 		string numY;
+		string s = "";
+		string allS = "";
 		Creature* mobsSpeedOrder[2048];
 
 		int mobNumberNow;
@@ -84,12 +86,12 @@ bool speedOrder(Creature* a, Creature* b);
 			mobsSpeedOrder[i + num_penguinKids] = &mobs_Bull[num_bull];
 		}*/
 
-		string s = "";
-		for (int i = 0; i < mobNumber; i++) {
-			s += "アドレス" + to_string(mobsSpeedOrder[i]->speed);//素早さ順アドレス配列のスピードを表示。
-		}
-		DrawString(800, 570, s.c_str(), WHITE);
-		WaitKey();
+		
+		//for (int i = 0; i < mobNumber; i++) {
+		//	s += "アドレス" + to_string(mobsSpeedOrder[i]->speed);//素早さ順アドレス配列のスピードを表示。
+		//}
+		//DrawString(800, 570, s.c_str(), WHITE);
+		//WaitKey();
 
 
 
@@ -149,9 +151,13 @@ bool speedOrder(Creature* a, Creature* b);
 
 		s = "";
 		for (int i = 0; i < mobNumber; i++) {
-			s += "アドレス" + to_string(mobsSpeedOrder[i]->speed);//素早さ順アドレス配列のスピードを表示。
+			if (mobsSpeedOrder[i]->speed > 0) {
+				s = "X" + std::to_string(mobsSpeedOrder[i]->x) + "Y" + std::to_string(mobsSpeedOrder[i]->y) + "の素早さ:"+ to_string(mobsSpeedOrder[i]->speed) + " \n";//素早さ順アドレス配列のスピードを表示。
+				allS += s;
+			}
 		}
-		DrawString(800, 570, s.c_str(), WHITE);
+		exhibitScreen();
+		DrawString(800, 570, allS.c_str(), WHITE);
 		WaitKey();
 
 
@@ -169,12 +175,16 @@ bool speedOrder(Creature* a, Creature* b);
 			if (mobsSpeedOrder[i] == NULL) {//スピード順配列にもう何もなければ終了。
 				return;
 			}
+			if (mobsSpeedOrder[i]->speed < 0) {//スピードがマイナス、つまり死んでいたら終了。
+				return;
+			}
+
 
 			//if (mobsSpeedOrder[i]->pass == TRUE) {//キャラは居るけど行動しない状態であればコンティニュー。
 			//	continue;
 			//}
 			
-			if (mobsSpeedOrder[i]->status == NORMAL or mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
+			if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
 				reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction();
 
 				mobsSpeedOrder[i]->skip = FALSE;//行動が終わってから（つまりモブ行動終了後）、孵化したばかりのペンギンのスキップが解除される。
@@ -185,11 +195,10 @@ bool speedOrder(Creature* a, Creature* b);
 			//mobsSpeedOrder[i]->attack();
 
 			exhibitScreen();
-
 			numSpeed = (to_string(mobsSpeedOrder[i]->speed));
 			numX = (to_string(mobsSpeedOrder[i]->x));
 			numY = (to_string(mobsSpeedOrder[i]->y));
-			mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの俊敏さは、" + numSpeed;
+			mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの行動速度は、" + numSpeed;
 			DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
 			WaitKey();
 		}

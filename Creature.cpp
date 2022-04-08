@@ -53,9 +53,94 @@ bool Creature::walk(int size) {
 	return FALSE;
 }
 
+
+
+
+
 bool Creature::kick(int size) {
-	return FALSE;
+	int cX = 0;
+	int cY = 0;
+	int drctnX, drctnY;
+	string s;
+
+	GETdirectionXY(&drctnX, &drctnY);
+	cX = x + drctnX;
+	cY = y + drctnY;
+
+	if (cX > 0 && cX < size && cY > 0 && cY < size) {
+		if (board[cX][cY].creature == NULL) {//押したマスの方向に何もいなかったら処理を終了。
+			return FALSE;
+		}
+
+		if (board[cX][cY].creature->status != EGG) {//押したマスの方向に卵以外があれば処理を終了。
+			return FALSE;
+		}
+		else {
+			exhibitScreen();
+			DrawString(800, 180, "kick開始", WHITE);
+			WaitKey();
+
+			while (1) {
+				cX = cX + drctnX;//転がる方向のマスをひとつづつ調べる。
+				cY = cY + drctnY;
+
+				s = "";
+				s = "X:" + std::to_string(cX) + "Y:" + std::to_string(cY);
+				exhibitScreen();
+				DrawString(800, 570, s.c_str(), WHITE);
+				WaitKey();
+
+				if (cX < 0 || cX > size || cY < 0 || cY > size) {//マス目の端っこまで調べたら、卵が消える。
+					board[x + drctnX][y + drctnY].creature->DeleteCreature();
+					board[x + drctnX][y + drctnY].creature = NULL;
+					break;
+				}
+
+				if (board[cX][cY].creature != NULL) {//転がる方向に何か居たらループ抜け。
+
+					if (board[cX][cY].creature->status == EMPEROR || board[cX][cY].creature->status == ELDER || board[cX][cY].creature->status == NORMAL) {//大人ペンギンが見つかったら
+
+						board[x + drctnX][y + drctnY].creature->x = cX - drctnX;//元の居場所から動くペンギンを指定し、そのXYを変更。
+						board[x + drctnX][y + drctnY].creature->y = cY - drctnY;
+						board[cX - drctnX][cY - drctnY].creature = board[x + drctnX][y + drctnY].creature;//新しいますに卵アドレスを代入。
+						board[x + drctnX][y + drctnY].creature = NULL;//元の位置の卵アドレスを削除。
+
+						s = "";
+						s = "NewPlace X:" + std::to_string(cX - drctnX) + "Y:" + std::to_string(cY - drctnY);
+						exhibitScreen();
+						DrawString(800, 570, s.c_str(), WHITE);
+						WaitKey();
+					}
+
+
+					if (board[cX][cY].creature->status == EGG) {//卵が見つかったら
+						board[cX][cY].creature->DeleteCreature();
+						board[cX][cY].creature = NULL;
+
+						board[x + drctnX][y + drctnY].creature->DeleteCreature();
+						board[x + drctnX][y + drctnY].creature = NULL;
+					}
+
+
+					if (board[cX][cY].creature->status == BULL) {
+					}
+					s = "卵がぶつかった！";
+					exhibitScreen();
+					DrawString(800, 570, s.c_str(), WHITE);
+					WaitKey();
+
+					break;
+				}
+			}
+		}
+	}
+	return TRUE;
 }
+
+
+
+
+
 
 void Creature::changeDirection() {
 }
@@ -82,9 +167,9 @@ void Creature::test() {
 };
 
 void Creature::killed() {
-	HP = 0;
-	x = NULL;
-	y = NULL;
+	this->HP = NULL;
+	this->x = NULL;
+	this->y = NULL;
 }
 
 
@@ -112,7 +197,7 @@ Direction Creature::GETdirection() {
 	return compass;
 }
 
-void Creature::DeleteCharacter() {
+void Creature::DeleteCreature() {
 	memset(&this->team, NULL, sizeof(this->team));
 	memset(&this->status, NULL, sizeof(this->status));
 	memset(&this->directionX, NULL, sizeof(this->directionX));

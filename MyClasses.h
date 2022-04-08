@@ -55,7 +55,7 @@ public:
 	virtual bool walk(int size);
 	virtual void changeDirection();
 	virtual bool attack(int size);
-	virtual bool kick(int size);
+	bool kick(int size);
 	virtual bool specialMovement1(int size);
 	virtual bool specialMovement2(int size);
 	virtual int useItem(int size);
@@ -65,7 +65,7 @@ public:
 	void SETdirection(Direction compass);
 	void GETdirectionXY(int* xward, int* yward);
 	Direction GETdirection();
-	void DeleteCharacter();
+	void DeleteCreature();
 };
 
 
