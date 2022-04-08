@@ -60,6 +60,7 @@ public:
 	virtual bool specialMovement2(int size);
 	virtual int useItem(int size);
 	virtual void test();
+	void killed();
 	void SETdirection(int xward, int yward);
 	void SETdirection(Direction compass);
 	void GETdirectionXY(int* xward, int* yward);

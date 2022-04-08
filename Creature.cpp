@@ -65,8 +65,8 @@ bool Creature::attack(int size) {
 }
 
 bool Creature::specialMovement1(int size){
-	DrawString(800, 300, "Creature.specialMovement1メソッド実行", WHITE);
-	WaitKey();
+	/*DrawString(800, 300, "Creature.specialMovement1メソッド実行", WHITE);
+	WaitKey();*/
 	return FALSE;
 }
 
@@ -79,8 +79,14 @@ int Creature::useItem(int size) {
 };
 
 void Creature::test() {
-
 };
+
+void Creature::killed() {
+	HP = 0;
+	x = NULL;
+	y = NULL;
+}
+
 
 void Creature::SETdirection(int xward, int yward) {
 	this->directionX = xward;

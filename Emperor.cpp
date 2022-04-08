@@ -2,6 +2,7 @@
 #include "MyClasses.h"
 #include "externs.h"
 #include "consts.h"
+#include "string"
 
 //プロトタイプ宣言
 void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/);
@@ -134,15 +135,16 @@ bool Emperor::attack(int size) {
 
 bool Emperor::kick(int size) {
 	int checkX = 0;
-	int checkY;
+	int checkY = 0;
 	int drctnX, drctnY;
+	string s;
 
 	GETdirectionXY(&drctnX, &drctnY);
 	checkX = x + drctnX;
 	checkY = y + drctnY;
 
-	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
-		if (board[checkX][checkY].creature == NULL) {
+	if (checkX > 0 && checkX < size && checkY > 0 && checkY < size) {
+		if (board[checkX][checkY].creature == NULL) {//押したマスの方向に何もいなかったら処理を終了。
 			return FALSE;
 		}
 
@@ -151,17 +153,46 @@ bool Emperor::kick(int size) {
 		}else{
 
 			while (1) {
+				exhibitScreen();
+				DrawString(800, 180, "kick開始", WHITE);
+				WaitKey();
+
+
+
 				checkX = checkX + drctnX;//転がる方向のマスをひとつづつ調べる。
-				checkY = checkY + drctnX;
+				checkY = checkY + drctnY;
+
+
+				s = "";
+				s = "X:" + std::to_string(checkX) + "Y:" + std::to_string(checkY);
+				DrawString(800, 570, s.c_str(), WHITE);
+				WaitKey();
+
+
 
 				if (checkX <= 0 && checkX > size && checkY <= 0 && checkY > size) {//マス目の端っこまで調べたら、卵が消える。
+					board[x + drctnX][y + drctnY].creature->killed();
 					board[x + drctnX][y + drctnY].creature = NULL;
 				}
 
 
+				
+
+
+
 				if (board[checkX][checkY].creature != NULL) {//転がる方向に何か居たらループ抜け。
 
-					if (board[checkX][checkY].creature->status <= 2 && board[checkX][checkY].creature->status >= 4) {//大人ペンギンが見つかったら
+					if (board[checkX][checkY].creature->status == NORMAL || ELDER || EMPEROR) {//大人ペンギンが見つかったら
+
+						board[x + drctnX][y + drctnY].creature->x = checkX - drctnX;
+						board[x + drctnX][y + drctnY].creature->x = checkY - drctnY;
+
+						s = "";
+						s = "X:" + std::to_string(checkX - drctnX) + "Y:" + std::to_string(checkY - drctnY);
+						DrawString(800, 570, s.c_str(), WHITE);
+						WaitKey();
+
+
 						board[checkX - drctnX][checkY - drctnY].creature = board[x + drctnX][y + drctnY].creature;//新しいますに卵アドレスを代入。
 						board[x + drctnX][y + drctnY].creature = NULL;//元の位置の卵アドレスを削除。
 					}
