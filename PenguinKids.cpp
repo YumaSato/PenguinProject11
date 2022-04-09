@@ -37,8 +37,8 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	staminaLimit = NULL;
 	attackPower = NULL;
 	defensePower = NULL;
-	speed = parentSpeed - 32 ;//素早さは世代を重ねるごとに低下する。減少量はランダム。
-	//- GetRand(32) *2
+	speed = parentSpeed - 32 - GetRand(16) * 2;//素早さは世代を重ねるごとに低下する。減少量はランダム。
+	//
 	if (speed < 1) { speed = 1;}
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
@@ -64,6 +64,7 @@ bool PenguinKids::selectAction() {
 
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
+		skip = FALSE;
 		return TRUE;
 	}
 
@@ -142,17 +143,38 @@ bool PenguinKids::specialMovement1(int size) {//産卵
 
 
 bool PenguinKids::specialMovement2(int size) {
+
+	string s = "";
+	string allS = "";
+	int ix = x;
+	int iy = y;
+	int tmpx, tmpy;
+	GETdirectionXY(&tmpx, &tmpy);
+	//ix = ix + directionX;
+	//iy = iy + directionY;
+	ix = ix + tmpx;
+	iy = iy + tmpy;
+
+
+	int diCheck[8] = {0,1,2,3,4,5,6,7};//隣にいくつも卵がある場合、卵を孵化させる方向をランダムにする。
+	for (int i = 0 ; i < 7; i++) {
+		int r = GetRand(7-i)+i;
+		int tmp = diCheck[i];
+		diCheck[i] = diCheck[r];
+		diCheck[r] = tmp;
+	}
+	
+	/*s = "";
+	for (int i = 0; i < 8; i++) {
+		s += to_string(diCheck[i]);
+	}
+	exhibitScreen();
+	DrawString(800, 570, s.c_str(), WHITE);
+	WaitKey();*/
+
+
+
 	if (status == NORMAL or status == ELDER) {
-
-		int ix = x;
-		int iy = y;
-		int tmpx, tmpy;
-		GETdirectionXY(&tmpx, &tmpy);
-		//ix = ix + directionX;
-		//iy = iy + directionY;
-		ix = ix + tmpx;
-		iy = iy + tmpy;
-
 		if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
 			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
@@ -166,7 +188,112 @@ bool PenguinKids::specialMovement2(int size) {
 					return TRUE;
 				}
 			}
+		}
 
+
+		for (int i = 0; i < 8; i++) {//８方向調べる。これなんでswitch使うとi==7の場合しか発動しないの？←ブレイクを書いていなかったから。
+
+
+
+
+			/*if (diCheck[i] == 0) {
+				tmpx = -1;
+				tmpy = -1;
+			}
+			if (diCheck[i] == 1) {
+				tmpx = 0;
+				tmpy = -1;
+			}
+			if (diCheck[i] == 2) {
+				tmpx = 1;
+				tmpy = -1;
+			}
+			if (diCheck[i] == 3) {
+				tmpx = 1;
+				tmpy = 0;
+			}
+			if (diCheck[i] == 4) {
+				tmpx = 1;
+				tmpy = 1;
+			}
+			if (diCheck[i] == 5) {
+				tmpx = 0;
+				tmpy = 1;
+			}
+			if (diCheck[i] == 6) {
+				tmpx = -1;
+				tmpy = 1;
+			}
+			if (diCheck[i] == 7) {
+				tmpx = -1;
+				tmpy = 0;
+			}*/
+
+
+			switch (i) {
+			case 0:
+				tmpx = -1;
+				tmpy = -1;
+				break;
+			case 1:
+				tmpx = 0;
+				tmpy = -1;
+				break;
+			case 2:
+				tmpx = 1;
+				tmpy = -1;
+				break;
+			case 3:
+				tmpx = 1;
+				tmpy = 0;
+				break;
+			case 4:
+				tmpx = 1;
+				tmpy = 1;
+				break;
+			case 5:
+				tmpx = 0;
+				tmpy = 1;
+				break;
+			case 6:
+				tmpx = -1;
+				tmpy = 1;
+				break;
+			case 7:
+				tmpx = -1;
+				tmpy = 0;
+				break;
+			}
+
+			ix = x + tmpx;
+			iy = y + tmpy;
+
+
+			/*s = "ix" + std::to_string(ix) + "iy" + std::to_string(iy) + " tmpx" + std::to_string(tmpx) + " tmpy" + std::to_string(tmpy);
+			exhibitScreen();
+			DrawString(800, 570, s.c_str(), WHITE);
+			WaitKey();*/
+
+
+			if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
+
+				
+
+
+				if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
+					if (board[ix][iy].creature->status == EGG) {//それが卵であった場合
+						SETdirection(tmpx, tmpy);//その方向を向く。
+						board[ix][iy].creature->status = NORMAL;//孵化させる。
+						board[ix][iy].creature->SETdirection(this->GETdirection());//親と同じ方向を向けさせる。
+
+						exhibitScreen();
+						DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
+						WaitKey();
+						return TRUE;
+					}
+				}
+
+			}
 		}
 
 

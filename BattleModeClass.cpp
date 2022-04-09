@@ -187,7 +187,7 @@ bool speedOrder(Creature* a, Creature* b);
 			if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
 				reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction();
 
-				mobsSpeedOrder[i]->skip = FALSE;//行動が終わってから（つまりモブ行動終了後）、孵化したばかりのペンギンのスキップが解除される。
+				//mobsSpeedOrder[i]->skip = FALSE;//行動が終わってから（つまりモブ行動終了後）、孵化したばかりのペンギンのスキップが解除される。
 			}
 
 			

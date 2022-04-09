@@ -72,10 +72,14 @@ bool Creature::kick(int size) {
 			return FALSE;
 		}
 
-		if (board[cX][cY].creature->status != EGG) {//押したマスの方向に卵以外があれば処理を終了。
-			return FALSE;
+		if (status == EMPEROR){
+			if (board[cX][cY].creature->status == NORMAL || board[cX][cY].creature->status == ELDER) {//押したマスの方向に大人がいたら
+				board[cX][cY].creature->SETdirection(directionX, directionY);
+				return TRUE;
+			}
 		}
-		else {
+
+		if (board[cX][cY].creature->status == EGG){
 			exhibitScreen();
 			DrawString(800, 180, "kick開始", WHITE);
 			WaitKey();
@@ -132,9 +136,10 @@ bool Creature::kick(int size) {
 					break;
 				}
 			}
+			return TRUE;
 		}
 	}
-	return TRUE;
+	return FALSE;
 }
 
 
