@@ -74,6 +74,7 @@ bool speedOrder(Creature* a, Creature* b);
 		string s = "";
 		string allS = "";
 		Creature* mobsSpeedOrder[2048];
+		bool moveOrNot = FALSE;
 
 		int mobNumberNow;
 		mobNumberNow = mobNumber;//このターンで実行するペンギンキッズ行動の回数を入れるローカル変数に、ターン末尾行動開始時点でのモブ数を代入。
@@ -185,22 +186,19 @@ bool speedOrder(Creature* a, Creature* b);
 			//}
 			
 			if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-				reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction();
-
-				//mobsSpeedOrder[i]->skip = FALSE;//行動が終わってから（つまりモブ行動終了後）、孵化したばかりのペンギンのスキップが解除される。
+				moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction();
 			}
 
-			
-			//mobsSpeedOrder[i]->specialMovement2(FIELDSIZE);
-			//mobsSpeedOrder[i]->attack();
 
-			exhibitScreen();
-			numSpeed = (to_string(mobsSpeedOrder[i]->speed));
-			numX = (to_string(mobsSpeedOrder[i]->x));
-			numY = (to_string(mobsSpeedOrder[i]->y));
-			mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの行動速度は、" + numSpeed;
-			DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
-			WaitKey();
+			if (moveOrNot == TRUE) {//もし行動が行われていたら
+				exhibitScreen();
+				numSpeed = (to_string(mobsSpeedOrder[i]->speed));
+				numX = (to_string(mobsSpeedOrder[i]->x));
+				numY = (to_string(mobsSpeedOrder[i]->y));
+				mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの行動速度は、" + numSpeed;
+				DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
+				WaitKey();
+			}
 		}
 
 	}

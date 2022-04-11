@@ -2,7 +2,8 @@
 
 enum Team {
 	red = 1, //赤チーム
-	blue = 2 //青チーム
+	blue = 2, //青チーム
+	enemy = 3 //敵キャラども。
 };
 
 enum Status {
@@ -12,7 +13,7 @@ enum Status {
 	EMPEROR = 4,    //皇帝ペンギン
 	FIREGOD = 5,    //火の神
 	LIQUIDGOD = 6,  //酒の神
-	BULL = 7,  //筋肉男
+	BULL = 7,       //闘牛
 	SPRINTER = 8    //速足男
 };
 

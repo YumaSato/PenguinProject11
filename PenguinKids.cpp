@@ -74,8 +74,10 @@ bool PenguinKids::selectAction() {
 	if (specialMovement2(FIELDSIZE) == TRUE) {
 		return TRUE;
 	}
-	attack(FIELDSIZE);
-	return TRUE;
+	if (attack(FIELDSIZE) == TRUE) {
+		return TRUE;
+	}
+	return FALSE;
 }
 
 
@@ -178,7 +180,7 @@ bool PenguinKids::specialMovement2(int size) {
 		if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
 			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
-				if (board[ix][iy].creature->status == EGG) {
+				if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {
 					board[ix][iy].creature->status = NORMAL;
 					board[ix][iy].creature->SETdirection(this->GETdirection());
 
@@ -190,47 +192,12 @@ bool PenguinKids::specialMovement2(int size) {
 			}
 		}
 
+		
 
 		for (int i = 0; i < 8; i++) {//８方向調べる。これなんでswitch使うとi==7の場合しか発動しないの？←ブレイクを書いていなかったから。
 
 
-
-
-			/*if (diCheck[i] == 0) {
-				tmpx = -1;
-				tmpy = -1;
-			}
-			if (diCheck[i] == 1) {
-				tmpx = 0;
-				tmpy = -1;
-			}
-			if (diCheck[i] == 2) {
-				tmpx = 1;
-				tmpy = -1;
-			}
-			if (diCheck[i] == 3) {
-				tmpx = 1;
-				tmpy = 0;
-			}
-			if (diCheck[i] == 4) {
-				tmpx = 1;
-				tmpy = 1;
-			}
-			if (diCheck[i] == 5) {
-				tmpx = 0;
-				tmpy = 1;
-			}
-			if (diCheck[i] == 6) {
-				tmpx = -1;
-				tmpy = 1;
-			}
-			if (diCheck[i] == 7) {
-				tmpx = -1;
-				tmpy = 0;
-			}*/
-
-
-			switch (i) {
+			switch (diCheck[i]) {
 			case 0:
 				tmpx = -1;
 				tmpy = -1;
@@ -267,6 +234,7 @@ bool PenguinKids::specialMovement2(int size) {
 
 			ix = x + tmpx;
 			iy = y + tmpy;
+		}
 
 
 			/*s = "ix" + std::to_string(ix) + "iy" + std::to_string(iy) + " tmpx" + std::to_string(tmpx) + " tmpy" + std::to_string(tmpy);
@@ -275,25 +243,24 @@ bool PenguinKids::specialMovement2(int size) {
 			WaitKey();*/
 
 
-			if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
-
-				
+		if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
 
-				if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
-					if (board[ix][iy].creature->status == EGG) {//それが卵であった場合
-						SETdirection(tmpx, tmpy);//その方向を向く。
-						board[ix][iy].creature->status = NORMAL;//孵化させる。
-						board[ix][iy].creature->SETdirection(this->GETdirection());//親と同じ方向を向けさせる。
 
-						exhibitScreen();
-						DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
-						WaitKey();
-						return TRUE;
-					}
+
+			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
+				if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {//それが卵であった場合
+					SETdirection(tmpx, tmpy);//その方向を向く。
+					board[ix][iy].creature->status = NORMAL;//孵化させる。
+					board[ix][iy].creature->SETdirection(this->GETdirection());//親と同じ方向を向けさせる。
+
+					exhibitScreen();
+					DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
+					WaitKey();
+					return TRUE;
 				}
-
 			}
+
 		}
 
 
@@ -303,3 +270,9 @@ bool PenguinKids::specialMovement2(int size) {
 	}
 
 }
+
+
+
+
+
+
