@@ -18,7 +18,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 	string numY;
 
 	team = ParentTeam;
-	status = EGG;//卵である意。
+	status = BULL;//卵である意。
 	//directionX = DirectionX;
 	//directionY = DirectionY;
 	SETdirection(DirectionX, DirectionY);
@@ -30,18 +30,16 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 	staminaLimit = NULL;
 	attackPower = NULL;
 	defensePower = NULL;
-	speed = parentSpeed - 32;//素早さは世代を重ねるごとに低下する。減少量はランダム。
-	//- GetRand(32) *2
-	if (speed < 1) { speed = 1; }
+	speed = 500000 - GetRand(160);//素早さは世代を重ねるごとに低下する。減少量はランダム。
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
-	skip = TRUE;//ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
+	skip = FALSE;//ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
 
-	DrawString(800, 180, "ペンギンキッズのSetMobs実行。", GetColor(255, 200, 255));
+	DrawString(800, 180, "闘牛のSetMobs実行。", GetColor(255, 200, 255));
 	numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));
-	mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの素早さは、" + numSpeed;
+	mobStatusMsg = "X:" + numX + ",Y:" + numY + "の闘牛の素早さは、" + numSpeed;
 	DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
 	WaitKey();
 }

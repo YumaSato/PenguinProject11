@@ -154,6 +154,11 @@ void handlePenguin() {//ハンドルに画像のポインタを代入
 		sprintf(tmp, "Imgs/bluePenguin%d.png", i);
 		handle[blue][ELDER][i] = LoadGraph(tmp);
 	}
+
+	for (int i = 0; i <= 7; i++) {
+		sprintf(tmp, "Imgs/redBull%d.png", i);
+		handle[enemy][BULL][i] = LoadGraph(tmp);
+
 }
 
 //void setCreature(int num, int ix, int iy) {
