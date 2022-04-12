@@ -67,6 +67,7 @@ public:
 	Direction GETdirection();
 	void DeleteCreature();
 	void incubate(int checkX, int checkY);
+	void damage(int checkX, int checkY);
 };
 
 

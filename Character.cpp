@@ -304,47 +304,7 @@ bool Character::attack(int size) {
 		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
 			return FALSE;
 		}
-		board[checkX][checkY].creature->HP = board[checkX][checkY].creature->HP - (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ダメ計
-
-		
-		
-		if (board[checkX][checkY].creature->status == NORMAL || board[checkX][checkY].creature->status == ELDER) {
-			
-			switch (GETdirection()) {
-			case NW:
-				board[checkX][checkY].creature->SETdirection(SE);
-				break;
-			case NN:
-				board[checkX][checkY].creature->SETdirection(SS);
-				break;
-			case NE:
-				board[checkX][checkY].creature->SETdirection(SW);
-				break;
-			case EE:
-				board[checkX][checkY].creature->SETdirection(WW);
-				break;
-			case SE:
-				board[checkX][checkY].creature->SETdirection(NW);
-				break;
-			case SS:
-				board[checkX][checkY].creature->SETdirection(NN);
-				break;
-			case SW:
-				board[checkX][checkY].creature->SETdirection(NE);
-				break;
-			case WW:
-				board[checkX][checkY].creature->SETdirection(EE);
-				break;
-			}
-
-			//board[checkX][checkY].creature->SETdirection(drctnX, drctnY);//殴った対象がペンギンキッズなら、こっちを向いてくる。
-		}
-
-
-		if (board[checkX][checkY].creature->HP <= 0) {
-			board[checkX][checkY].creature->DeleteCreature();
-			board[checkX][checkY].creature = NULL;
-		}
+		damage(checkX, checkY);
 
 
 		exhibitScreen();

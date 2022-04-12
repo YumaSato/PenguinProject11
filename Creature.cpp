@@ -245,9 +245,49 @@ void Creature::DeleteCreature() {
 }
 
 
-void Creature::incubate(int checkX, int checkY) {//孵化の内容
+
+
+void Creature::incubate(int checkX, int checkY) {//指定地点に生物がいる前提。孵化の内容を実行。
 
 	board[checkX][checkY].creature->status = NORMAL;
 	board[checkX][checkY].creature->defensePower = 25 + GetRand(2);
 	board[checkX][checkY].creature->SETdirection(GETdirection());
+}
+
+
+
+void Creature::damage(int checkX, int checkY) {//指定地点に生物がいる前提。攻撃の内容を実行。
+	board[checkX][checkY].creature->HP = board[checkX][checkY].creature->HP - (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ダメ計
+	if (board[checkX][checkY].creature->status == NORMAL || board[checkX][checkY].creature->status == ELDER) {//相手がペンギンだった場合、向きが変わる。
+		switch (GETdirection()) {
+		case NW:
+			board[checkX][checkY].creature->SETdirection(SE);
+			break;
+		case NN:
+			board[checkX][checkY].creature->SETdirection(SS);
+			break;
+		case NE:
+			board[checkX][checkY].creature->SETdirection(SW);
+			break;
+		case EE:
+			board[checkX][checkY].creature->SETdirection(WW);
+			break;
+		case SE:
+			board[checkX][checkY].creature->SETdirection(NW);
+			break;
+		case SS:
+			board[checkX][checkY].creature->SETdirection(NN);
+			break;
+		case SW:
+			board[checkX][checkY].creature->SETdirection(NE);
+			break;
+		case WW:
+			board[checkX][checkY].creature->SETdirection(EE);
+			break;
+		}
+	}
+	if (board[checkX][checkY].creature->HP <= 0) {
+		board[checkX][checkY].creature->DeleteCreature();
+		board[checkX][checkY].creature = NULL;
+	}
 }

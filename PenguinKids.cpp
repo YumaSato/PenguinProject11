@@ -74,13 +74,13 @@ bool PenguinKids::selectAction() {
 		HP = HP_Limit;
 	}
 
+	if (attack(FIELDSIZE) == TRUE) {
+		return TRUE;
+	}
 	if (specialMovement1(FIELDSIZE) == TRUE) {
 		return TRUE;
 	}
 	if (specialMovement2(FIELDSIZE) == TRUE) {
-		return TRUE;
-	}
-	if (attack(FIELDSIZE) == TRUE) {
 		return TRUE;
 	}
 	return FALSE;
@@ -99,7 +99,29 @@ void PenguinKids::test() {
 	WaitKey();
 }
 
+
+
 bool PenguinKids::attack(int size) {
+
+	int checkX = 0;
+	int checkY;
+	int drctnX, drctnY;
+	GETdirectionXY(&drctnX, &drctnY);
+	checkX = x + drctnX;
+	checkY = y + drctnY;
+
+	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
+			return FALSE;
+		}
+		if (board[checkX][checkY].creature->team == enemy) {//そこにいるやつが敵ならば攻撃。
+			damage(checkX, checkY);
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+
 	return FALSE;
 }
 
