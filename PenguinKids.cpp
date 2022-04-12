@@ -46,12 +46,12 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 	exhibitScreen();
 	DrawString(800, 180, "ペンギンキッズのSetMobs実行。", GetColor(255, 200, 255));
-	numSpeed = (to_string(speed));
+	/*numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));
 	mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの素早さは、" + numSpeed;
 	DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
-	WaitKey();
+	WaitKey();*/
 
 	
 }
@@ -66,6 +66,11 @@ bool PenguinKids::selectAction() {
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;
 		return TRUE;
+	}
+
+	HP += 20;
+	if (HP < HP_Limit) {//自然治癒
+		HP = HP_Limit;
 	}
 
 	if (specialMovement1(FIELDSIZE) == TRUE) {
@@ -234,7 +239,7 @@ bool PenguinKids::specialMovement2(int size) {
 
 			ix = x + tmpx;
 			iy = y + tmpy;
-		}
+
 
 
 			/*s = "ix" + std::to_string(ix) + "iy" + std::to_string(iy) + " tmpx" + std::to_string(tmpx) + " tmpy" + std::to_string(tmpy);
@@ -243,26 +248,26 @@ bool PenguinKids::specialMovement2(int size) {
 			WaitKey();*/
 
 
-		if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
+			if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
 
 
 
-			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
-				if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {//それが卵であった場合
-					SETdirection(tmpx, tmpy);//その方向を向く。
-					board[ix][iy].creature->status = NORMAL;//孵化させる。
-					board[ix][iy].creature->SETdirection(this->GETdirection());//親と同じ方向を向けさせる。
+				if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
+					if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {//それが卵であった場合
+						SETdirection(tmpx, tmpy);//その方向を向く。
+						board[ix][iy].creature->status = NORMAL;//孵化させる。
+						board[ix][iy].creature->SETdirection(this->GETdirection());//親と同じ方向を向けさせる。
 
-					exhibitScreen();
-					DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
-					WaitKey();
-					return TRUE;
+						exhibitScreen();
+						DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
+						WaitKey();
+						return TRUE;
+					}
 				}
+
 			}
-
 		}
-
 
 
 

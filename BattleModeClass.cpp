@@ -195,7 +195,7 @@ bool speedOrder(Creature* a, Creature* b);
 				numSpeed = (to_string(mobsSpeedOrder[i]->speed));
 				numX = (to_string(mobsSpeedOrder[i]->x));
 				numY = (to_string(mobsSpeedOrder[i]->y));
-				mobStatusMsg = "X:" + numX + ",Y:" + numY + "のペンギンの行動速度は、" + numSpeed;
+				mobStatusMsg= "X:" +numX+ ",Y:" +numY + "のペンギン\n 行動速度:" +numSpeed+ " 体力:" + to_string(mobsSpeedOrder[i]->HP) + "/" + to_string(mobsSpeedOrder[i]->HP_Limit);
 				DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
 				WaitKey();
 			}
