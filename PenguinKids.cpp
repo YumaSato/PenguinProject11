@@ -35,17 +35,18 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	HP_Limit = 50;
 	stamina = NULL;
 	staminaLimit = NULL;
-	attackPower = NULL;
-	defensePower = NULL;
-	speed = parentSpeed - 32 - GetRand(16) * 2;//素早さは世代を重ねるごとに低下する。減少量はランダム。
+	attackPower = 30 + GetRand(3);
+	defensePower = 1;
+	speed = parentSpeed - 30 - GetRand(16) * 2;//素早さは世代を重ねるごとに低下する。減少量はランダム。
 	//
 	if (speed < 1) { speed = 1;}
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
 	skip = TRUE;//ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
 
-	exhibitScreen();
-	DrawString(800, 180, "ペンギンキッズのSetMobs実行。", GetColor(255, 200, 255));
+
+	/*exhibitScreen();
+	DrawString(800, 180, "ペンギンキッズのSetMobs実行。", GetColor(255, 200, 255));*/
 	/*numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));
@@ -68,8 +69,8 @@ bool PenguinKids::selectAction() {
 		return TRUE;
 	}
 
-	HP += 20;
-	if (HP < HP_Limit) {//自然治癒
+	HP += 12;
+	if (HP > HP_Limit) {//自然治癒
 		HP = HP_Limit;
 	}
 
@@ -186,8 +187,8 @@ bool PenguinKids::specialMovement2(int size) {
 
 			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 				if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {
-					board[ix][iy].creature->status = NORMAL;
-					board[ix][iy].creature->SETdirection(this->GETdirection());
+					
+					incubate(ix, iy);
 
 					exhibitScreen();
 					DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
@@ -255,9 +256,9 @@ bool PenguinKids::specialMovement2(int size) {
 
 				if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 					if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {//それが卵であった場合
-						SETdirection(tmpx, tmpy);//その方向を向く。
-						board[ix][iy].creature->status = NORMAL;//孵化させる。
-						board[ix][iy].creature->SETdirection(this->GETdirection());//親と同じ方向を向けさせる。
+						
+						SETdirection(tmpx, tmpy);
+						incubate(ix, iy);
 
 						exhibitScreen();
 						DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);

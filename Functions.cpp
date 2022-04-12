@@ -61,10 +61,14 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 
 void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
 	int h;//ハンドル格納用
+	int hHP;
+	bool HPexhibitOrNot;
 	ClearDrawScreen();//一度画面を全消し
 	DrawGraph(0, 0, HandleBoard, TRUE);
 	for (int ix = 0; ix < FIELDSIZE; ix++) {
 		for (int iy = 0; iy < FIELDSIZE; iy++) {
+
+			HPexhibitOrNot = FALSE;
 
 			if (board[ix][iy].creature == NULL) {
 				continue;
@@ -102,16 +106,28 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 				Direction directionNum;
 				directionNum = board[ix][iy].creature->GETdirection();
 				h = handle[board[ix][iy].creature->team][board[ix][iy].creature->status][directionNum];
+
+
+				if (board[ix][iy].creature->status != EMPEROR && board[ix][iy].creature->HP < board[ix][iy].creature->HP_Limit) {
+					hHP = HandleHP;
+					HPexhibitOrNot = TRUE;
+				}
 			}
 			//LoadGraphScreen(0, 0, "back.png", TRUE);
 			DrawGraph(ix * 48, iy * 48, h, TRUE);//一度クラスの変数に格納したHandleで描画
 			//DrawString(450, 20, msg.c_str(), WHITE);
 
+			if (HPexhibitOrNot == TRUE) {
+				DrawGraph(ix * 48 + 5, iy * 48 + 29, hHP, TRUE);
+				DrawBox(ix * 48 + 16, iy * 48 + 31, ix * 48 + 16 + board[ix][iy].creature->HP / 2, iy * 48 + 36, GetColor(45, 205, 50),TRUE);
+			}
 
 		}
 	}
 	exhibitStatusMsg();//キャラクタ0のメッセージを代入。
 	DrawString(800, 20, mainMsg.c_str(), WHITE);
+	DrawString(800, 130, actionMsg.c_str(), GetColor(255, 200, 255));
+	actionMsg = "";
 }
 
 

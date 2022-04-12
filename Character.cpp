@@ -107,7 +107,9 @@ bool Character::selectAction() {
 	if (stamina > staminaLimit) {
 		stamina = staminaLimit;//スタミナが満タンになるとき。
 	}
-	DrawString(800, 150, "行動終了。スタミナが回復します。", GetColor(255, 200, 255));
+
+	actionMsg = "行動終了。スタミナが回復します。";
+	exhibitScreen();
 	WaitKey();
 	mainMsg = "";
 	return TRUE;
@@ -164,11 +166,13 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 	for (int i = 1; i <= distance; i++) {//1歩歩く
 
 		if (stamina < staminaNeed) {//スタミナが必要数に満たない場合walk中断でリターン。
-			DrawString(800, 70, "スタミナ切れだ！", WHITE);
+			actionMsg = "スタミナ切れだ！";
+			exhibitScreen();
 			return TRUE;
 		}
 
-		DrawString(800, 70, "歩こう!　1:移動終了　SHIFT:斜めサポート", WHITE);
+		actionMsg = "歩こう!　1:移動終了　SHIFT:斜めサポート";
+		exhibitScreen();
 
 		while (1) {
 			checkX = this->x;//自分のいる座標を代入。
@@ -274,6 +278,78 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		exhibitScreen();
 	};
 
-	DrawString(800, 120, "walkの実行が終了", WHITE);//なんで青の時だけ呼ばれてるの？？
+
+	actionMsg = "walkの実行が終了";
+	exhibitScreen();
 	return TRUE;
+}
+
+
+
+
+
+
+
+
+bool Character::attack(int size) {
+
+	int checkX = 0;
+	int checkY;
+	int drctnX, drctnY;
+	GETdirectionXY(&drctnX, &drctnY);
+	checkX = x + drctnX;
+	checkY = y + drctnY;
+
+	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
+			return FALSE;
+		}
+		board[checkX][checkY].creature->HP = board[checkX][checkY].creature->HP - (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ダメ計
+
+		
+		
+		if (board[checkX][checkY].creature->status == NORMAL || board[checkX][checkY].creature->status == ELDER) {
+			
+			switch (GETdirection()) {
+			case NW:
+				board[checkX][checkY].creature->SETdirection(SE);
+				break;
+			case NN:
+				board[checkX][checkY].creature->SETdirection(SS);
+				break;
+			case NE:
+				board[checkX][checkY].creature->SETdirection(SW);
+				break;
+			case EE:
+				board[checkX][checkY].creature->SETdirection(WW);
+				break;
+			case SE:
+				board[checkX][checkY].creature->SETdirection(NW);
+				break;
+			case SS:
+				board[checkX][checkY].creature->SETdirection(NN);
+				break;
+			case SW:
+				board[checkX][checkY].creature->SETdirection(NE);
+				break;
+			case WW:
+				board[checkX][checkY].creature->SETdirection(EE);
+				break;
+			}
+
+			//board[checkX][checkY].creature->SETdirection(drctnX, drctnY);//殴った対象がペンギンキッズなら、こっちを向いてくる。
+		}
+
+
+		if (board[checkX][checkY].creature->HP <= 0) {
+			board[checkX][checkY].creature->DeleteCreature();
+			board[checkX][checkY].creature = NULL;
+		}
+
+
+		exhibitScreen();
+		DrawString(800, 180, "msg", GetColor(255, 200, 255));
+		WaitKey();
+		return TRUE;
+	}
 }

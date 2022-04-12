@@ -36,6 +36,7 @@ extern string actionMsg;
 extern string statusMsg;
 
 extern int HandleBoard;
+extern int HandleHP;
 extern int handle[3][5][8];
 
 extern Grid board[FIELDSIZE][FIELDSIZE];//‚»‚Ìƒ}ƒX‚É‰½‚ª‚¢‚é‚©

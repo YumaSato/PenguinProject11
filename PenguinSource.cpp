@@ -56,6 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	handlePenguin();//ペンギンの全ての画像データを読み込む。
 	HandleBoard = LoadGraph("Imgs/back.png");
+	HandleHP = LoadGraph("Imgs/HPmeter43,9.png");
 
 	
 

@@ -75,6 +75,10 @@ bool Creature::kick(int size) {
 		if (status == EMPEROR){
 			if (board[cX][cY].creature->status == NORMAL || board[cX][cY].creature->status == ELDER) {//押したマスの方向に大人がいたら
 				board[cX][cY].creature->SETdirection(directionX, directionY);
+				board[cX][cY].creature->HP -= 5;
+				if (board[cX][cY].creature->HP <= 0) {
+					board[cX][cY].creature->DeleteCreature();
+				}
 				return TRUE;
 			}
 		}
@@ -202,6 +206,9 @@ Direction Creature::GETdirection() {
 	return compass;
 }
 
+
+
+
 void Creature::DeleteCreature() {
 	memset(&this->team, NULL, sizeof(this->team));
 	memset(&this->status, NULL, sizeof(this->status));
@@ -218,6 +225,8 @@ void Creature::DeleteCreature() {
 	memset(&this->speed, NULL, sizeof(this->speed));
 	memset(&this->staminaRecoverAbility, NULL, sizeof(this->staminaRecoverAbility));
 	memset(&this->num, NULL, sizeof(this->num));
+
+	
 	//team = NULL;
 	//status = NULL;
 	//directionX = NULL;
@@ -233,4 +242,12 @@ void Creature::DeleteCreature() {
 	//speed = NULL;
 	//staminaRecoverAbility = NULL;
 	//num = NULL;
+}
+
+
+void Creature::incubate(int checkX, int checkY) {//孵化の内容
+
+	board[checkX][checkY].creature->status = NORMAL;
+	board[checkX][checkY].creature->defensePower = 25 + GetRand(2);
+	board[checkX][checkY].creature->SETdirection(GETdirection());
 }

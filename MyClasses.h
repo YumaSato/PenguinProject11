@@ -66,6 +66,7 @@ public:
 	void GETdirectionXY(int* xward, int* yward);
 	Direction GETdirection();
 	void DeleteCreature();
+	void incubate(int checkX, int checkY);
 };
 
 
@@ -95,6 +96,7 @@ public:
 	void test();
 	void changeDirection();
 	bool walk(int size) override;
+	bool attack(int size);
 	Character();//キャラクタのコンストラクタ
 };
 
@@ -103,8 +105,6 @@ public:
 	Emperor(Team team, int num);
 	bool specialMovement1(int size);
 	bool specialMovement2(int size);
-	bool attack(int size) override;
-	bool kick(int size);
 };
 
 
