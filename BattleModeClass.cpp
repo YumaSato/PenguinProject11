@@ -48,8 +48,11 @@ bool speedOrder(Creature* a, Creature* b);
 			Emperor1.selectAction();
 
 			Emperor2.selectAction();
+
+			
 			turnFinal();
 			enemyEnter(turnNum);
+			
 			turnNum += 1;
 
 
@@ -89,72 +92,20 @@ bool speedOrder(Creature* a, Creature* b);
 			mobsSpeedOrder[i] = &mobs_PenguinKids[i];
 
 		}
-		/*for (int i = 0; i < num_bull; i++) {
-			mobsSpeedOrder[i + num_penguinKids] = &mobs_Bull[num_bull];
-		}*/
+		for (int i = 0; i < num_bull; i++) {
+			mobsSpeedOrder[i + num_penguinKids] = &mobs_Bull[i];//mobs_PenguinKidsの中身を入れ終わったら、その後ろにbullポインタ配列の中身も入れていく。
+		}
 
-		
+
+
+		//
 		//for (int i = 0; i < mobNumber; i++) {
 		//	s += "アドレス" + to_string(mobsSpeedOrder[i]->speed);//素早さ順アドレス配列のスピードを表示。
 		//}
 		//DrawString(800, 570, s.c_str(), WHITE);
 		//WaitKey();
 
-
-
-
 		sort(mobsSpeedOrder, mobsSpeedOrder + mobNumber, speedOrder);
-
-
-
-
-
-		//int sortSpeedOrder[mobLimit];
-		
-
-		//for (int i = 0; i < mobNumber; i++) {
-		//	sortSpeedOrder[i] = mobs_PenguinKids[i].speed;//まず素早さ順で素早さを入れるint配列に、mobsのnum順で素早さ値を代入。
-
-		//	
-
-		//	/*if (sortSpeedOrder[i] == NULL) {
-		//		sortSpeedOrder[i] = -1;
-		//	}*/
-		//	/*numSpeed = (to_string(sortSpeedOrder[i]));
-		//	DrawString(800, 560 + i*20, numSpeed.c_str(), WHITE);
-		//	WaitKey();*/
-		//}	
-
-		//sort(sortSpeedOrder, sortSpeedOrder + mobNumber, greater<>());//降順で並べ替え。
-		////素早さ順で素早さを入れるint配列の中身を、ちゃんと素早さ順に並べ替える。
-
-
-		
-		//for (int i = 0; i < mobNumber; i++) {
-		//	s += " " + to_string(sortSpeedOrder[i]);
-		//}
-		//DrawString(770, 550, s.c_str(), WHITE);
-		//WaitKey();
-
-
-		//for (int sort_i = 0; sort_i < mobNumber; sort_i++) {//素早さ順int配列ごとに、
-
-		//	if (sortSpeedOrder[sort_i] == NULL) {
-		//		continue;
-		//	}
-
-		//	for (int mobs_i = 0; mobs_i < mobNumber; mobs_i++) {//各mobsを調べて、
-
-
-		//		//numSpeed = (to_string(mobs_PenguinKids[mobs_i].speed));
-		//		//DrawString(800, 660 + mobs_i*20, numSpeed.c_str(), WHITE);
-		//		//WaitKey();
-
-		//		if (sortSpeedOrder[sort_i] == mobs_PenguinKids[mobs_i].speed) {//素早さ順intの素早さとmobsの素早さが一致したら
-		//			mobsSpeedOrder[sort_i] = &mobs_PenguinKids[mobs_i];//素早さ順アドレス配列に代入。
-		//		}
-		//	}
-		//}
 
 		s = "";
 		for (int i = 0; i < mobNumber; i++) {
@@ -201,7 +152,7 @@ bool speedOrder(Creature* a, Creature* b);
 				numSpeed = (to_string(mobsSpeedOrder[i]->speed));
 				numX = (to_string(mobsSpeedOrder[i]->x));
 				numY = (to_string(mobsSpeedOrder[i]->y));
-				mobStatusMsg= "X:" +numX+ ",Y:" +numY + "のペンギン\n 行動速度:" +numSpeed+ " 体力:" + to_string(mobsSpeedOrder[i]->HP) + "/" + to_string(mobsSpeedOrder[i]->HP_Limit);
+				mobStatusMsg= "X:" +numX+ ",Y:" +numY + "の"+ mobsSpeedOrder[i]->name +"\n 行動速度:" +numSpeed+ " 体力:" + to_string(mobsSpeedOrder[i]->HP) + "/" + to_string(mobsSpeedOrder[i]->HP_Limit);
 				DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
 				WaitKey();
 			}
@@ -221,6 +172,7 @@ bool speedOrder(Creature* a, Creature* b);
 
 
 	bool speedOrder(Creature* a, Creature* b) {
+		
 		if (a->speed == NULL) {
 			a->speed = -1;
 		}
@@ -245,14 +197,17 @@ bool speedOrder(Creature* a, Creature* b);
 
 
 	void enemyEnter(int turn) {
-	/*	if (turn > 4 && turn < 10 && turn % 2 == 1) {
+		if (turn > 0 && turn < 10 && turn % 2 == 1) {
 
 			Bull bull = Bull();
-			bull.setMobs(red, 1,1,1,0,400000);
+			int checkX = 1 + turn;
+			int checkY = 1;
+			bull.setMobs(red, 1,1,checkX,checkY,400000);
 			mobs_Bull[num_bull] = bull;
+			board[checkX][checkY].creature = &mobs_Bull[num_bull];
 			mobNumber += 1;
 			num_bull += 1;
-		}*/
+		}
 
 
 	}

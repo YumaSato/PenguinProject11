@@ -24,6 +24,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	string numX;
 	string numY;
 
+	name = "ƒyƒ“ƒMƒ“";
 	team = ParentTeam;
 	status = EGG;//—‘‚Å‚ ‚éˆÓB
 	//directionX = DirectionX;

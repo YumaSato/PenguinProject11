@@ -17,6 +17,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 	string numX;
 	string numY;
 
+	name = "闘牛";
 	team = ParentTeam;
 	status = BULL;//卵である意。
 	//directionX = DirectionX;
@@ -28,14 +29,15 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 	HP_Limit = 50;
 	stamina = NULL;
 	staminaLimit = NULL;
-	attackPower = NULL;
-	defensePower = NULL;
-	speed = 500000 - GetRand(160);//素早さは世代を重ねるごとに低下する。減少量はランダム。
+	attackPower = 45;
+	defensePower = 50;
+	speed = 500000 - GetRand(160);//素早さはランダム。
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
 	skip = FALSE;//TRUEのとき、ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
 	enemy = TRUE;//こいつは、敵。
 
+	exhibitScreen();
 	DrawString(800, 180, "闘牛のSetMobs実行。", GetColor(255, 200, 255));
 	numSpeed = (to_string(speed));
 	numX = (to_string(x));
@@ -48,6 +50,9 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 bool Bull::selectAction() {
+	exhibitScreen();
+	DrawString(800, 160, (to_string(speed)).c_str(), WHITE);
+	WaitKey();
 	return TRUE;
 }
 
