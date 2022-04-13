@@ -19,8 +19,8 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 		//this->directionY = -1;
 		SETdirection(0, -1);
 		this->status = EMPEROR;
-		this->HP = 120;
-		this->HP_Limit = 120;
+		this->HP = 100;
+		this->HP_Limit = 100;
 		this->stamina = 100;
 		this->staminaLimit = 100;
 		this->attackPower = 30;

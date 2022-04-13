@@ -44,11 +44,20 @@ bool speedOrder(Creature* a, Creature* b);
 		gameMode = 1;
 
 		while (gameMode == 1) {
+			if (Emperor1.HP > 0) {
+				Emperor1.selectAction();
+			}
+			if (Emperor2.HP > 0) {
+				Emperor2.selectAction();
+			}
 
-			Emperor1.selectAction();
-
-			Emperor2.selectAction();
-
+			if (Emperor1.HP <= 0 && Emperor2.HP <= 0) {
+				mainMsg = "ゲームオーバー";
+				actionMsg = "ゲームを終了します。";
+				exhibitScreen();
+				WaitKey();
+				return;
+			}
 			
 			turnFinal();
 			enemyEnter(turnNum);
@@ -199,12 +208,16 @@ bool speedOrder(Creature* a, Creature* b);
 
 
 
+
+
+
+
 	void enemyEnter(int turn) {
 		if (turn > 0 && turn < 10 && turn % 2 == 1) {
 
 			Bull bull = Bull();
-			int checkX = 1 + turn;
-			int checkY = 1;
+			int checkX = turn;
+			int checkY = 0;
 			bull.setMobs(red, 1,1,checkX,checkY,400000);
 			mobs_Bull[num_bull] = bull;
 			board[checkX][checkY].creature = &mobs_Bull[num_bull];

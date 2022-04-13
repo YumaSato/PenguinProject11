@@ -29,9 +29,9 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 	HP_Limit = 50;
 	stamina = NULL;
 	staminaLimit = NULL;
-	attackPower = 45;
-	defensePower = 50;
-	speed = 500000 - GetRand(160);//素早さはランダム。
+	attackPower = 40;
+	defensePower = 65;
+	speed = 500000 - GetRand(260);//素早さはランダム。
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
 	skip = FALSE;//TRUEのとき、ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
@@ -50,14 +50,54 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 bool Bull::selectAction() {
-	exhibitScreen();
-	DrawString(800, 160, (to_string(speed)).c_str(), WHITE);
-	WaitKey();
-	return TRUE;
+
+	if (skip == TRUE) {//skipする状態なら、即終了。
+		skip = FALSE;
+		return TRUE;
+	}
+
+	HP += 2;
+	if (HP > HP_Limit) {//自然治癒
+		HP = HP_Limit;
+	}
+
+	if (walk(FIELDSIZE) == TRUE) {
+		return TRUE;
+	}
+	if (attack(FIELDSIZE) == TRUE) {
+		return TRUE;
+	}
+	return FALSE;
 }
+
 
 void Bull::test() {
 }
+
+
+bool Bull::walk(int size) {
+	int ix;
+	int iy;
+	int dx;
+	int dy;
+	GETdirectionXY(&dx, &dy);
+	ix = x + dx;
+	iy = y + dy;
+
+	if (ix >= 0 && ix < size && iy >= 0 && iy < size){//マスが盤面以内なら
+		if (board[ix][iy].creature == NULL) {//マスが空白なら
+
+			board[ix][iy].creature = this;
+			board[x][y].creature = NULL;
+
+			x = ix;
+			y = iy;
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
 
 bool Bull::specialMovement1(int size) {
 	return TRUE;
@@ -68,5 +108,24 @@ bool Bull::specialMovement2(int size) {
 }
 
 bool Bull::attack(int size) {
-	return TRUE;
+	int ix;
+	int iy;
+	int dx;
+	int dy;
+
+	GETdirectionXY(&dx, &dy);
+	ix = x + dx;
+	iy = y + dy;
+	if (ix >= 0 && ix < size && iy >= 0 && iy < size) {//マスが盤面以内なら
+		if (board[ix][iy].creature != NULL) {//マスが空白でない、つまり何か居る場合
+			if (board[ix][iy].creature->enemy == TRUE) {//でも敵側同士だったら
+				return FALSE;
+			}
+			if (board[ix][iy].creature->enemy == FALSE) {//NULLじゃなくてロボットどもだったら攻撃
+				damage(ix, iy);
+
+			}
+		}
+	}
+	return FALSE;
 }

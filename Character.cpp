@@ -320,4 +320,5 @@ bool Character::attack(int size) {
 		WaitKey();
 		return TRUE;
 	}
+	return FALSE;
 }

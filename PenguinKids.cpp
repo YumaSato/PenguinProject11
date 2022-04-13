@@ -64,7 +64,6 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 bool PenguinKids::selectAction() {
 
-
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;
 		return TRUE;
@@ -110,21 +109,88 @@ bool PenguinKids::attack(int size) {
 	GETdirectionXY(&drctnX, &drctnY);
 	checkX = x + drctnX;
 	checkY = y + drctnY;
+	int tmpx;
+	int tmpy;
 
 	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
-		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
-			return FALSE;
+		if (board[checkX][checkY].creature != NULL) {//目の前に生物がいたら
+			if (board[checkX][checkY].creature->enemy == TRUE) {//そこにいるやつが敵ならば攻撃。
+				damage(checkX, checkY);
+				
+				return TRUE;
+			}
 		}
-		if (board[checkX][checkY].creature->enemy == TRUE) {//そこにいるやつが敵ならば攻撃。
-			damage(checkX, checkY);
-			return TRUE;
-		}
-		return FALSE;
 	}
 
 
+	if (status == ELDER) {//出産という仕事が終わっている場合
+
+		int diCheck[8] = { 0,1,2,3,4,5,6,7 };//正面に敵いあればそれが優先的に孵化されるが、隣にいくつも卵がある場合、卵を孵化させる方向をランダムにする。
+		for (int i = 0; i < 7; i++) {
+			int r = GetRand(7 - i) + i;
+			int tmp = diCheck[i];
+			diCheck[i] = diCheck[r];
+			diCheck[r] = tmp;
+		}
+
+		for (int i = 0; i < 8; i++) {//８方向調べる。これなんでswitch使うとi==7の場合しか発動しないの？←ブレイクを書いていなかったから。
+
+			switch (diCheck[i]) {
+			case 0:
+				tmpx = -1;
+				tmpy = -1;
+				break;
+			case 1:
+				tmpx = 0;
+				tmpy = -1;
+				break;
+			case 2:
+				tmpx = 1;
+				tmpy = -1;
+				break;
+			case 3:
+				tmpx = 1;
+				tmpy = 0;
+				break;
+			case 4:
+				tmpx = 1;
+				tmpy = 1;
+				break;
+			case 5:
+				tmpx = 0;
+				tmpy = 1;
+				break;
+			case 6:
+				tmpx = -1;
+				tmpy = 1;
+				break;
+			case 7:
+				tmpx = -1;
+				tmpy = 0;
+				break;
+			}
+			checkX = x + tmpx;
+			checkY = y + tmpy;
+
+			if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+
+				if (board[checkX][checkY].creature != NULL) {//向いている方向のマスに何か居たら
+					if (board[checkX][checkY].creature->enemy == TRUE) {//それが敵だと判定されたら
+
+						SETdirection(tmpx, tmpy);//敵の方を向いて
+						damage(checkX, checkY);//攻撃。
+						return TRUE;
+					}
+				}
+			}
+		}
+	}
+
 	return FALSE;
 }
+
+
+
 
 bool PenguinKids::specialMovement1(int size) {//産卵
 	if (status == NORMAL) {
@@ -166,8 +232,8 @@ bool PenguinKids::specialMovement1(int size) {//産卵
 
 			return TRUE;//成功。
 		}
-		return FALSE;
 	}
+	return FALSE;
 }
 
 
@@ -187,13 +253,7 @@ bool PenguinKids::specialMovement2(int size) {
 	iy = iy + tmpy;
 
 
-	int diCheck[8] = {0,1,2,3,4,5,6,7};//隣にいくつも卵がある場合、卵を孵化させる方向をランダムにする。
-	for (int i = 0 ; i < 7; i++) {
-		int r = GetRand(7-i)+i;
-		int tmp = diCheck[i];
-		diCheck[i] = diCheck[r];
-		diCheck[r] = tmp;
-	}
+	
 	
 	/*s = "";
 	for (int i = 0; i < 8; i++) {
@@ -221,6 +281,14 @@ bool PenguinKids::specialMovement2(int size) {
 			}
 		}
 
+
+		int diCheck[8] = { 0,1,2,3,4,5,6,7 };//正面に卵があればそれが優先的に孵化されるが、隣にいくつも卵がある場合、卵を孵化させる方向をランダムにする。
+		for (int i = 0; i < 7; i++) {
+			int r = GetRand(7 - i) + i;
+			int tmp = diCheck[i];
+			diCheck[i] = diCheck[r];
+			diCheck[r] = tmp;
+		}
 		
 
 		for (int i = 0; i < 8; i++) {//８方向調べる。これなんでswitch使うとi==7の場合しか発動しないの？←ブレイクを書いていなかったから。
@@ -293,11 +361,8 @@ bool PenguinKids::specialMovement2(int size) {
 			}
 		}
 
-
-
-		return FALSE;
 	}
-
+	return FALSE;
 }
 
 

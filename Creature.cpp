@@ -26,6 +26,7 @@ Creature::Creature() {//ƒRƒ“ƒXƒgƒ‰ƒNƒ^Bƒ`[ƒ€‚ÆˆÊ’u‚ğó‚¯æ‚éB
 	name = "Somebody";
 	skip = FALSE;
 	enemy = FALSE;
+
 	//this->team = NULL;
 	//this->status = NULL;
 	//this->directionX = NULL;
@@ -132,7 +133,7 @@ bool Creature::kick(int size) {
 					}
 
 
-					if (board[cX][cY].creature->status == BULL) {
+					if (board[cX][cY].creature->status == BULL) {//‚±‚ÌŒx‚Í‚Ç‚¤‚¢‚¤‚±‚ÆHH
 					}
 					s = "—‘‚ª‚Ô‚Â‚©‚Á‚½I";
 					exhibitScreen();
@@ -260,6 +261,7 @@ void Creature::incubate(int checkX, int checkY) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñB›z‰
 
 void Creature::damage(int checkX, int checkY) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñBUŒ‚‚Ì“à—e‚ğÀsB
 	board[checkX][checkY].creature->HP = board[checkX][checkY].creature->HP - (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ƒ_ƒŒv
+
 	if (board[checkX][checkY].creature->status == NORMAL || board[checkX][checkY].creature->status == ELDER) {//‘Šè‚ªƒyƒ“ƒMƒ“‚¾‚Á‚½ê‡AŒü‚«‚ª•Ï‚í‚éB
 		switch (GETdirection()) {
 		case NW:
@@ -288,8 +290,14 @@ void Creature::damage(int checkX, int checkY) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñBUŒ‚‚
 			break;
 		}
 	}
+	string msg1 = "‚ÍUŒ‚‚µ‚½B";
+	actionMsg = name + msg1;
+
 	if (board[checkX][checkY].creature->HP <= 0) {
 		board[checkX][checkY].creature->DeleteCreature();
 		board[checkX][checkY].creature = NULL;
+
+		string msg2 = "\n‘Šè‚ğ‚â‚Á‚Â‚¯‚½B";
+		actionMsg = name + msg1 + msg2;
 	}
 }

@@ -125,6 +125,7 @@ public:
 	Bull();
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed)override;
 	void test();
+	bool walk(int size);
 	bool specialMovement1(int size) override;
 	bool specialMovement2(int size) override;
 	bool attack(int size) override;
