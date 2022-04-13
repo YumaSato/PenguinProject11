@@ -157,7 +157,8 @@ void handlePenguin() {//ハンドルに画像のポインタを代入
 
 	for (int i = 0; i <= 7; i++) {
 		sprintf(tmp, "Imgs/redBull%d.png", i);
-		handle[enemy][BULL][i] = LoadGraph(tmp);
+		handle[red][BULL][i] = LoadGraph(tmp);
+	}
 
 }
 

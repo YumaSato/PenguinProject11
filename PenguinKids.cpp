@@ -114,7 +114,7 @@ bool PenguinKids::attack(int size) {
 		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
 			return FALSE;
 		}
-		if (board[checkX][checkY].creature->team == enemy) {//そこにいるやつが敵ならば攻撃。
+		if (board[checkX][checkY].creature->enemy == TRUE) {//そこにいるやつが敵ならば攻撃。
 			damage(checkX, checkY);
 			return TRUE;
 		}

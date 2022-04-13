@@ -18,6 +18,8 @@ using namespace std;
 
 void turnFinal();//ターンの最後にまとめて行われる操作。
 
+void enemyEnter(int turn);//敵が襲来する動作。
+
 bool speedOrder(Creature* a, Creature* b);
 
 
@@ -47,6 +49,9 @@ bool speedOrder(Creature* a, Creature* b);
 
 			Emperor2.selectAction();
 			turnFinal();
+			enemyEnter(turnNum);
+			turnNum += 1;
+
 
 
 		}
@@ -73,7 +78,7 @@ bool speedOrder(Creature* a, Creature* b);
 		string numY;
 		string s = "";
 		string allS = "";
-		Creature* mobsSpeedOrder[2048];
+		//Creature* mobsSpeedOrder[2048];
 		bool moveOrNot = FALSE;
 
 		int mobNumberNow;
@@ -82,6 +87,7 @@ bool speedOrder(Creature* a, Creature* b);
 
 		for (int i = 0; i < num_penguinKids; i++) {//いったん代入する。
 			mobsSpeedOrder[i] = &mobs_PenguinKids[i];
+
 		}
 		/*for (int i = 0; i < num_bull; i++) {
 			mobsSpeedOrder[i + num_penguinKids] = &mobs_Bull[num_bull];
@@ -236,3 +242,17 @@ bool speedOrder(Creature* a, Creature* b);
 
 
 
+
+
+	void enemyEnter(int turn) {
+	/*	if (turn > 4 && turn < 10 && turn % 2 == 1) {
+
+			Bull bull = Bull();
+			bull.setMobs(red, 1,1,1,0,400000);
+			mobs_Bull[num_bull] = bull;
+			mobNumber += 1;
+			num_bull += 1;
+		}*/
+
+
+	}

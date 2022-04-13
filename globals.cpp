@@ -22,11 +22,12 @@ int turnNum = 0;
 PenguinKids mobs_PenguinKids[mobLimit];
 Bull mobs_Bull[mobLimit];
 
+
 int mobNumber = 0;
 int num_penguinKids = 0;
 int num_bull = 0;
 
-//Creature* mobsSpeedOrder[mobLimit];
+Creature* mobsSpeedOrder[2048];
 
 string mainMsg;
 string actionMsg;

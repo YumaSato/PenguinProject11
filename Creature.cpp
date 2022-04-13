@@ -24,6 +24,7 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 	memset(&this->staminaRecoverAbility, NULL, sizeof(this->staminaRecoverAbility));
 	memset(&this->num, NULL, sizeof(this->num));
 	skip = FALSE;
+	enemy = FALSE;
 	//this->team = NULL;
 	//this->status = NULL;
 	//this->directionX = NULL;

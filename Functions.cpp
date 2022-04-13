@@ -65,6 +65,14 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 	bool HPexhibitOrNot;
 	ClearDrawScreen();//一度画面を全消し
 	DrawGraph(0, 0, HandleBoard, TRUE);
+
+	//for (int ix = 0; ix < ; ix++)
+	
+
+
+
+
+
 	for (int ix = 0; ix < FIELDSIZE; ix++) {
 		for (int iy = 0; iy < FIELDSIZE; iy++) {
 

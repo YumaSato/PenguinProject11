@@ -29,6 +29,7 @@ extern int mobNumber;
 extern int num_penguinKids;
 extern int num_bull;
 
+extern Creature* mobsSpeedOrder[2048];
 //extern Creature* mobsSpeedOrder[mobLimit];//素早さ順にモブキャラのアドレスを格納する変数。
 
 extern string mainMsg;

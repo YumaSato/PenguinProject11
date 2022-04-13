@@ -47,6 +47,7 @@ public:
 	int staminaRecoverAbility;
 	int num;//ƒLƒƒƒ‰ƒNƒ^¯•Ê”Ô†
 	bool skip;
+	bool enemy;
 
 	
 	Creature();
