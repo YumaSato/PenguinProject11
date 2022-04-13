@@ -23,6 +23,7 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 	memset(&this->speed, NULL, sizeof(this->speed));
 	memset(&this->staminaRecoverAbility, NULL, sizeof(this->staminaRecoverAbility));
 	memset(&this->num, NULL, sizeof(this->num));
+	name = "Somebody";
 	skip = FALSE;
 	enemy = FALSE;
 	//this->team = NULL;
@@ -75,11 +76,11 @@ bool Creature::kick(int size) {
 
 		if (status == EMPEROR){
 			if (board[cX][cY].creature->status == NORMAL || board[cX][cY].creature->status == ELDER) {//押したマスの方向に大人がいたら
-				board[cX][cY].creature->SETdirection(directionX, directionY);
-				board[cX][cY].creature->HP -= 5;
+				board[cX][cY].creature->SETdirection(directionX, directionY);//ダメージは無し。向きだけ変える。
+				/*board[cX][cY].creature->HP -= 5;
 				if (board[cX][cY].creature->HP <= 0) {
 					board[cX][cY].creature->DeleteCreature();
-				}
+				}*/
 				return TRUE;
 			}
 		}

@@ -145,6 +145,9 @@ bool speedOrder(Creature* a, Creature* b);
 			if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
 				moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction();
 			}
+			if (mobsSpeedOrder[i]->status == BULL) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
+				moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction();
+			}
 
 
 			if (moveOrNot == TRUE) {//もし行動が行われていたら

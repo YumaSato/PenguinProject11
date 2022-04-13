@@ -306,9 +306,17 @@ bool Character::attack(int size) {
 		}
 		damage(checkX, checkY);
 
+		
+		string msg1 = "は攻撃した。";
+		//string msg2 = board[checkX][checkY].creature->name;//なぜか実行時エラーが出る。
+		string msg3 = "はダメージを受けた。";
+		actionMsg = name + msg1;
+
+		//actionMsg = "fafafafafafafaffa";
+
 
 		exhibitScreen();
-		DrawString(800, 180, "msg", GetColor(255, 200, 255));
+		DrawString(800, 180, actionMsg.c_str(), GetColor(255, 200, 255));
 		WaitKey();
 		return TRUE;
 	}
