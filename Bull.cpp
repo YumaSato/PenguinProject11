@@ -29,13 +29,15 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 	HP_Limit = 50;
 	stamina = NULL;
 	staminaLimit = NULL;
-	attackPower = 40;
-	defensePower = 65;
+	attackPower = 38;
+	defensePower = 100;
 	speed = 500000 - GetRand(260);//素早さはランダム。
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
 	skip = FALSE;//TRUEのとき、ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
 	enemy = TRUE;//こいつは、敵。
+
+
 
 	exhibitScreen();
 	DrawString(800, 180, "闘牛のSetMobs実行。", GetColor(255, 200, 255));
@@ -84,7 +86,7 @@ bool Bull::walk(int size) {
 	ix = x + dx;
 	iy = y + dy;
 
-	if (ix >= 0 && ix < size && iy >= 0 && iy < size){//マスが盤面以内なら
+	if (ix >= 0 && ix < size && iy >= 0 && iy < size) {//マスが盤面以内なら
 		if (board[ix][iy].creature == NULL) {//マスが空白なら
 
 			board[ix][iy].creature = this;

@@ -46,7 +46,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetGraphMode(1200, 768, 32); // 画面サイズは最大の1024, 900 にしておく
 	SetWindowSize(1200, 768);// 最初は 1024, 900 にしておく
 
-	
+
 
 
 	if (DxLib_Init() == -1) {
@@ -58,10 +58,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	HandleBoard = LoadGraph("Imgs/back.png");
 	HandleHP = LoadGraph("Imgs/HPmeter43,9.png");
 
-	
+	bool game = TRUE;
 
 
-	while (TRUE) {
+	while (game == TRUE) {
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			break;
 		}
@@ -73,23 +73,21 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 		DrawString(300, 70, "PenguinGame", WHITE);
-		DrawString(300, 100, "モードを選択してください。\n1:皇帝戦争モード\n2:異変対処モード\nEsc:やめる", WHITE);
+		DrawString(300, 100, "モードを選択してください。\n1:大群襲来バトル\nEsc:やめる", WHITE);
 		WaitKey();
-		while (1) {
-			if (CheckHitKey(KEY_INPUT_1) == TRUE) {
-				BattleMode_GameManager battle;
-				battle.BattleMode();
-			}
-			if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
-				return 0;
-			}
-
-			
-			
-			
-
-
+		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
+			BattleMode_GameManager battle;
+			game = battle.BattleMode();
 		}
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
+			return 0;
+		}
+
+
+
+
+
+
 
 
 

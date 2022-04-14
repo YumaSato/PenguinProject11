@@ -75,7 +75,7 @@ bool Creature::kick(int size) {
 			return FALSE;
 		}
 
-		if (status == EMPEROR){
+		if (status == EMPEROR) {
 			if (board[cX][cY].creature->status == NORMAL || board[cX][cY].creature->status == ELDER) {//押したマスの方向に大人がいたら
 				board[cX][cY].creature->SETdirection(directionX, directionY);//ダメージは無し。向きだけ変える。
 				/*board[cX][cY].creature->HP -= 5;
@@ -86,7 +86,7 @@ bool Creature::kick(int size) {
 			}
 		}
 
-		if (board[cX][cY].creature->status == EGG){
+		if (board[cX][cY].creature->status == EGG) {
 			exhibitScreen();
 			DrawString(800, 180, "kick開始", WHITE);
 			WaitKey();
@@ -161,7 +161,7 @@ bool Creature::attack(int size) {
 	return FALSE;
 }
 
-bool Creature::specialMovement1(int size){
+bool Creature::specialMovement1(int size) {
 	/*DrawString(800, 300, "Creature.specialMovement1メソッド実行", WHITE);
 	WaitKey();*/
 	return FALSE;
@@ -194,7 +194,7 @@ void Creature::SETdirection(int xward, int yward) {
 void Creature::SETdirection(Direction compass) {
 	int tmp_x, tmp_y;
 	GETxyBYdirection(&tmp_x, &tmp_y, compass);
-	
+
 	this->directionX = tmp_x;
 	this->directionY = tmp_y;
 	this->compass = compass;
@@ -229,7 +229,7 @@ void Creature::DeleteCreature() {
 	memset(&this->staminaRecoverAbility, NULL, sizeof(this->staminaRecoverAbility));
 	memset(&this->num, NULL, sizeof(this->num));
 
-	
+
 	//team = NULL;
 	//status = NULL;
 	//directionX = NULL;

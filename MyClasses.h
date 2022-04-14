@@ -16,7 +16,7 @@ class BattleMode_GameManager {
 public:
 	int turnNum;
 	BattleMode_GameManager();
-	void BattleMode();
+	bool BattleMode();
 
 
 
@@ -49,7 +49,7 @@ public:
 	bool skip;
 	bool enemy;
 
-	
+
 	Creature();
 	virtual void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed);
 	virtual bool selectAction();
@@ -78,7 +78,7 @@ public:
 	PenguinKids();
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed)override;
 	void test();
-	bool specialMovement1 (int size) override;
+	bool specialMovement1(int size) override;
 	bool specialMovement2(int size) override;
 	bool attack(int size) override;
 	bool selectAction() override;

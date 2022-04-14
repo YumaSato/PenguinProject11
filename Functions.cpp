@@ -67,7 +67,7 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 	DrawGraph(0, 0, HandleBoard, TRUE);
 
 	//for (int ix = 0; ix < ; ix++)
-	
+
 
 
 
@@ -127,7 +127,7 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 
 			if (HPexhibitOrNot == TRUE) {
 				DrawGraph(ix * 48 + 5, iy * 48 + 29, hHP, TRUE);
-				DrawBox(ix * 48 + 16, iy * 48 + 31, ix * 48 + 16 + board[ix][iy].creature->HP / 2, iy * 48 + 36, GetColor(45, 205, 50),TRUE);
+				DrawBox(ix * 48 + 16, iy * 48 + 31, ix * 48 + 16 + board[ix][iy].creature->HP / 2, iy * 48 + 36, GetColor(45, 205, 50), TRUE);
 			}
 
 		}

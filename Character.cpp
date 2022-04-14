@@ -183,7 +183,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 			}
 
 
-			
+
 
 			if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {
 				checkX -= 1;
@@ -306,7 +306,7 @@ bool Character::attack(int size) {
 		}
 		damage(checkX, checkY);
 
-		
+
 		string msg1 = "は攻撃した。";
 		//string msg2 = board[checkX][checkY].creature->name;//なぜか実行時エラーが出る。
 		string msg3 = "はダメージを受けた。";

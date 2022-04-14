@@ -7,7 +7,7 @@
 using namespace std;
 
 PenguinKids::PenguinKids() {
-	}
+}
 
 
 
@@ -16,7 +16,7 @@ PenguinKids::PenguinKids() {
 
 
 
-void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed){//実質的なコンストラクタ。
+void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed) {//実質的なコンストラクタ。
 	//未初期化のPenguinKids配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -40,7 +40,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	defensePower = 1;
 	speed = parentSpeed - 30 - GetRand(16) * 2;//素早さは世代を重ねるごとに低下する。減少量はランダム。
 	//
-	if (speed < 1) { speed = 1;}
+	if (speed < 1) { speed = 1; }
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
 	skip = TRUE;//ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
@@ -55,7 +55,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
 	WaitKey();*/
 
-	
+
 }
 
 
@@ -73,6 +73,30 @@ bool PenguinKids::selectAction() {
 	if (HP > HP_Limit) {//自然治癒
 		HP = HP_Limit;
 	}
+
+
+	int iX = x;
+	int iY = y;
+	int tmpx, tmpy;
+	GETdirectionXY(&tmpx, &tmpy);
+	//ix = ix + directionX;
+	//iy = iy + directionY;
+	iX = iX + tmpx;
+	iY = iY + tmpy;
+	if (status == ELDER || status == NORMAL) {
+		if (iX >= 0 && iX < FIELDSIZE && iY >= 0 && iY < FIELDSIZE) {
+			if (board[iX][iY].creature != NULL) {//向いている方向のマスに何か居たら
+				if (board[iX][iY].creature->status == EGG && board[iX][iY].creature->team == team) {//同じチームの卵があれば
+					if (specialMovement1(FIELDSIZE) == TRUE) {//優先行動として産卵。
+						return TRUE;
+					}
+				}
+			}
+		}
+	}
+
+
+
 
 	if (attack(FIELDSIZE) == TRUE) {
 		return TRUE;
@@ -111,19 +135,24 @@ bool PenguinKids::attack(int size) {
 	checkY = y + drctnY;
 	int tmpx;
 	int tmpy;
+	bool attackPriority = FALSE;
 
 	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
 		if (board[checkX][checkY].creature != NULL) {//目の前に生物がいたら
 			if (board[checkX][checkY].creature->enemy == TRUE) {//そこにいるやつが敵ならば攻撃。
 				damage(checkX, checkY);
-				
+
 				return TRUE;
 			}
+			if (status == NORMAL) {//目の前に生物（敵とは限らない）がいて、かつ卵を産みたい状態のとき
+				attackPriority = TRUE;
+			}
 		}
+
 	}
 
 
-	if (status == ELDER) {//出産という仕事が終わっている場合
+	if (status == ELDER || attackPriority == TRUE) {//出産という仕事が終わっている場合か、ノーマル状態でも目の前に何かいて卵を産めないとき
 
 		int diCheck[8] = { 0,1,2,3,4,5,6,7 };//正面に敵いあればそれが優先的に孵化されるが、隣にいくつも卵がある場合、卵を孵化させる方向をランダムにする。
 		for (int i = 0; i < 7; i++) {
@@ -209,7 +238,7 @@ bool PenguinKids::specialMovement1(int size) {//産卵
 
 		if (ix >= 0 && ix < size && iy >= 0 && iy < size && board[ix][iy].creature == NULL) {//向いている方向のマスが空いていたら
 
-			
+
 
 			PenguinKids penguinKids = PenguinKids();
 			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, speed);
@@ -221,7 +250,7 @@ bool PenguinKids::specialMovement1(int size) {//産卵
 			num_penguinKids += 1;
 			status = ELDER;//老化する
 
-			
+
 			s = "";
 			s = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が産卵した！";
 			exhibitScreen();
@@ -253,24 +282,12 @@ bool PenguinKids::specialMovement2(int size) {
 	iy = iy + tmpy;
 
 
-	
-	
-	/*s = "";
-	for (int i = 0; i < 8; i++) {
-		s += to_string(diCheck[i]);
-	}
-	exhibitScreen();
-	DrawString(800, 570, s.c_str(), WHITE);
-	WaitKey();*/
-
-
-
 	if (status == NORMAL or status == ELDER) {
 		if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
 			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 				if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {
-					
+
 					incubate(ix, iy);
 
 					exhibitScreen();
@@ -289,7 +306,7 @@ bool PenguinKids::specialMovement2(int size) {
 			diCheck[i] = diCheck[r];
 			diCheck[r] = tmp;
 		}
-		
+
 
 		for (int i = 0; i < 8; i++) {//８方向調べる。これなんでswitch使うとi==7の場合しか発動しないの？←ブレイクを書いていなかったから。
 
@@ -347,7 +364,7 @@ bool PenguinKids::specialMovement2(int size) {
 
 				if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 					if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {//それが卵であった場合
-						
+
 						SETdirection(tmpx, tmpy);
 						incubate(ix, iy);
 

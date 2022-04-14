@@ -1,7 +1,7 @@
 #pragma once
 
 enum Team {
-	
+
 	red = 1, //赤チーム
 	blue = 2, //青チーム
 	 //敵キャラども。
@@ -15,7 +15,7 @@ enum Status {
 
 	BULL = 5,       //闘牛
 	LIQUIDGOD = 6,  //酒の神
-	
+
 	FIREGOD = 7,    //火の神
 	SPRINTER = 8    //速足男
 };

@@ -73,19 +73,19 @@ bool Emperor::specialMovement1(int size) {//特殊技：産卵
 		if (board[checkX][checkY].creature == NULL) {//押したマスの方向が空いていたらインスタンス化を実行
 			PenguinKids penguinKids = PenguinKids();
 			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, speed);
-			
+
 			//kids.push_back(penguinKids);
 			//board[checkX][checkY].creature = &kids.back();
 			/*mobs_PenguinKids[mobNumber] = penguinKids;
 			board[checkX][checkY].creature = &mobs_PenguinKids[mobNumber];
 			mobNumber += 1;*/
-			
+
 			mobs_PenguinKids[num_penguinKids] = penguinKids;//生まれたキッズを配列に入れる。
 			board[checkX][checkY].creature = &mobs_PenguinKids[num_penguinKids];
 			mobNumber += 1;
 			num_penguinKids += 1;
-			
-			
+
+
 
 			stamina -= 5;
 			exhibitScreen();
@@ -112,7 +112,7 @@ bool Emperor::specialMovement2(int size) {//特殊技：孵化
 			return FALSE;
 		}
 		if (board[checkX][checkY].creature->status == EGG) {//押したマスの方向に卵があれば処理を実行
-			
+
 			incubate(checkX, checkY);
 			//board[checkX][checkY].creature->directionX = this->directionX;
 			//board[checkX][checkY].creature->directionY = this->directionY;
