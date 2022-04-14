@@ -75,8 +75,13 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 
 	for (int ix = 0; ix < FIELDSIZE; ix++) {
 		for (int iy = 0; iy < FIELDSIZE; iy++) {
+			if (board[ix][iy].state == ROCK) {
+				DrawBox(ix * 48, iy * 48, ix * 48 + 47, iy * 48 + 47, GetColor(205, 133, 63), TRUE);
+				continue;
+			}
 
-			HPexhibitOrNot = FALSE;
+
+			HPexhibitOrNot = FALSE;//体力が満タンでない場合、これがTRUEになり、メータが表示される。
 
 			if (board[ix][iy].creature == NULL) {
 				continue;

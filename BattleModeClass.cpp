@@ -30,6 +30,13 @@ bool speedOrder(Creature* a, Creature* b);
 
 BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 	turnNum = 0;
+
+	for (int i = 0; i < FIELDSIZE; i++) {
+		board[i][0].state = ROCK;
+		board[i][FIELDSIZE -1].state = ROCK;
+		board[0][i].state = ROCK;
+		board[FIELDSIZE - 1][i].state = ROCK;
+	}
 }
 
 
@@ -219,7 +226,21 @@ void enemyEnter(int turn) {
 	switch (turn) {
 	case 1:
 		yieldEnemy(BULL, red, 0, 1, 8, 0);
-	}
+		break;
+	case 3:
+		yieldEnemy(BULL, red, 0, 1, 4, 0);
+		break;
+	case 4:
+		yieldEnemy(BULL, red, 1, 0, 0, 6);
+		break;
+	case 6:
+		yieldEnemy(BULL, red, 1, 0, 0, 7);
+		break;
+	case 8:
+		yieldEnemy(BULL, red, 1, 0, 0, 11);
+		yieldEnemy(BULL, red, 1, 0, 0, 9);
+		break;
+}
 
 
 

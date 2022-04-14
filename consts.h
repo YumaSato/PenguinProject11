@@ -34,9 +34,10 @@ enum Direction {
 
 enum State {
 	VACANT,
-	GROUND,  //ínñ 
+	ROCK,  //ínñ 
 	WATER,   //êÖ
-	POISON   //ì≈è¿
+	POISON,   //ì≈è¿
+	
 };
 
 constexpr int BUFFER = 256;

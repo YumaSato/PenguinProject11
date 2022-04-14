@@ -87,7 +87,7 @@ public:
 
 class Grid {//各マス
 public:
-	char state = VACANT;//マス目の状態。1:地面　2:水　3:毒沼
+	State state = VACANT;//マス目の状態。1:地面　2:水　3:毒沼
 	Creature* creature = NULL;//マス目にいるモンスターorキャラクターのポインタ
 };
 
