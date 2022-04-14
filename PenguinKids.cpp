@@ -223,7 +223,6 @@ bool PenguinKids::attack(int size) {
 
 bool PenguinKids::specialMovement1(int size) {//産卵
 	if (status == NORMAL) {
-		string s;
 		//exhibitScreen();
 		//DrawString(800, 300, "PenguinKids.specialMovement1メソッド実行", WHITE);
 		//WaitKey();
@@ -236,7 +235,7 @@ bool PenguinKids::specialMovement1(int size) {//産卵
 		ix = ix + tmpx;
 		iy = iy + tmpy;
 
-		if (ix >= 0 && ix < size && iy >= 0 && iy < size && board[ix][iy].creature == NULL) {//向いている方向のマスが空いていたら
+		if (ix >= 0 && ix < size && iy >= 0 && iy < size && board[ix][iy].creature == NULL && board[ix][iy].state == VACANT) {//向いている方向のマスが空いていたら
 
 
 
@@ -251,10 +250,9 @@ bool PenguinKids::specialMovement1(int size) {//産卵
 			status = ELDER;//老化する
 
 
-			s = "";
-			s = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が産卵した！";
+
+			actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が産卵した！";
 			exhibitScreen();
-			DrawString(800, 300, s.c_str(), WHITE);
 			WaitKey();
 
 			//board[ix][iy].creature = &penguinKids;
@@ -289,9 +287,8 @@ bool PenguinKids::specialMovement2(int size) {
 				if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {
 
 					incubate(ix, iy);
-
+					actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が孵化させた！";
 					exhibitScreen();
-					DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
 					WaitKey();
 					return TRUE;
 				}
@@ -367,9 +364,8 @@ bool PenguinKids::specialMovement2(int size) {
 
 						SETdirection(tmpx, tmpy);
 						incubate(ix, iy);
-
+						actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が孵化させた！";
 						exhibitScreen();
-						DrawString(800, 300, "PenguinKids.specialMovement2メソッド実行", WHITE);
 						WaitKey();
 						return TRUE;
 					}

@@ -37,12 +37,18 @@ enum State {
 	ROCK,  //地面
 	WATER,   //水
 	POISON,   //毒沼
+	CASTLE, //城
 	
 };
 
 constexpr int BUFFER = 256;
 
-constexpr int FIELDSIZE = 16;//フィールドのマス目の数
+constexpr int FIELDSIZE = 17;//フィールドのマス目の数
+constexpr int SQUARESIZE = 48;
+
+const int CASTLE_X = 8;
+const int CASTLE_Y = 8;
+
 constexpr int CHARACTERNUM = 2;//操作可能なキャラクタ数
 
 const int WHITE = GetColor(255, 255, 255);

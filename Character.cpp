@@ -256,7 +256,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 			}
 
 			if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
-				if (board[checkX][checkY].creature == NULL) {//押したマスの方向が空いていたらループ抜け
+				if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//押したマスの方向が空いていたらループ抜け
 					break;
 				}
 			}

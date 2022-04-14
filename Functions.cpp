@@ -46,7 +46,7 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 		//DrawString(800, exhibitY + 20 , HP_Msg.c_str(), GetColor(255, 200, 255));
 
 
-		DrawString(800, exhibitY, CharacterStatusMsg.c_str(), GetColor(255, 200, 255));
+		DrawString(FIELDSIZE * SQUARESIZE + 5, exhibitY, CharacterStatusMsg.c_str(), GetColor(255, 200, 255));
 
 
 
@@ -76,8 +76,10 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 	for (int ix = 0; ix < FIELDSIZE; ix++) {
 		for (int iy = 0; iy < FIELDSIZE; iy++) {
 			if (board[ix][iy].state == ROCK) {
-				DrawBox(ix * 48, iy * 48, ix * 48 + 47, iy * 48 + 47, GetColor(205, 133, 63), TRUE);
-				continue;
+				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE, ix * SQUARESIZE + 47, iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
+			}
+			if (board[ix][iy].state == CASTLE) {
+				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE, ix * SQUARESIZE + 47, iy * SQUARESIZE + 47, GetColor(220, 20, 63), TRUE);
 			}
 
 
@@ -127,19 +129,19 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 				}
 			}
 			//LoadGraphScreen(0, 0, "back.png", TRUE);
-			DrawGraph(ix * 48, iy * 48, h, TRUE);//一度クラスの変数に格納したHandleで描画
+			DrawGraph(ix * SQUARESIZE, iy * SQUARESIZE, h, TRUE);//一度クラスの変数に格納したHandleで描画
 			//DrawString(450, 20, msg.c_str(), WHITE);
 
 			if (HPexhibitOrNot == TRUE) {
-				DrawGraph(ix * 48 + 5, iy * 48 + 29, hHP, TRUE);
-				DrawBox(ix * 48 + 16, iy * 48 + 31, ix * 48 + 16 + board[ix][iy].creature->HP / 2, iy * 48 + 36, GetColor(45, 205, 50), TRUE);
+				DrawGraph(ix * SQUARESIZE + 5, iy * SQUARESIZE + 29, hHP, TRUE);
+				DrawBox(ix * SQUARESIZE + 16, iy * SQUARESIZE + 31, ix * SQUARESIZE + 16 + board[ix][iy].creature->HP / 2, iy * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
 			}
 
 		}
 	}
 	exhibitStatusMsg();//キャラクタ0のメッセージを代入。
-	DrawString(800, 20, mainMsg.c_str(), WHITE);
-	DrawString(800, 130, actionMsg.c_str(), GetColor(255, 200, 255));
+	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
+	DrawString(FIELDSIZE * SQUARESIZE + 5, 130, actionMsg.c_str(), GetColor(255, 200, 255));
 	actionMsg = "";
 }
 

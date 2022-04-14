@@ -3,6 +3,7 @@
 #include "consts.h"
 #include "MyClasses.h"
 #include <string>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -92,13 +93,119 @@ bool Bull::walk(int size) {
 			board[ix][iy].creature = this;
 			board[x][y].creature = NULL;
 
+
+
 			x = ix;
 			y = iy;
+			int randDi = 0;
+			randDi = GetRand(1);
+			if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
+				//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より長い場合(西北西)
+				if (randDi == 0) {
+					SETdirection(EE);
+				}
+				if (randDi == 1) {
+					SETdirection(SE);
+				}
+			}
+			if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {
+				//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離と同じ場合(北西)
+				SETdirection(SE);
+			}
+			if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {
+				//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より短い場合（北北西）
+				if (randDi == 0) {
+					SETdirection(SS);
+				}
+				if (randDi == 1) {
+					SETdirection(SE);
+				}
+			}
+			if (CASTLE_X - x > 0 && CASTLE_Y == y) {
+				//x軸距離が+(城より左)で、かつy軸距離が0(城と同じ)で、かつX軸の城との距離がY軸の城との距離より長い場合（西）
+				SETdirection(EE);
+			}
+
+			if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
+				//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離より長い場合（西南西）
+				if (randDi == 0) {
+					SETdirection(EE);
+				}
+				if (randDi == 1) {
+					SETdirection(NE);
+				}
+			}
+			if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {
+				//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離が同じ場合（南西）
+				SETdirection(NE);
+			}
+
+			if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {
+				//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離より短い場合（南南西）
+				if (randDi == 0) {
+					SETdirection(NN);
+				}
+				if (randDi == 1) {
+					SETdirection(NE);
+				}
+			}
+
+
+			if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {//東北東
+				if (randDi == 0) {
+					SETdirection(WW);
+				}
+				if (randDi == 1) {
+					SETdirection(SW);
+				}
+			}
+			if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {//北東
+				SETdirection(SW);
+			}
+			if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {//北北東
+				if (randDi == 0) {
+					SETdirection(SS);
+				}
+				if (randDi == 1) {
+					SETdirection(SW);
+				}
+			}
+			if (CASTLE_X - x < 0 && CASTLE_Y == y) {//東
+				SETdirection(WW);
+			}
+
+			if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {//東南東
+				if (randDi == 0) {
+					SETdirection(WW);
+				}
+				if (randDi == 1) {
+					SETdirection(NW);
+				}
+			}
+			if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {//南東
+				SETdirection(NW);
+			}
+			if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {//南南東
+				if (randDi == 0) {
+					SETdirection(NN);
+				}
+				if (randDi == 1) {
+					SETdirection(NW);
+				}
+			}
+
+
 			return TRUE;
 		}
 	}
 	return FALSE;
 }
+
+
+
+
+
+
 
 
 bool Bull::specialMovement1(int size) {

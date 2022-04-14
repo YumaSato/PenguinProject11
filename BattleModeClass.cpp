@@ -36,6 +36,8 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 		board[i][FIELDSIZE -1].state = ROCK;
 		board[0][i].state = ROCK;
 		board[FIELDSIZE - 1][i].state = ROCK;
+
+		board[CASTLE_X][CASTLE_Y].state = CASTLE;
 	}
 }
 
@@ -133,7 +135,7 @@ void turnFinal() {//素早さ順にmobが行動していく関数。
 		}
 	}
 	exhibitScreen();
-	DrawString(800, 570, allS.c_str(), WHITE);
+	DrawString(FIELDSIZE * SQUARESIZE, 570, allS.c_str(), WHITE);
 	WaitKey();
 
 
@@ -174,7 +176,7 @@ void turnFinal() {//素早さ順にmobが行動していく関数。
 			numX = (to_string(mobsSpeedOrder[i]->x));
 			numY = (to_string(mobsSpeedOrder[i]->y));
 			mobStatusMsg = "X:" + numX + ",Y:" + numY + "の" + mobsSpeedOrder[i]->name + "\n 行動速度:" + numSpeed + " 体力:" + to_string(mobsSpeedOrder[i]->HP) + "/" + to_string(mobsSpeedOrder[i]->HP_Limit);
-			DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
+			DrawString(FIELDSIZE * SQUARESIZE, 160, mobStatusMsg.c_str(), WHITE);
 			WaitKey();
 		}
 	}
@@ -253,7 +255,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 
 	if (enemyType == BULL) {
 		Bull bull = Bull();
-		bull.setMobs(red, 1, 1, cx, cy, 400000);
+		bull.setMobs(red, dx, dy, cx, cy, 400000);
 		mobs_Bull[num_bull] = bull;
 		board[cx][cy].creature = &mobs_Bull[num_bull];
 		mobNumber += 1;

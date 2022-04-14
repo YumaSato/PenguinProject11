@@ -43,8 +43,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	// ウインドウのサイズを手動ではできず、且つウインドウのサイズに合わせて拡大もしないようにする
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
-	SetGraphMode(1200, 768, 32); // 画面サイズは最大の1024, 900 にしておく
-	SetWindowSize(1200, 768);// 最初は 1024, 900 にしておく
+	SetGraphMode(FIELDSIZE * 48 + 450, FIELDSIZE * 48, 32); // 画面サイズは最大の1024, 900 にしておく
+	SetWindowSize(FIELDSIZE * 48 + 450, FIELDSIZE * 48);// 最初は 1024, 900 にしておく
 
 
 

@@ -13,8 +13,8 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 
 	if (this->team == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
 		this->name = "赤皇帝";
-		this->x = 6;
-		this->y = 7;
+		this->x = FIELDSIZE - 6;
+		this->y = 6;
 		//this->directionX = 0;
 		//this->directionY = -1;
 		SETdirection(0, -1);
@@ -39,7 +39,7 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 	if (this->team == blue) {//青チーム(=2)の皇帝であれば青皇帝を盤面下部にスポーン
 		this->name = "青皇帝";
 		this->x = 6;
-		this->y = 0;
+		this->y = FIELDSIZE - 6;
 		//this->directionX = 0;
 		//this->directionY = 1;
 		SETdirection(0, 1);
@@ -70,7 +70,7 @@ bool Emperor::specialMovement1(int size) {//特殊技：産卵
 	checkY = y + drctnY;
 
 	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
-		if (board[checkX][checkY].creature == NULL) {//押したマスの方向が空いていたらインスタンス化を実行
+		if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//押したマスの方向が空いていたらインスタンス化を実行
 			PenguinKids penguinKids = PenguinKids();
 			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, speed);
 
