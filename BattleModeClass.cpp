@@ -236,12 +236,19 @@ bool speedOrder(Creature* a, Creature* b) {
 void enemyEnter(int turn) {
 	int side;
 	int place;
+	int rand;
 
+	if (turn == 1) {//１ターン目から、敵が出現しない側を決定する。
+		yieldStopSide[GetRand(3)] = -1;
+	}
 	if (1 < turn || turn < 16 || turn % 3 == 0) {
 	
-		side = GetRand(3);
-		place = GetRand(FIELDSIZE - 3);
+		side = GetRand(2);
+		if (yieldStopSide[side] = -1) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
+			side += 1;
+		}
 
+		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
 			yieldEnemy(BULL, red, 0, 1, place+1 , 0);
 		}

@@ -46,5 +46,9 @@ extern Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレ
 //extern vector<Character*> handledCharacters(CHARACTERNUM);
 
 
+
+extern int yieldStopSide[4];//敵が出現する側を示す。3番目の値がでなくなる、というときは、3番目の値が3ではなく-1になる。
+
+
 void exhibitScreen();
 void exhibitStatusMsg();

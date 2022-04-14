@@ -42,3 +42,7 @@ Grid board[FIELDSIZE][FIELDSIZE];
 
 Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのポインタを格納する変数。配列インデックスは、キャラ番号。
 //vector<Character*> handledCharacters(CHARACTERNUM);
+
+
+
+int yieldStopSide[4] = {0,1,2,3};//敵が出現する側を示す。3番目の値がでなくなる、というときは、3番目の値が3ではなく-1になる。
