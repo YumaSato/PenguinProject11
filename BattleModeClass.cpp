@@ -234,24 +234,29 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 void enemyEnter(int turn) {
+	int side;
+	int place;
 
-	switch (turn) {
-	case 1:
-		yieldEnemy(BULL, red, 0, 1, 8, 0);
-		break;
-	case 3:
-		yieldEnemy(BULL, red, 0, 1, 4, 0);
-		break;
-	case 4:
-		yieldEnemy(BULL, red, 1, 0, 0, 6);
-		break;
-	case 6:
-		yieldEnemy(BULL, red, 1, 0, 0, 7);
-		break;
-	case 8:
-		yieldEnemy(BULL, red, 1, 0, 0, 11);
-		yieldEnemy(BULL, red, 1, 0, 0, 9);
-		break;
+	if (1 < turn || turn < 16 || turn % 3 == 0) {
+	
+		side = GetRand(3);
+		place = GetRand(FIELDSIZE - 3);
+
+		if (side == 0) {
+			yieldEnemy(BULL, red, 0, 1, place+1 , 0);
+		}
+		if (side == 1) {
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE -1);
+		}
+		if (side == 2) {
+			yieldEnemy(BULL, red, 1, 0, 0, place +1);
+		}
+		if (side == 3) {
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+		}
+
+		
+
 }
 
 
