@@ -88,7 +88,7 @@ bool Bull::walk(int size) {
 	iy = y + dy;
 
 	if (ix >= 0 && ix < size && iy >= 0 && iy < size) {//マスが盤面以内なら
-		if (board[ix][iy].creature == NULL) {//マスが空白なら
+		if (board[ix][iy].creature == NULL && board[ix][iy].state != CASTLE) {//マスが空白なら
 
 			board[ix][iy].creature = this;
 			board[x][y].creature = NULL;
@@ -193,8 +193,6 @@ bool Bull::walk(int size) {
 					SETdirection(NW);
 				}
 			}
-
-
 			return TRUE;
 		}
 	}
@@ -234,6 +232,11 @@ bool Bull::attack(int size) {
 				damage(ix, iy);
 
 			}
+		}
+		if (board[ix][iy].state == CASTLE) {
+			board[ix][iy].state = VACANT;
+			actionMsg = "城を壊されてしまった。";
+			return TRUE;
 		}
 	}
 	return FALSE;

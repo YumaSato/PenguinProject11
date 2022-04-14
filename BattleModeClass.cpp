@@ -62,7 +62,7 @@ bool BattleMode_GameManager::BattleMode() {
 			Emperor2.selectAction();
 		}
 
-		if (Emperor1.HP <= 0 && Emperor2.HP <= 0) {
+		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 ) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "ゲームを終了します。";
 			exhibitScreen();
@@ -71,6 +71,16 @@ bool BattleMode_GameManager::BattleMode() {
 		}
 
 		turnFinal();
+
+		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 || board[CASTLE_X][CASTLE_Y].state == VACANT) {
+			mainMsg = "ゲームオーバー";
+			actionMsg = "ゲームを終了します。";
+			exhibitScreen();
+			WaitKey();
+			return FALSE;
+		}
+		
+
 		enemyEnter(turnNum);
 
 		turnNum += 1;
