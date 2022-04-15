@@ -278,7 +278,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		}
 	}
 
-	if (turn == 20 || turn == 25 || turn == 45 || turn == 50 || turn == 52) {
+	if (turn % 5 == 0 && turn > 18) {
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {

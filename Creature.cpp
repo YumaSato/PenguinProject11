@@ -101,7 +101,7 @@ bool Creature::kick(int size) {
 				DrawString(800, 570, s.c_str(), WHITE);
 				WaitKey();
 
-				if (cX < 0 || cX > size || cY < 0 || cY > size) {//マス目の端っこまで調べたら、卵が消える。
+				if (cX < 0 || cX > size || cY < 0 || cY > size ||(cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
 					board[x + drctnX][y + drctnY].creature->DeleteCreature();
 					board[x + drctnX][y + drctnY].creature = NULL;
 					break;

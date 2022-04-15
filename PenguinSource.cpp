@@ -74,8 +74,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 		DrawString(300, 70, "PenguinGame", WHITE);
-		DrawString(300, 100, "モードを選択してください。\n1:大群襲来バトル\nEsc:やめる", WHITE);
+		DrawString(300, 100, "モードを選択してください。\n1:大群襲来バトル\n2:対人戦「牛飼いとバトル！」\nEsc:やめる", WHITE);
 		WaitKey();
+		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
+			BattleMode_GameManager battle;
+			game = battle.BattleMode();
+		}
+		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
+			BattleMode_GameManager battle;
+			game = battle.BattleMode();
+		}
+
+
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			BattleMode_GameManager battle;
 			game = battle.BattleMode();
