@@ -14,7 +14,6 @@ using std::string;
 
 class BattleMode_GameManager {
 public:
-	int turnNum;
 	BattleMode_GameManager();
 	bool BattleMode();
 

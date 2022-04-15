@@ -36,6 +36,7 @@ string statusMsg;
 //•\¦‰æ‘œ
 int HandleBoard;//ƒQ[ƒ€”Õ‚Ì‰æ‘œƒnƒ“ƒhƒ‹
 int HandleHP;
+int HandleCastle;
 int handle[3][5][8];//[team][status][direction]‚Åƒyƒ“ƒMƒ“‚Ì‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ğŠi”[‚·‚é3ŸŒ³”z—ñB
 
 Grid board[FIELDSIZE][FIELDSIZE];
@@ -46,3 +47,4 @@ Character* handledCharacters[CHARACTERNUM];//‘€ì‰Â”\‚ÈƒLƒƒƒ‰ƒNƒ^‚Ìƒ|ƒCƒ“ƒ^‚ğŠi”
 
 
 int yieldStopSide[4] = {0,1,2,3};//“G‚ªoŒ»‚·‚é‘¤‚ğ¦‚·B3”Ô–Ú‚Ì’l‚ª‚Å‚È‚­‚È‚éA‚Æ‚¢‚¤‚Æ‚«‚ÍA3”Ô–Ú‚Ì’l‚ª3‚Å‚Í‚È‚­-1‚É‚È‚éB
+int randomSide = 0;

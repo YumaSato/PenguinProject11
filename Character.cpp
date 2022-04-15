@@ -108,6 +108,13 @@ bool Character::selectAction() {
 		stamina = staminaLimit;//スタミナが満タンになるとき。
 	}
 
+	HP += 8;//HP回復
+	if (HP > HP_Limit) {
+		HP = HP_Limit;//HPが満タンになるとき。
+	}
+
+	
+
 	actionMsg = "行動終了。スタミナが回復します。";
 	exhibitScreen();
 	WaitKey();

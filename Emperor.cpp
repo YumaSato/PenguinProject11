@@ -13,18 +13,18 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 
 	if (this->team == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
 		this->name = "赤皇帝";
-		this->x = FIELDSIZE - 6;
-		this->y = 6;
+		this->x = CASTLE_X -1;
+		this->y = CASTLE_Y -1;
 		//this->directionX = 0;
 		//this->directionY = -1;
 		SETdirection(0, -1);
 		this->status = EMPEROR;
-		this->HP = 100;
-		this->HP_Limit = 100;
+		this->HP = 50;
+		this->HP_Limit = 50;
 		this->stamina = 100;
 		this->staminaLimit = 100;
 		this->attackPower = 30;
-		this->defensePower = 30;
+		this->defensePower = 60;
 		this->speed = 500001;
 		this->staminaRecoverAbility = 5;
 		this->num = num;
@@ -38,18 +38,18 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 
 	if (this->team == blue) {//青チーム(=2)の皇帝であれば青皇帝を盤面下部にスポーン
 		this->name = "青皇帝";
-		this->x = 6;
-		this->y = FIELDSIZE - 6;
+		this->x = CASTLE_X + 1;
+		this->y = CASTLE_Y + 1;
 		//this->directionX = 0;
 		//this->directionY = 1;
 		SETdirection(0, 1);
 		this->status = EMPEROR;
-		this->HP = 100;
-		this->HP_Limit = 100;
+		this->HP = 50;
+		this->HP_Limit = 50;
 		this->stamina = 100;
 		this->staminaLimit = 100;
 		this->attackPower = 30;
-		this->defensePower = 30;
+		this->defensePower = 60;
 		this->speed = 500002;
 		this->staminaRecoverAbility = 5;
 		this->num = num;
@@ -87,7 +87,7 @@ bool Emperor::specialMovement1(int size) {//特殊技：産卵
 
 
 
-			stamina -= 5;
+			stamina -= 15;
 			exhibitScreen();
 			return TRUE;
 		}

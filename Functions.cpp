@@ -62,6 +62,7 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
 	int h;//ハンドル格納用
 	int hHP;
+	string turn = "";
 	bool HPexhibitOrNot;
 	ClearDrawScreen();//一度画面を全消し
 	DrawGraph(0, 0, HandleBoard, TRUE);
@@ -79,7 +80,7 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE, ix * SQUARESIZE + 47, iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
 			}
 			if (board[ix][iy].state == CASTLE) {
-				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE, ix * SQUARESIZE + 47, iy * SQUARESIZE + 47, GetColor(220, 20, 63), TRUE);
+				DrawGraph(ix * SQUARESIZE, iy * SQUARESIZE, HandleCastle, TRUE);
 			}
 
 
@@ -123,7 +124,7 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 				h = handle[board[ix][iy].creature->team][board[ix][iy].creature->status][directionNum];
 
 
-				if (board[ix][iy].creature->status != EMPEROR && board[ix][iy].creature->HP < board[ix][iy].creature->HP_Limit) {
+				if (board[ix][iy].creature->HP < board[ix][iy].creature->HP_Limit) {
 					hHP = HandleHP;
 					HPexhibitOrNot = TRUE;
 				}
@@ -142,6 +143,9 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 	exhibitStatusMsg();//キャラクタ0のメッセージを代入。
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 130, actionMsg.c_str(), GetColor(255, 200, 255));
+
+	turn = "現在のターン:" + std::to_string(turnNum);
+	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20 ,turn.c_str(), GetColor(255, 200, 255));
 	actionMsg = "";
 }
 

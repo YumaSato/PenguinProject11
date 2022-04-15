@@ -30,6 +30,7 @@ bool speedOrder(Creature* a, Creature* b);
 
 BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 	turnNum = 0;
+	
 
 	for (int i = 0; i < FIELDSIZE; i++) {
 		board[i][0].state = ROCK;
@@ -44,6 +45,8 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 
 
 bool BattleMode_GameManager::BattleMode() {
+
+	//string turnF = "";
 
 	Emperor Emperor1(red, 0);//インスタンス化
 	handledCharacters[0] = &Emperor1;
@@ -82,9 +85,11 @@ bool BattleMode_GameManager::BattleMode() {
 		
 
 		enemyEnter(turnNum);
-
 		turnNum += 1;
-
+		exhibitScreen();
+		/*turnF = "現在のターン:" + std::to_string(turnNum);
+		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turnF.c_str(), GetColor(255, 200, 255));
+		WaitKey();*/
 
 
 	}
@@ -233,42 +238,78 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn) {
-	int side;
-	int place;
-	int rand;
+
+
+
+void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
+	int side = 0;
+	int place = 0;
 
 	if (turn == 1) {//１ターン目から、敵が出現しない側を決定する。
-		yieldStopSide[GetRand(3)] = -1;
+		randomSide = GetRand(3);
 	}
-	if (1 < turn || turn < 16 || turn % 3 == 0) {
-	
-		side = GetRand(2);
-		if (yieldStopSide[side] = -1) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
-			side += 1;
+	if (turn == 14) {//敵が出現しない側を決定する。
+		randomSide = GetRand(2);
+	}
+
+
+	if (1 < turn && turn < 25) {
+		if (turn % 5 == 2 || turn % 5 == 4 || turn == 10 || turn == 15 ) {
+
+			side = GetRand(2);
+			if (side <= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
+				side += 1;
+			}
+
+			place = GetRand(FIELDSIZE - 3);
+			if (yieldStopSide[side] == 0) {
+				yieldEnemy(BULL, red, 0, 1, place + 1, 0);
+			}
+			if (yieldStopSide[side] == 1) {
+				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
+			}
+			if (yieldStopSide[side] == 2) {
+				yieldEnemy(BULL, red, 1, 0, 0, place + 1);
+			}
+			if (yieldStopSide[side] == 3) {
+				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+			}
 		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+	if (turn == 22) {//敵が出現する側を決定する。1つの方向から集中攻撃がくるぞ！
+		randomSide = GetRand(3);
+	}
+	if (22 < turn && turn < 28) {
 
 		place = GetRand(FIELDSIZE - 3);
-		if (side == 0) {
-			yieldEnemy(BULL, red, 0, 1, place+1 , 0);
+		if (yieldStopSide[randomSide] == 0) {
+			yieldEnemy(BULL, red, 0, 1, place + 1, 0);
 		}
-		if (side == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE -1);
+		if (yieldStopSide[randomSide] == 1) {
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
 		}
-		if (side == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place +1);
+		if (yieldStopSide[randomSide] == 2) {
+			yieldEnemy(BULL, red, 1, 0, 0, place + 1);
 		}
-		if (side == 3) {
+		if (yieldStopSide[randomSide] == 3) {
 			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
 		}
-
-		
-
-}
-
-
+	}
 
 }
+
+
 
 
 
