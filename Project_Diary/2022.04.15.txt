@@ -1,0 +1,15 @@
+Functionsの、ExhibitScreenの、マス目に卵があるか否かを判定するif文で例外エラー発生。
+
+原因は、PenguinSourceのHandlePenguin関数に、青闘牛を読み込む文を書いたかららしい。
+
+
+//for (int i = 0; i <= 7; i++) {
+	//	sprintf(tmp, "Imgs/blueBull%d.png", i);
+	//	handle[blue][BULL][i] = LoadGraph(tmp);
+	//}
+
+
+
+この部分を書き足してからエラーが出た。画像のアドレスを3次元のhandle配列に入れただけの文なのに、何がいけないのかわからない。
+
+Handleの3次元配列の、2個目のステータス値[5]を、[8]にしたら直った。なんでかわからない。ステータスは確かに使っていないもの（FIREGOD）とかを含むとSTATUSのenum数は8まであるから、今回読み込むものは6,7,8のいずれでもないが、8まで必要だったのかも？

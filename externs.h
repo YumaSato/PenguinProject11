@@ -39,7 +39,7 @@ extern string statusMsg;
 extern int HandleBoard;
 extern int HandleHP;
 extern int HandleCastle;
-extern int handle[3][5][8];
+extern int handle[3][9][8];
 
 extern Grid board[FIELDSIZE][FIELDSIZE];//そのマスに何がいるか
 
@@ -48,7 +48,6 @@ extern Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレ
 
 
 
-extern int yieldStopSide[4];//敵が出現する側を示す。3番目の値がでなくなる、というときは、3番目の値が3ではなく-1になる。
 extern int randomSide;
 
 

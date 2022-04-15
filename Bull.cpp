@@ -18,34 +18,57 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 	string numX;
 	string numY;
 
-	name = "闘牛";
-	team = ParentTeam;
-	status = BULL;//卵である意。
-	//directionX = DirectionX;
-	//directionY = DirectionY;
-	SETdirection(DirectionX, DirectionY);
-	x = ix;
-	y = iy;
-	HP = 50;
-	HP_Limit = 50;
-	stamina = NULL;
-	staminaLimit = NULL;
-	attackPower = 38;
-	defensePower = 100;
-	speed = 500000 - GetRand(260);//素早さはランダム。
-	staminaRecoverAbility = NULL;
-	num = mobNumber;
-	skip = FALSE;//TRUEのとき、ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
-	enemy = TRUE;//こいつは、敵。
+	if (ParentTeam == red) {
+		name = "赤い闘牛";
+		team = ParentTeam;
+		status = BULL;//卵である意。
+		//directionX = DirectionX;
+		//directionY = DirectionY;
+		SETdirection(DirectionX, DirectionY);
+		x = ix;
+		y = iy;
+		HP = 50;
+		HP_Limit = 50;
+		stamina = NULL;
+		staminaLimit = NULL;
+		attackPower = 38;
+		defensePower = 100;
+		speed = 500000 - GetRand(260);//素早さはランダム。
+		staminaRecoverAbility = NULL;
+		num = mobNumber;
+		skip = FALSE;//TRUEのとき、ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
+		enemy = TRUE;//こいつは、敵。
+	}
+
+	if (ParentTeam == blue) {
+		name = "紫の闘牛";
+		team = ParentTeam;
+		status = BULL;//卵である意。
+		//directionX = DirectionX;
+		//directionY = DirectionY;
+		SETdirection(DirectionX, DirectionY);
+		x = ix;
+		y = iy;
+		HP = 50;
+		HP_Limit = 50;
+		stamina = NULL;
+		staminaLimit = NULL;
+		attackPower = 46;
+		defensePower = 100;
+		speed = 500000 - GetRand(360);//素早さはランダム。
+		staminaRecoverAbility = NULL;
+		num = mobNumber;
+		skip = FALSE;//TRUEのとき、ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
+		enemy = TRUE;//こいつは、敵。
+	}
 
 
 
 	exhibitScreen();
-	DrawString(800, 180, "闘牛のSetMobs実行。", GetColor(255, 200, 255));
 	numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));
-	mobStatusMsg = "X:" + numX + ",Y:" + numY + "の闘牛の素早さは、" + numSpeed;
+	mobStatusMsg = "X:" + numX + ",Y:" + numY + "に闘牛が現れた！";
 	DrawString(800, 160, mobStatusMsg.c_str(), WHITE);
 	WaitKey();
 }
@@ -64,12 +87,13 @@ bool Bull::selectAction() {
 		HP = HP_Limit;
 	}
 
-	if (walk(FIELDSIZE) == TRUE) {
-		return TRUE;
-	}
 	if (attack(FIELDSIZE) == TRUE) {
 		return TRUE;
 	}
+	if (walk(FIELDSIZE) == TRUE) {
+		return TRUE;
+	}
+	
 	return FALSE;
 }
 
@@ -97,7 +121,7 @@ bool Bull::walk(int size) {
 
 			x = ix;
 			y = iy;
-			int randDi = 0;
+			int randDi = 0;//歩き終わってから次に行動する方向を決定する。
 			randDi = GetRand(1);
 			if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
 				//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より長い場合(西北西)
@@ -193,6 +217,14 @@ bool Bull::walk(int size) {
 					SETdirection(NW);
 				}
 			}
+
+			if (CASTLE_X == x && CASTLE_Y - y < 0) {//南
+				SETdirection(NN);
+			}
+			if (CASTLE_X == x && CASTLE_Y - y > 0) {//北
+				SETdirection(SS);
+			}
+
 			return TRUE;
 		}
 	}
@@ -230,9 +262,87 @@ bool Bull::attack(int size) {
 			}
 			if (board[ix][iy].creature->enemy == FALSE) {//NULLじゃなくてロボットどもだったら攻撃
 				damage(ix, iy);
-
+				return TRUE;
 			}
 		}
+
+		if (board[ix][iy].creature == NULL || team == blue) {//マスが空白である場合
+
+
+
+
+
+
+
+
+
+
+
+
+
+			int diCheck[8] = { 0,1,2,3,4,5,6,7 };//正面に敵があればそれが優先的に攻撃されるが、隣にいくつも敵がある場合、敵を攻撃する方向をランダムにする。
+			Direction di = GETdirection();
+			for (int i = 0; i < 7; i++) {
+				int r = GetRand(7 - i) + i;
+				int tmp = diCheck[i];
+				diCheck[i] = diCheck[r];
+				diCheck[r] = tmp;
+			}
+
+			for (int i = 0; i < 8; i++) {//８方向調べる。これなんでswitch使うとi==7の場合しか発動しないの？←ブレイクを書いていなかったから。
+
+				switch (diCheck[i]) {
+				case 0:
+					dx = -1;
+					dy = -1;
+					break;
+				case 1:
+					dx = 0;
+					dy = -1;
+					break;
+				case 2:
+					dx = 1;
+					dy = -1;
+					break;
+				case 3:
+					dx = 1;
+					dy = 0;
+					break;
+				case 4:
+					dx = 1;
+					dy = 1;
+					break;
+				case 5:
+					dx = 0;
+					dy = 1;
+					break;
+				case 6:
+					dx = -1;
+					dy = 1;
+					break;
+				case 7:
+					dx = -1;
+					dy = 0;
+					break;
+				}
+				ix = x + dx;
+				iy = y + dy;
+
+				if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
+
+					if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
+						if (board[ix][iy].creature->enemy == FALSE) {//それがペンギン共だったら
+							SETdirection(ix, iy);//敵の方を向いて
+							damage(ix, iy);
+							return TRUE;
+						}
+					}
+				}
+			}
+		}
+
+
+
 		if (board[ix][iy].state == CASTLE) {
 			board[ix][iy].state = VACANT;
 			actionMsg = "城を壊されてしまった。";

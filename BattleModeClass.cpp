@@ -262,22 +262,39 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 			}
 
 			place = GetRand(FIELDSIZE - 3);
-			if (yieldStopSide[side] == 0) {
-				yieldEnemy(BULL, red, 0, 1, place + 1, 0);
+
+			if (side == 0) {
+				yieldEnemy(BULL, blue, 0, 1, place + 1, 0);
 			}
-			if (yieldStopSide[side] == 1) {
-				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
+			if (side == 1) {
+				yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1);
 			}
-			if (yieldStopSide[side] == 2) {
-				yieldEnemy(BULL, red, 1, 0, 0, place + 1);
+			if (side == 2) {
+				yieldEnemy(BULL, blue, 1, 0, 0, place + 1);
 			}
-			if (yieldStopSide[side] == 3) {
-				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+			if (side == 3) {
+				yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1);
 			}
 		}
 	}
 
+	if (turn == 20 || turn == 25) {
+		side = GetRand(3);
+		place = GetRand(FIELDSIZE - 3);
+		if (side == 0) {
+			yieldEnemy(BULL, blue, 0, 1, place + 1, 0);
+		}
+		if (side == 1) {
+			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1);
+		}
+		if (side == 2) {
+			yieldEnemy(BULL, blue, 1, 0, 0, place + 1);
+		}
+		if (side == 3) {
+			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1);
+		}
 
+	}
 
 
 
@@ -293,16 +310,16 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 	if (22 < turn && turn < 28) {
 
 		place = GetRand(FIELDSIZE - 3);
-		if (yieldStopSide[randomSide] == 0) {
+		if (randomSide == 0) {
 			yieldEnemy(BULL, red, 0, 1, place + 1, 0);
 		}
-		if (yieldStopSide[randomSide] == 1) {
+		if (randomSide == 1) {
 			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
 		}
-		if (yieldStopSide[randomSide] == 2) {
+		if (randomSide == 2) {
 			yieldEnemy(BULL, red, 1, 0, 0, place + 1);
 		}
-		if (yieldStopSide[randomSide] == 3) {
+		if (randomSide == 3) {
 			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
 		}
 	}
@@ -318,7 +335,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 
 	if (enemyType == BULL) {
 		Bull bull = Bull();
-		bull.setMobs(red, dx, dy, cx, cy, 400000);
+		bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000);
 		mobs_Bull[num_bull] = bull;
 		board[cx][cy].creature = &mobs_Bull[num_bull];
 		mobNumber += 1;

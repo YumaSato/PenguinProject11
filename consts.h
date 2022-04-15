@@ -22,14 +22,14 @@ enum Status {
 
 
 enum Direction {
-	NW,
-	NN,
-	NE,
-	EE,
-	SE,
-	SS,
-	SW,
-	WW
+	NW = 0,
+	NN = 1,
+	NE = 2,
+	EE = 3,
+	SE = 4,
+	SS = 5,
+	SW = 6,
+	WW = 7
 };
 
 enum State {
