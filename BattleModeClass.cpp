@@ -253,7 +253,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 	}
 
 
-	if (1 < turn && turn < 25) {
+	if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
 		if (turn % 5 == 2 || turn % 5 == 4 || turn == 10 || turn == 15 ) {
 
 			side = GetRand(2);
@@ -264,21 +264,21 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 			place = GetRand(FIELDSIZE - 3);
 
 			if (side == 0) {
-				yieldEnemy(BULL, blue, 0, 1, place + 1, 0);
+				yieldEnemy(BULL, red, 0, 1, place + 1, 0);
 			}
 			if (side == 1) {
-				yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1);
+				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
 			}
 			if (side == 2) {
-				yieldEnemy(BULL, blue, 1, 0, 0, place + 1);
+				yieldEnemy(BULL, red, 1, 0, 0, place + 1);
 			}
 			if (side == 3) {
-				yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1);
+				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
 			}
 		}
 	}
 
-	if (turn == 20 || turn == 25) {
+	if (turn == 20 || turn == 25 || turn == 45 || turn == 50 || turn == 52) {
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
@@ -304,10 +304,10 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 
 
 
-	if (turn == 22) {//敵が出現する側を決定する。1つの方向から集中攻撃がくるぞ！
+	if (turn == 28) {//敵が出現する側を決定する。1つの方向から集中攻撃がくるぞ！
 		randomSide = GetRand(3);
 	}
-	if (22 < turn && turn < 28) {
+	if (28 < turn && turn < 34) {
 
 		place = GetRand(FIELDSIZE - 3);
 		if (randomSide == 0) {

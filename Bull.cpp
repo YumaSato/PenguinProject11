@@ -266,22 +266,12 @@ bool Bull::attack(int size) {
 			}
 		}
 
-		if (board[ix][iy].creature == NULL || team == blue) {//マスが空白である場合
 
 
-
-
-
-
-
-
-
-
-
-
+		if (board[ix][iy].creature == NULL && team == blue) {//マスが空白である場合
 
 			int diCheck[8] = { 0,1,2,3,4,5,6,7 };//正面に敵があればそれが優先的に攻撃されるが、隣にいくつも敵がある場合、敵を攻撃する方向をランダムにする。
-			Direction di = GETdirection();
+			Direction di = GETdirection();//方向データを仮置き。
 			for (int i = 0; i < 7; i++) {
 				int r = GetRand(7 - i) + i;
 				int tmp = diCheck[i];
@@ -289,55 +279,55 @@ bool Bull::attack(int size) {
 				diCheck[r] = tmp;
 			}
 
-			for (int i = 0; i < 8; i++) {//８方向調べる。これなんでswitch使うとi==7の場合しか発動しないの？←ブレイクを書いていなかったから。
+			for (int i = 0; i < 8; i++) {
 
 				switch (diCheck[i]) {
 				case 0:
-					dx = -1;
-					dy = -1;
+					SETdirection(NW);
 					break;
 				case 1:
-					dx = 0;
-					dy = -1;
+					SETdirection(NN);
 					break;
 				case 2:
-					dx = 1;
-					dy = -1;
+					SETdirection(NE);
 					break;
 				case 3:
-					dx = 1;
-					dy = 0;
+					SETdirection(EE);
 					break;
 				case 4:
-					dx = 1;
-					dy = 1;
+					SETdirection(SE);
 					break;
 				case 5:
-					dx = 0;
-					dy = 1;
+					SETdirection(SS);
 					break;
 				case 6:
-					dx = -1;
-					dy = 1;
+					SETdirection(SW);
 					break;
 				case 7:
-					dx = -1;
-					dy = 0;
+					SETdirection(WW);
 					break;
 				}
-				ix = x + dx;
-				iy = y + dy;
 
-				if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
-					if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
-						if (board[ix][iy].creature->enemy == FALSE) {//それがペンギン共だったら
-							SETdirection(ix, iy);//敵の方を向いて
-							damage(ix, iy);
-							return TRUE;
+
+				if ((GETdirection() - di <= 2 && GETdirection() - di >= -2) || (GETdirection() == 1 && di == 7) || (GETdirection() == 0 && di == 7) || (GETdirection() == 0 && di == 6)) {
+					//索敵範囲は、方向+-2まで。一旦方向を変えたことにする。索敵範囲をすべて索敵した後に、見つからなければ元に戻す。
+					GETdirectionXY(&dx, &dy);
+					ix = x + dx;
+					iy = y + dy;//索敵マスを設定。
+
+					if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
+
+						if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
+							if (board[ix][iy].creature->enemy == FALSE) {//それがペンギン共だったら
+								SETdirection(dx, dy);//敵の方を向いて
+								damage(ix, iy);
+								return TRUE;
+							}
 						}
 					}
 				}
+				SETdirection(di);
 			}
 		}
 
