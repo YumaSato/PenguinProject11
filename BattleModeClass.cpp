@@ -73,6 +73,8 @@ bool BattleMode_GameManager::BattleMode() {
 			return FALSE;
 		}
 
+
+		mainMsg = "";
 		turnFinal();
 
 		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 || board[CASTLE_X][CASTLE_Y].state == VACANT) {

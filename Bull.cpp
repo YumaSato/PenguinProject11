@@ -110,123 +110,134 @@ bool Bull::walk(int size) {
 	GETdirectionXY(&dx, &dy);
 	ix = x + dx;
 	iy = y + dy;
+	bool walkOrNot = FALSE;
 
-	if (ix >= 0 && ix < size && iy >= 0 && iy < size) {//マスが盤面以内なら
+	if (ix >= 0 && ix < size && iy >= 0 && iy < size) {//歩くか否かを判定し、walkOrNotに判定結果を格納。
+		if (board[ix][iy].creature != NULL) {
+			if (board[ix][iy].creature->status == EGG) {//マスに卵があれば
+				board[ix][iy].creature->DeleteCreature();//卵が死ぬ。
+				actionMsg = name + "は歩いた。卵を踏みつぶした。";
+				walkOrNot = TRUE;
+			}
+		}
 		if (board[ix][iy].creature == NULL && board[ix][iy].state != CASTLE) {//マスが空白なら
+			actionMsg = name + "は歩いた。";
+			walkOrNot = TRUE;
+		}
+	}
 
-			board[ix][iy].creature = this;
-			board[x][y].creature = NULL;
+	if (walkOrNot == TRUE) {//歩く判定TRUEなら、調べたマスに自分のアドレスを入れる。
+		board[ix][iy].creature = this;
+		board[x][y].creature = NULL;
+		x = ix;//自分の位置をxyに入れる。
+		y = iy;
 
 
-
-			x = ix;
-			y = iy;
-			int randDi = 0;//歩き終わってから次に行動する方向を決定する。
-			randDi = GetRand(1);
-			if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
-				//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より長い場合(西北西)
-				if (randDi == 0) {
-					SETdirection(EE);
-				}
-				if (randDi == 1) {
-					SETdirection(SE);
-				}
-			}
-			if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {
-				//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離と同じ場合(北西)
-				SETdirection(SE);
-			}
-			if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {
-				//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より短い場合（北北西）
-				if (randDi == 0) {
-					SETdirection(SS);
-				}
-				if (randDi == 1) {
-					SETdirection(SE);
-				}
-			}
-			if (CASTLE_X - x > 0 && CASTLE_Y == y) {
-				//x軸距離が+(城より左)で、かつy軸距離が0(城と同じ)で、かつX軸の城との距離がY軸の城との距離より長い場合（西）
+		int randDi = 0;//歩き終わってから次に行動する方向を決定する。
+		randDi = GetRand(1);
+		if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
+			//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より長い場合(西北西)
+			if (randDi == 0) {
 				SETdirection(EE);
 			}
-
-			if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
-				//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離より長い場合（西南西）
-				if (randDi == 0) {
-					SETdirection(EE);
-				}
-				if (randDi == 1) {
-					SETdirection(NE);
-				}
+			if (randDi == 1) {
+				SETdirection(SE);
 			}
-			if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {
-				//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離が同じ場合（南西）
-				SETdirection(NE);
-			}
-
-			if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {
-				//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離より短い場合（南南西）
-				if (randDi == 0) {
-					SETdirection(NN);
-				}
-				if (randDi == 1) {
-					SETdirection(NE);
-				}
-			}
-
-
-			if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {//東北東
-				if (randDi == 0) {
-					SETdirection(WW);
-				}
-				if (randDi == 1) {
-					SETdirection(SW);
-				}
-			}
-			if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {//北東
-				SETdirection(SW);
-			}
-			if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {//北北東
-				if (randDi == 0) {
-					SETdirection(SS);
-				}
-				if (randDi == 1) {
-					SETdirection(SW);
-				}
-			}
-			if (CASTLE_X - x < 0 && CASTLE_Y == y) {//東
-				SETdirection(WW);
-			}
-
-			if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {//東南東
-				if (randDi == 0) {
-					SETdirection(WW);
-				}
-				if (randDi == 1) {
-					SETdirection(NW);
-				}
-			}
-			if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {//南東
-				SETdirection(NW);
-			}
-			if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {//南南東
-				if (randDi == 0) {
-					SETdirection(NN);
-				}
-				if (randDi == 1) {
-					SETdirection(NW);
-				}
-			}
-
-			if (CASTLE_X == x && CASTLE_Y - y < 0) {//南
-				SETdirection(NN);
-			}
-			if (CASTLE_X == x && CASTLE_Y - y > 0) {//北
+		}
+		if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {
+			//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離と同じ場合(北西)
+			SETdirection(SE);
+		}
+		if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {
+			//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より短い場合（北北西）
+			if (randDi == 0) {
 				SETdirection(SS);
 			}
-
-			return TRUE;
+			if (randDi == 1) {
+				SETdirection(SE);
+			}
 		}
+		if (CASTLE_X - x > 0 && CASTLE_Y == y) {
+			//x軸距離が+(城より左)で、かつy軸距離が0(城と同じ)で、かつX軸の城との距離がY軸の城との距離より長い場合（西）
+			SETdirection(EE);
+		}
+
+		if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
+			//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離より長い場合（西南西）
+			if (randDi == 0) {
+				SETdirection(EE);
+			}
+			if (randDi == 1) {
+				SETdirection(NE);
+			}
+		}
+		if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {
+			//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離が同じ場合（南西）
+			SETdirection(NE);
+		}
+
+		if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {
+			//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離より短い場合（南南西）
+			if (randDi == 0) {
+				SETdirection(NN);
+			}
+			if (randDi == 1) {
+				SETdirection(NE);
+			}
+		}
+
+
+		if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {//東北東
+			if (randDi == 0) {
+				SETdirection(WW);
+			}
+			if (randDi == 1) {
+				SETdirection(SW);
+			}
+		}
+		if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {//北東
+			SETdirection(SW);
+		}
+		if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {//北北東
+			if (randDi == 0) {
+				SETdirection(SS);
+			}
+			if (randDi == 1) {
+				SETdirection(SW);
+			}
+		}
+		if (CASTLE_X - x < 0 && CASTLE_Y == y) {//東
+			SETdirection(WW);
+		}
+
+		if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {//東南東
+			if (randDi == 0) {
+				SETdirection(WW);
+			}
+			if (randDi == 1) {
+				SETdirection(NW);
+			}
+		}
+		if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {//南東
+			SETdirection(NW);
+		}
+		if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {//南南東
+			if (randDi == 0) {
+				SETdirection(NN);
+			}
+			if (randDi == 1) {
+				SETdirection(NW);
+			}
+		}
+
+		if (CASTLE_X == x && CASTLE_Y - y < 0) {//南
+			SETdirection(NN);
+		}
+		if (CASTLE_X == x && CASTLE_Y - y > 0) {//北
+			SETdirection(SS);
+		}
+
+		return TRUE;
 	}
 	return FALSE;
 }
@@ -257,7 +268,7 @@ bool Bull::attack(int size) {
 	iy = y + dy;
 	if (ix >= 0 && ix < size && iy >= 0 && iy < size) {//マスが盤面以内なら
 		if (board[ix][iy].creature != NULL) {//マスが空白でない、つまり何か居る場合
-			if (board[ix][iy].creature->enemy == TRUE) {//でも敵側同士だったら
+			if (board[ix][iy].creature->enemy == TRUE || board[ix][iy].creature->status == EGG) {//でも敵側同士か卵だったら
 				return FALSE;
 			}
 			if (board[ix][iy].creature->enemy == FALSE) {//NULLじゃなくてロボットどもだったら攻撃
@@ -311,7 +322,7 @@ bool Bull::attack(int size) {
 
 
 				if ((GETdirection() - di <= 2 && GETdirection() - di >= -2) || (GETdirection() == 1 && di == 7) || (GETdirection() == 0 && di == 7) || (GETdirection() == 0 && di == 6)) {
-					//索敵範囲は、方向+-2まで。一旦方向を変えたことにする。索敵範囲をすべて索敵した後に、見つからなければ元に戻す。
+					//索敵範囲は、方向+-2まで。一旦方向を変えたことにする。索敵範囲をすべて索敵した後に、見つからなければ方向を元に戻す。
 					GETdirectionXY(&dx, &dy);
 					ix = x + dx;
 					iy = y + dy;//索敵マスを設定。
@@ -319,7 +330,7 @@ bool Bull::attack(int size) {
 					if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
 						if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
-							if (board[ix][iy].creature->enemy == FALSE) {//それがペンギン共だったら
+							if (board[ix][iy].creature->enemy == FALSE || board[ix][iy].creature->status != EGG) {//それがペンギン共で、卵じゃなければ
 								SETdirection(dx, dy);//敵の方を向いて
 								damage(ix, iy);
 								return TRUE;
@@ -327,7 +338,7 @@ bool Bull::attack(int size) {
 						}
 					}
 				}
-				SETdirection(di);
+				SETdirection(di);//索敵しても見つからなかったら元の方向に戻る。
 			}
 		}
 
