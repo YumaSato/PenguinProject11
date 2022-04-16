@@ -87,7 +87,7 @@ bool Creature::kick(int size) {
 		}
 
 		if (board[cX][cY].creature->status == EGG) {
-			exhibitScreen();
+			exhibitScreen(x, y, TRUE);
 			DrawString(800, 180, "kick開始", WHITE);
 			WaitKey();
 
@@ -97,7 +97,7 @@ bool Creature::kick(int size) {
 
 				s = "";
 				s = "X:" + std::to_string(cX) + "Y:" + std::to_string(cY);
-				exhibitScreen();
+				exhibitScreen(x, y, TRUE);
 				DrawString(800, 570, s.c_str(), WHITE);
 				WaitKey();
 
@@ -118,7 +118,7 @@ bool Creature::kick(int size) {
 
 						s = "";
 						s = "NewPlace X:" + std::to_string(cX - drctnX) + "Y:" + std::to_string(cY - drctnY);
-						exhibitScreen();
+						exhibitScreen(x, y, TRUE);
 						DrawString(800, 570, s.c_str(), WHITE);
 						WaitKey();
 					}
@@ -136,7 +136,7 @@ bool Creature::kick(int size) {
 					if (board[cX][cY].creature->status == BULL) {//この警告はどういうこと？？
 					}
 					s = "卵がぶつかった！";
-					exhibitScreen();
+					exhibitScreen(x, y, TRUE);
 					DrawString(800, 570, s.c_str(), WHITE);
 					WaitKey();
 

@@ -68,7 +68,7 @@ bool BattleMode_GameManager::BattleMode() {
 		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 ) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "ゲームを終了します。";
-			exhibitScreen();
+			exhibitScreen(0, 0, FALSE);
 			WaitKey();
 			return FALSE;
 		}
@@ -80,7 +80,7 @@ bool BattleMode_GameManager::BattleMode() {
 		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "ゲームを終了します。";
-			exhibitScreen();
+			exhibitScreen(0, 0, FALSE);
 			WaitKey();
 			return FALSE;
 		}
@@ -88,7 +88,7 @@ bool BattleMode_GameManager::BattleMode() {
 
 		enemyEnter(turnNum);
 		turnNum += 1;
-		exhibitScreen();
+		exhibitScreen(0, 0, FALSE);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);
 		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turnF.c_str(), GetColor(255, 200, 255));
 		WaitKey();*/
@@ -151,7 +151,7 @@ void turnFinal() {//素早さ順にmobが行動していく関数。
 			allS += s;
 		}
 	}
-	exhibitScreen();
+	exhibitScreen(0, 0, FALSE);
 	DrawString(FIELDSIZE * SQUARESIZE, 570, allS.c_str(), WHITE);
 	WaitKey();
 
@@ -188,7 +188,7 @@ void turnFinal() {//素早さ順にmobが行動していく関数。
 
 
 		if (moveOrNot == TRUE) {//もし行動が行われていたら
-			exhibitScreen();
+			exhibitScreen(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y,TRUE);
 			numSpeed = (to_string(mobsSpeedOrder[i]->speed));
 			numX = (to_string(mobsSpeedOrder[i]->x));
 			numY = (to_string(mobsSpeedOrder[i]->y));
@@ -256,7 +256,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 
 
 	if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
-		if (turn % 5 == 2 || turn % 5 == 4 || turn == 10 || turn == 15 ) {
+		if (turn % 5 == 1 || turn % 5 == 3 || turn == 10 || turn == 15 ) {
 
 			side = GetRand(2);
 			if (side <= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
@@ -280,7 +280,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		}
 	}
 
-	if (turn % 5 == 0 && turn > 18) {
+	if (turn % 5 == 0 && turn > 18 && turn != 30) {
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
@@ -314,12 +314,14 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		place = GetRand(FIELDSIZE - 3);
 		if (randomSide == 0) {
 			yieldEnemy(BULL, red, 0, 1, place + 1, 0);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
 		}
 		if (randomSide == 1) {
 			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
 		}
 		if (randomSide == 2) {
 			yieldEnemy(BULL, red, 1, 0, 0, place + 1);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
 		}
 		if (randomSide == 3) {
 			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);

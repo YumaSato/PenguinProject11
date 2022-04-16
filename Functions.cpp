@@ -59,7 +59,7 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 
 
 
-void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
+void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
 	int h;//ハンドル格納用
 	int hHP;
 	string turn = "";
@@ -67,10 +67,9 @@ void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/) {//ペンギンを描画（ステ
 	ClearDrawScreen();//一度画面を全消し
 	DrawGraph(0, 0, HandleBoard, TRUE);
 
-	//for (int ix = 0; ix < ; ix++)
-
-
-
+	if (attention == TRUE) {//注目対象キャラのマスに注目用の円を表示するか否か
+		DrawBox(markX * 48 + 2, markY * 48 + 2, markX * 48 + 46, markY * 48 + 46, GetColor(255, 200, 0), TRUE);
+	}
 
 
 

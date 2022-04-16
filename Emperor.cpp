@@ -88,7 +88,7 @@ bool Emperor::specialMovement1(int size) {//“ÁŽê‹ZFŽY—‘
 
 
 			stamina -= 15;
-			exhibitScreen();
+			exhibitScreen(x, y, TRUE);
 			return TRUE;
 		}
 		else {
@@ -116,7 +116,7 @@ bool Emperor::specialMovement2(int size) {//“ÁŽê‹ZF›z‰»
 			incubate(checkX, checkY);
 			//board[checkX][checkY].creature->directionX = this->directionX;
 			//board[checkX][checkY].creature->directionY = this->directionY;
-			exhibitScreen();
+			exhibitScreen(x, y, TRUE);
 			return TRUE;
 		}
 		else {

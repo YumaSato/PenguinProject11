@@ -65,8 +65,8 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 bool PenguinKids::selectAction() {
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
-		skip = FALSE;
-		return TRUE;
+		skip = FALSE;//skip状態を解消。
+		return FALSE;//行動しなかった判定にする。これがTRUEだと、こいつの行動について説明が表示されてしまう。
 	}
 
 	HP += 12;
@@ -99,12 +99,18 @@ bool PenguinKids::selectAction() {
 
 
 	if (attack(FIELDSIZE) == TRUE) {
+		exhibitScreen(x, y, TRUE);
+		WaitKey();
 		return TRUE;
 	}
 	if (specialMovement1(FIELDSIZE) == TRUE) {
+		exhibitScreen(x, y, TRUE);
+		WaitKey();
 		return TRUE;
 	}
 	if (specialMovement2(FIELDSIZE) == TRUE) {
+		exhibitScreen(x, y, TRUE);
+		WaitKey();
 		return TRUE;
 	}
 	return FALSE;
@@ -118,7 +124,7 @@ void PenguinKids::test() {
 	string s;
 	s = "";
 	s = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "のtestメソッド実行";
-	exhibitScreen();
+	exhibitScreen(x, y, TRUE);
 	DrawString(800, 300, s.c_str(), WHITE);
 	WaitKey();
 }
@@ -252,8 +258,6 @@ bool PenguinKids::specialMovement1(int size) {//産卵
 
 
 			actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が産卵した！";
-			exhibitScreen();
-			WaitKey();
 
 			//board[ix][iy].creature = &penguinKids;
 
@@ -288,8 +292,6 @@ bool PenguinKids::specialMovement2(int size) {
 
 					incubate(ix, iy);
 					actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が孵化させた！";
-					exhibitScreen();
-					WaitKey();
 					return TRUE;
 				}
 			}
@@ -365,8 +367,6 @@ bool PenguinKids::specialMovement2(int size) {
 						SETdirection(tmpx, tmpy);
 						incubate(ix, iy);
 						actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が孵化させた！";
-						exhibitScreen();
-						WaitKey();
 						return TRUE;
 					}
 				}

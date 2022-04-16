@@ -71,7 +71,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 
-
+		DrawCircle(1 * 48 + 24, 1 * 48 + 24, GetColor(255, 200, 0), TRUE);
 
 		DrawString(300, 70, "PenguinGame", WHITE);
 		DrawString(300, 100, "モードを選択してください。\n1:大群襲来バトル\n2:対人戦「牛飼いとバトル！」\nEsc:やめる", WHITE);

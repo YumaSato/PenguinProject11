@@ -14,7 +14,7 @@ Character::Character() : Creature() {}
 bool Character::selectAction() {
 	string msg = "は何する?\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る";
 	mainMsg = name + msg;
-	exhibitScreen();
+	exhibitScreen(x,y,TRUE);
 	WaitKey();
 	while (1) {
 
@@ -25,16 +25,16 @@ bool Character::selectAction() {
 			if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//向きだけ変わる:右上
 				//directionY = -1;
 				SETdirection(1, -1);
-				exhibitScreen();
+				exhibitScreen(x, y, TRUE);
 				WaitTimer(200);
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//向きだけ変わる:右下
 				//directionY = 1;
 				SETdirection(1, 1);
-				exhibitScreen();
+				exhibitScreen(x, y, TRUE);
 				WaitTimer(200);
 			}
-			exhibitScreen();
+			exhibitScreen(x, y, TRUE);
 		}
 		else if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//向きだけ変わる:左
 			//directionX = -1;
@@ -43,28 +43,28 @@ bool Character::selectAction() {
 			if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//向きだけ変わる:左上
 				//directionY = -1;
 				SETdirection(-1, -1);
-				exhibitScreen();
+				exhibitScreen(x, y, TRUE);
 				WaitTimer(200);
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//向きだけ変わる:左下
 				//directionY = 1;
 				SETdirection(-1, 1);
-				exhibitScreen();
+				exhibitScreen(x, y, TRUE);
 				WaitTimer(200);
 			}
-			exhibitScreen();
+			exhibitScreen(x, y, TRUE);
 		}
 		else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//向きだけ変わる:下
 			//directionX = 0;
 			//directionY = 1;
 			SETdirection(0, 1);
-			exhibitScreen();
+			exhibitScreen(x, y, TRUE);
 		}
 		else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//向きだけ変わる:上
 			//directionX = 0;
 			//directionY = -1;
 			SETdirection(0, -1);
-			exhibitScreen();
+			exhibitScreen(x, y, TRUE);
 		}
 
 
@@ -116,7 +116,7 @@ bool Character::selectAction() {
 	
 
 	actionMsg = "行動終了。スタミナが回復します。";
-	exhibitScreen();
+	exhibitScreen(x, y, TRUE);
 	WaitKey();
 	mainMsg = "";
 	return TRUE;
@@ -156,7 +156,7 @@ void Character::changeDirection() {//歩かずに向きを変える
 	int tmpx, tmpy;
 	this->GETdirectionXY(&tmpx, &tmpy);
 	board[x][y].creature->SETdirection(tmpx, tmpy);
-	exhibitScreen();
+	exhibitScreen(x, y, TRUE);
 };
 
 
@@ -174,12 +174,12 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 		if (stamina < staminaNeed) {//スタミナが必要数に満たない場合walk中断でリターン。
 			actionMsg = "スタミナ切れだ！";
-			exhibitScreen();
+			exhibitScreen(x, y, TRUE);
 			return TRUE;
 		}
 
 		actionMsg = "歩こう!　1:移動終了　SHIFT:斜めサポート";
-		exhibitScreen();
+		exhibitScreen(x, y, TRUE);
 
 		while (1) {
 			checkX = this->x;//自分のいる座標を代入。
@@ -252,7 +252,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 					}
 
 					else if (CheckHitKey(KEY_INPUT_LSHIFT) == TRUE or CheckHitKey(KEY_INPUT_RSHIFT) == TRUE) {//斜め補助解除
-						exhibitScreen();
+						exhibitScreen(x, y, TRUE);
 						DrawString(800, 70, "歩こう! 1:移動終了　SHIFT:斜めサポート", WHITE);
 						break;
 					}
@@ -282,12 +282,12 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		staminaNeed = staminaNeed + i * 5;//次の歩みで減少するスタミナを決定。
 
 
-		exhibitScreen();
+		exhibitScreen(x, y, TRUE);
 	};
 
 
 	actionMsg = "walkの実行が終了";
-	exhibitScreen();
+	exhibitScreen(x, y, TRUE);
 	return TRUE;
 }
 
@@ -322,7 +322,7 @@ bool Character::attack(int size) {
 		//actionMsg = "fafafafafafafaffa";
 
 
-		exhibitScreen();
+		exhibitScreen(x, y, TRUE);
 		DrawString(800, 180, actionMsg.c_str(), GetColor(255, 200, 255));
 		WaitKey();
 		return TRUE;

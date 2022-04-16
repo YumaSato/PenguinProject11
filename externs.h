@@ -51,5 +51,5 @@ extern Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレ
 extern int randomSide;
 
 
-void exhibitScreen();
+void exhibitScreen(int markX, int markY, bool attention);
 void exhibitStatusMsg();

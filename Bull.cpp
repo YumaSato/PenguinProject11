@@ -64,7 +64,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-	exhibitScreen();
+	exhibitScreen(x,y,TRUE);
 	numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));
@@ -77,6 +77,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 bool Bull::selectAction() {
 
+	
 	if (skip == TRUE) {//skipÇ∑ÇÈèÛë‘Ç»ÇÁÅAë¶èIóπÅB
 		skip = FALSE;
 		return TRUE;
@@ -88,12 +89,17 @@ bool Bull::selectAction() {
 	}
 
 	if (attack(FIELDSIZE) == TRUE) {
+		exhibitScreen(x, y, TRUE);
+		WaitKey();
 		return TRUE;
 	}
 	if (walk(FIELDSIZE) == TRUE) {
+		exhibitScreen(x, y, TRUE);
+		WaitKey();
 		return TRUE;
 	}
-	
+	exhibitScreen(x, y, TRUE);
+	WaitKey();
 	return FALSE;
 }
 
