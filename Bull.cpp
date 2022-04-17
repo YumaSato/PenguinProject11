@@ -53,8 +53,8 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 		HP_Limit = 50;
 		stamina = NULL;
 		staminaLimit = NULL;
-		attackPower = 46;
-		defensePower = 100;
+		attackPower = 58;
+		defensePower = 160;
 		speed = 500000 - GetRand(360);//素早さはランダム。
 		staminaRecoverAbility = NULL;
 		num = mobNumber;
@@ -336,7 +336,7 @@ bool Bull::attack(int size) {
 					if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
 
 						if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
-							if (board[ix][iy].creature->enemy == FALSE || board[ix][iy].creature->status != EGG) {//それがペンギン共で、卵じゃなければ
+							if (board[ix][iy].creature->enemy == FALSE && board[ix][iy].creature->status != EGG) {//それがペンギン共で、卵じゃなければ
 								SETdirection(dx, dy);//敵の方を向いて
 								damage(ix, iy);
 								return TRUE;

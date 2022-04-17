@@ -247,19 +247,22 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 	int side = 0;
 	int place = 0;
 
-	if (turn == 1) {//１ターン目から、敵が出現しない側を決定する。
+	if (turn == 0) {//１ターン目から、敵が出現しない側を決定する。
 		randomSide = GetRand(3);
 	}
 	if (turn == 14) {//敵が出現しない側を決定する。
-		randomSide = GetRand(2);
+		randomSide = GetRand(3);
+	}
+	if (turn == 40) {//敵が出現しない側を決定する。
+		randomSide = GetRand(3);
 	}
 
 
 	if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
-		if (turn % 5 == 1 || turn % 5 == 3 || turn == 10 || turn == 15 ) {
+		if ((turn % 3 == 1 || turn % 3 == 0) && turn != 4) {
 
 			side = GetRand(2);
-			if (side <= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
+			if (side >= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
 				side += 1;
 			}
 
@@ -280,7 +283,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		}
 	}
 
-	if (turn % 5 == 0 && turn > 18 && turn != 30) {
+	if (turn % 2 == 0 && turn > 18 && turn != 32) {
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
@@ -295,7 +298,6 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		if (side == 3) {
 			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1);
 		}
-
 	}
 
 
@@ -314,21 +316,47 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		place = GetRand(FIELDSIZE - 3);
 		if (randomSide == 0) {
 			yieldEnemy(BULL, red, 0, 1, place + 1, 0);
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
 		}
 		if (randomSide == 1) {
 			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
 		}
 		if (randomSide == 2) {
 			yieldEnemy(BULL, red, 1, 0, 0, place + 1);
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
 		}
 		if (randomSide == 3) {
 			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
 		}
 	}
 
+
+
+
+	if ((turn % 5 == 0 && turn > 12) || turn == 16 || turn == 17) {//普通に赤が来る。半分の確率で反対側からも来る。
+		side = GetRand(3);
+		place = GetRand(FIELDSIZE - 3);
+		if (side == 0) {
+			yieldEnemy(BULL, red, 0, 1, place + 1, 0);
+			place = GetRand(FIELDSIZE - 3);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
+		}
+		if (side == 1) {
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
+		}
+		if (side == 2) {
+			yieldEnemy(BULL, red, 1, 0, 0, place + 1);
+			place = GetRand(FIELDSIZE - 3);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+		}
+		if (side == 3) {
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+		}
+
+	}
+
+
+
 }
+
 
 
 

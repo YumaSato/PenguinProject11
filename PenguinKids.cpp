@@ -69,6 +69,10 @@ bool PenguinKids::selectAction() {
 		return FALSE;//行動しなかった判定にする。これがTRUEだと、こいつの行動について説明が表示されてしまう。
 	}
 
+	if (status == EGG) {//skipする状態なら、即終了。
+		return FALSE;
+	}
+
 	HP += 12;
 	if (HP > HP_Limit) {//自然治癒
 		HP = HP_Limit;
@@ -143,21 +147,20 @@ bool PenguinKids::attack(int size) {
 	int tmpy;
 	bool attackPriority = FALSE;
 
-	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {//攻撃優先モードに当てはまるかを調べる。
 		if (board[checkX][checkY].creature != NULL) {//目の前に生物がいたら
 			if (board[checkX][checkY].creature->enemy == TRUE) {//そこにいるやつが敵ならば攻撃。
 				damage(checkX, checkY);
-
 				return TRUE;
 			}
-			if (status == NORMAL) {//目の前に生物（敵とは限らない）がいて、かつ卵を産みたい状態のとき
-				attackPriority = TRUE;
+			if (status == NORMAL && (board[checkX][checkY].creature->status != EGG || board[checkX][checkY].creature->team != team)) {//目の前に別チームもしくは卵以外がいて、かつ卵を産みたい状態のとき
+				attackPriority = TRUE;//索敵開始。
 			}
 		}
-
 	}
-
-
+	if (board[checkX][checkY].state == ROCK) {//攻撃優先モードに当てはまるかを調べる。当てはまった場合、向いている方向以外も索敵する。
+		attackPriority = TRUE;//岩場を向いている場合。
+	}
 	if (status == ELDER || attackPriority == TRUE) {//出産という仕事が終わっている場合か、ノーマル状態でも目の前に何かいて卵を産めないとき
 
 		int diCheck[8] = { 0,1,2,3,4,5,6,7 };//正面に敵いあればそれが優先的に孵化されるが、隣にいくつも卵がある場合、卵を孵化させる方向をランダムにする。
