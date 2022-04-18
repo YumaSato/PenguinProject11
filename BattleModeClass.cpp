@@ -53,8 +53,6 @@ bool BattleMode_GameManager::BattleMode() {
 	Emperor Emperor2(blue, 1);//インスタンス化
 	handledCharacters[1] = &Emperor2;
 
-	DrawGraph(0, 0, HandleBoard, TRUE);
-	WaitKey();
 	gameMode = 1;
 
 	while (gameMode == 1) {

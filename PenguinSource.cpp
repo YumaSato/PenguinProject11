@@ -43,8 +43,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	// ウインドウのサイズを手動ではできず、且つウインドウのサイズに合わせて拡大もしないようにする
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
-	SetGraphMode(FIELDSIZE * 48 + 450, FIELDSIZE * 48, 32); // 画面サイズは最大の1024, 900 にしておく
-	SetWindowSize(FIELDSIZE * 48 + 450, FIELDSIZE * 48);// 最初は 1024, 900 にしておく
+	SetGraphMode(FIELDSIZE * 48 + 384, FIELDSIZE * 48, 32); // 画面サイズは最大の1024, 900 にしておく
+	SetWindowSize(FIELDSIZE * 48 + 384, FIELDSIZE * 48);// 最初は 1024, 900 にしておく
 
 
 
@@ -60,7 +60,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	HandleCastle = LoadGraph("Imgs/Castle.png");
 
 	bool game = TRUE;
-
+	int handleTitle;
+	int titleStringColor = 200;
+	bool colorUpOrDown = TRUE;
+	handleTitle = LoadGraph("Imgs/title.jpg");
 
 	while (game == TRUE) {
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -71,10 +74,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 
-
-		DrawString(300, 70, "PenguinGame", GetColor(GetRand(255), GetRand(255), 255));
-		DrawString(300, 100, "モードを選択してください。\n1:大群襲来バトル\n2:対人戦「牛飼いとバトル！」\nEsc:やめる", WHITE);
-		WaitKey();
+		DrawGraph(0, 0, handleTitle, TRUE);
+		DrawString(960, 500, "モードを選択してください。\n1:大群襲来バトル\n2:対人戦「牛飼いとバトル！」\nEsc:やめる", GetColor(titleStringColor, 245,255));
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			BattleMode_GameManager battle;
 			game = battle.BattleMode();
@@ -93,8 +94,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			return 0;
 		}
 
-
-
+		if (colorUpOrDown == TRUE) {
+			titleStringColor += 7;
+		}
+		if (colorUpOrDown == FALSE) {
+			titleStringColor -= 7;
+		}
+		if (titleStringColor >= 246) {
+			colorUpOrDown = FALSE;
+		}
+		if (titleStringColor <= 8) {
+			colorUpOrDown = TRUE;
+		}
 
 
 
