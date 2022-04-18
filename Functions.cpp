@@ -190,6 +190,10 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 		DrawBox(damageX * SQUARESIZE + 16, damageY * SQUARESIZE + 31, damageX * SQUARESIZE + 16 + (substitute.HP - damaging) / 2, damageY * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
 		
 		WaitTimer(30);
+
+		if (substitute.HP - damaging < 0) {
+			break;
+		}
 	}
 	board[damageX][damageY].creature = damaged;
 

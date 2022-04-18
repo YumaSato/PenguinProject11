@@ -257,7 +257,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 
 
 	if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
-		if ((turn % 3 == 1 || turn % 3 == 0) && turn != 4) {
+		if ((turn % 3 == 1 || turn % 3 == 0) || turn == 8) {
 
 			side = GetRand(2);
 			if (side >= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
@@ -281,7 +281,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		}
 	}
 
-	if (turn % 2 == 0 && turn > 18 && turn != 32) {
+	if (turn % 2 == 0 && turn > 16 && turn != 32) {
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
@@ -309,7 +309,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 	if (turn == 28) {//敵が出現する側を決定する。1つの方向から集中攻撃がくるぞ！
 		randomSide = GetRand(3);
 	}
-	if (28 < turn && turn < 34) {
+	if ((28 < turn && turn < 34) || turn == 9) {
 
 		place = GetRand(FIELDSIZE - 3);
 		if (randomSide == 0) {
@@ -329,7 +329,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 
 
 
-	if ((turn % 5 == 0 && turn > 12) || turn == 16 || turn == 17) {//普通に赤が来る。半分の確率で反対側からも来る。
+	if ((turn % 5 == 0 && turn > 12) || turn == 16) {//普通に赤が来る。半分の確率で反対側からも来る。
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
