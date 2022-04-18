@@ -37,7 +37,7 @@ extern string actionMsg;
 extern string statusMsg;
 
 extern int HandleBoard;
-extern int HandleHP;
+extern int hHP;
 extern int HandleCastle;
 extern int handle[3][9][8];
 
@@ -53,3 +53,4 @@ extern int randomSide;
 
 void exhibitScreen(int markX, int markY, bool attention);
 void exhibitStatusMsg();
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP);

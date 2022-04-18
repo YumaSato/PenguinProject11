@@ -61,7 +61,6 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 
 void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
 	int h;//ハンドル格納用
-	int hHP;
 	string turn = "";
 	bool HPexhibitOrNot;
 	ClearDrawScreen();//一度画面を全消し
@@ -124,7 +123,6 @@ void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステ
 
 
 				if (board[ix][iy].creature->HP < board[ix][iy].creature->HP_Limit) {
-					hHP = HandleHP;
 					HPexhibitOrNot = TRUE;
 				}
 			}
@@ -146,6 +144,55 @@ void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステ
 	turn = "現在のターン:" + std::to_string(turnNum);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20 ,turn.c_str(), GetColor(255, 200, 255));
 	actionMsg = "";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP) {
+	
+	Creature* damaged = board[damageX][damageY].creature;//被ダメージ側を一時保存。
+	board[damageX][damageY].creature = NULL;//一旦その場にキャラがいないことにする。
+
+	Creature substitute = *damaged;//被ダメージ側の身代わりを作る。
+	substitute.HP += damageHP;//身代わりは、体力満タンとして扱う。
+
+	int damaging = 0;//繰り返しにより減り続けるメーターのHP値。
+
+	//int damagedHP = damaged->HP;//被ダメージ側のHPを一時保存。
+	
+	for (int i = 0; i < damageHP/2+5; i++) {
+		if (i % 6 == 0) {
+			board[damageX][damageY].creature = NULL;//4の倍数ごとにチカチカ切り替え。
+		}
+		if (i % 6 == 4) {
+			board[damageX][damageY].creature = &substitute;
+		}
+		
+
+		if (damaging < damageHP) {
+			damaging += 2;
+		}
+		exhibitScreen(markX, markY, TRUE);
+		DrawGraph(damageX * SQUARESIZE + 5, damageY * SQUARESIZE + 29, hHP, TRUE);
+		DrawBox(damageX * SQUARESIZE + 16, damageY * SQUARESIZE + 31, damageX * SQUARESIZE + 16 + (substitute.HP - damaging) / 2, damageY * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
+		
+		WaitTimer(30);
+	}
+	board[damageX][damageY].creature = damaged;
+
 }
 
 

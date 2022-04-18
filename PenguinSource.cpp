@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	handlePenguin();//ペンギンの全ての画像データを読み込む。
 	HandleBoard = LoadGraph("Imgs/back.png");
-	HandleHP = LoadGraph("Imgs/HPmeter43,9.png");
+	hHP = LoadGraph("Imgs/HPmeter43,9.png");
 	HandleCastle = LoadGraph("Imgs/Castle.png");
 
 	bool game = TRUE;
@@ -166,11 +166,11 @@ void handlePenguin() {//ハンドルに画像のポインタを代入
 
 
 	for (int i = 0; i <= 7; i++) {//老いた赤ペンギンも普通のペンギンと同じ絵。
-		sprintf(tmp, "Imgs/redPenguin%d.png", i);
+		sprintf(tmp, "Imgs/redOld%d.png", i);
 		handle[red][ELDER][i] = LoadGraph(tmp);
 	}
 	for (int i = 0; i <= 7; i++) {//老いた青ペンギンも普通のペンギンと同じ絵。
-		sprintf(tmp, "Imgs/bluePenguin%d.png", i);
+		sprintf(tmp, "Imgs/blueOld%d.png", i);
 		handle[blue][ELDER][i] = LoadGraph(tmp);
 	}
 

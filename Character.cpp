@@ -319,7 +319,7 @@ bool Character::attack(int size) {
 		string msg3 = "はダメージを受けた。";
 		actionMsg = name + msg1;
 
-		//actionMsg = "fafafafafafafaffa";
+
 
 
 		exhibitScreen(x, y, TRUE);

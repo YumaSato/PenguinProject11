@@ -260,7 +260,10 @@ void Creature::incubate(int checkX, int checkY) {//Žw’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñB›z‰
 
 
 void Creature::damage(int checkX, int checkY) {//Žw’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñBUŒ‚‚Ì“à—e‚ðŽÀsB
-	board[checkX][checkY].creature->HP = board[checkX][checkY].creature->HP - (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ƒ_ƒŒv
+
+	int damageHP = 0;
+	damageHP = (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ƒ_ƒŒv
+	board[checkX][checkY].creature->HP = board[checkX][checkY].creature->HP - damageHP;//‘Ì—Í-damageHP‚ÌŒvŽZ‚ðs‚¤B
 
 	if (board[checkX][checkY].creature->status == NORMAL || board[checkX][checkY].creature->status == ELDER) {//‘ŠŽè‚ªƒyƒ“ƒMƒ“‚¾‚Á‚½ê‡AŒü‚«‚ª•Ï‚í‚éB
 		switch (GETdirection()) {
@@ -292,8 +295,10 @@ void Creature::damage(int checkX, int checkY) {//Žw’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñBUŒ‚‚
 	}
 	string msg1 = "‚ÍUŒ‚‚µ‚½B";
 	actionMsg = name + msg1;
+	exhibitDamage(x, y, checkX, checkY, TRUE, damageHP);
 
-	if (board[checkX][checkY].creature->HP <= 0) {
+
+	if (board[checkX][checkY].creature->HP <= 0) {//HP‚ªƒ}ƒCƒiƒX‚É‚È‚Á‚½‚çŽ€‚Ê
 		board[checkX][checkY].creature->DeleteCreature();
 		board[checkX][checkY].creature = NULL;
 

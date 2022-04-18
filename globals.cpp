@@ -35,7 +35,7 @@ string statusMsg;
 
 //表示画像
 int HandleBoard;//ゲーム盤の画像ハンドル
-int HandleHP;
+int hHP;
 int HandleCastle;
 int handle[3][9][8];//[team][status][direction]でペンギンの画像のハンドルを格納する3次元配列。
 
