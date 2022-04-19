@@ -13,10 +13,15 @@ Character::Character() : Creature() {}
 
 bool Character::selectAction() {
 	string msg = "‚Í‰½‚·‚é?\n1:•à‚­ 2:Y—‘ 3:›z‰» 4:UŒ‚ 5:R‚é";
+	int XBuf = NULL;
+	int YBuf = NULL;
 	mainMsg = name + msg;
 	exhibitScreen(x,y,TRUE);
 	WaitKey();
 	while (1) {
+
+		GetMousePoint(&XBuf, &YBuf);
+
 
 		if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:‰E
 			//directionX = 1;

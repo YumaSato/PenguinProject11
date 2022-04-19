@@ -76,14 +76,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		DrawGraph(0, 0, handleTitle, TRUE);
 		DrawString(960, 500, "モードを選択してください。\n1:大群襲来バトル\n2:対人戦「牛飼いとバトル！」\nEsc:やめる", GetColor(titleStringColor, 245,255));
-		WaitKey();
+		
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			BattleMode_GameManager battle;
 			game = battle.BattleMode();
+			WaitKey();
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
 			BattleMode_GameManager battle;
 			game = battle.BattleMode();
+			WaitKey();
 		}
 
 

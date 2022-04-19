@@ -173,17 +173,17 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 	//int damagedHP = damaged->HP;//被ダメージ側のHPを一時保存。
 	
-	for (int i = 0; i < damageHP/2+5; i++) {
-		if (i % 6 == 0) {
+	for (int i = 0; i < damageHP+5; i++) {
+		if (i % 5 == 0) {
 			board[damageX][damageY].creature = NULL;//4の倍数ごとにチカチカ切り替え。
 		}
-		if (i % 6 == 4) {
+		if (i % 5 == 3) {
 			board[damageX][damageY].creature = &substitute;
 		}
 		
 
 		if (damaging < damageHP) {
-			damaging += 2;
+			damaging += 1;
 		}
 		exhibitScreen(markX, markY, TRUE);
 		DrawGraph(damageX * SQUARESIZE + 5, damageY * SQUARESIZE + 29, hHP, TRUE);
