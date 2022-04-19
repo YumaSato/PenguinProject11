@@ -71,21 +71,34 @@ bool BattleMode_GameManager::BattleMode() {
 			return FALSE;
 		}
 
-		if (turnNum == 50) {
-			mainMsg = "50ターン生き延びた！ ゲームクリア！ おめでとう！";
+		if (turnNum == 60 || turnNum == 100) {
+			mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
 			actionMsg = "戦わされた子ペンギンの数:"+ std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
 			exhibitScreen(0, 0, FALSE);
 			WaitKey();
 			mainMsg = "ゲームを終了しますか？ 1:Yes 2:No";
+			exhibitScreen(0, 0, FALSE);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。
-					return FALSE;
+					mainMsg = "本当にゲームを終了してよろしいですか？ \n1:Yes 2:No";
+					exhibitScreen(0, 0, FALSE);
+					WaitKey();
+					while (1) {
+						if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。
+							return FALSE;
+						}
+						if (CheckHitKey(KEY_INPUT_2) == TRUE) {//なぜ上下左右が逆なの？謎。
+							break;
+						}
+					}
 				}
 				if (CheckHitKey(KEY_INPUT_2) == TRUE) {//なぜ上下左右が逆なの？謎。
 					break;
 				}
 			}
+			exhibitScreen(0, 0, FALSE);
+			WaitKey();
 		}
 
 
@@ -298,7 +311,8 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		}
 	}
 
-	if (turn % 2 == 0 && turn > 16 && turn != 32) {
+	if ((turn % 2 == 0 && turn > 16 && turn < 33) || (turn % 3 == 0 && turn > 35)) {
+		
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
