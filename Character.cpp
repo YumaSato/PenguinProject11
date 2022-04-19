@@ -12,15 +12,40 @@ using std::string;
 Character::Character() : Creature() {}
 
 bool Character::selectAction() {
-	string msg = "は何する?\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る";
-	int XBuf = NULL;
-	int YBuf = NULL;
+	string msg = "は何する?\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る\nキャラを右クリック:状態を表示";
+	int xClick = NULL;
+	int yClick = NULL;
+	int XBuf = -49;
+	int YBuf = -49;
+	int mouse = NULL;
 	mainMsg = name + msg;
 	exhibitScreen(x,y,TRUE);
 	WaitKey();
 	while (1) {
 
-		GetMousePoint(&XBuf, &YBuf);
+		mouse = GetMouseInput();
+		if (mouse & MOUSE_INPUT_RIGHT) {
+			GetMousePoint(&xClick, &yClick);
+			xClick = xClick / 48;
+			yClick = yClick / 48;
+
+			if (xClick == XBuf && yClick == YBuf) {//もともとの表示座標と同じところをクリックしたら
+				exhibitScreen(x, y, TRUE);//ステータス詳細を消す。
+				WaitTimer(250);
+				XBuf = -1;
+				YBuf = -1;
+			}else if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
+				XBuf = xClick;
+				YBuf = yClick;
+				if (board[XBuf][YBuf].creature != NULL) {//ステータス詳細を表示。
+					exhibitStatus(x, y, XBuf, YBuf, TRUE);
+					WaitTimer(250);
+				}
+				if (board[XBuf][YBuf].creature == NULL) {
+					exhibitScreen(x, y, TRUE);
+				}
+			}
+		}
 
 
 		if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//向きだけ変わる:右

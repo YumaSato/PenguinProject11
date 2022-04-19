@@ -25,7 +25,7 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 		this->staminaLimit = 100;
 		this->attackPower = 30;
 		this->defensePower = 60;
-		this->speed = 500001;
+		this->speed = 501001;
 		this->staminaRecoverAbility = 5;
 		this->num = num;
 
@@ -50,7 +50,7 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 		this->staminaLimit = 100;
 		this->attackPower = 30;
 		this->defensePower = 60;
-		this->speed = 500002;
+		this->speed = 501002;
 		this->staminaRecoverAbility = 5;
 		this->num = num;
 

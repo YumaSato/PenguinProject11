@@ -54,3 +54,4 @@ extern int randomSide;
 void exhibitScreen(int markX, int markY, bool attention);
 void exhibitStatusMsg();
 void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP);
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention);
