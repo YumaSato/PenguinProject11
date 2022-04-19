@@ -71,6 +71,23 @@ bool BattleMode_GameManager::BattleMode() {
 			return FALSE;
 		}
 
+		if (turnNum == 50) {
+			mainMsg = "50ターン生き延びた！ ゲームクリア！ おめでとう！";
+			actionMsg = "戦わされた子ペンギンの数:"+ std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
+			exhibitScreen(0, 0, FALSE);
+			WaitKey();
+			mainMsg = "ゲームを終了しますか？ 1:Yes 2:No";
+			WaitKey();
+			while (1) {
+				if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。
+					return FALSE;
+				}
+				if (CheckHitKey(KEY_INPUT_2) == TRUE) {//なぜ上下左右が逆なの？謎。
+					break;
+				}
+			}
+		}
+
 
 		mainMsg = "";
 		turnFinal();
