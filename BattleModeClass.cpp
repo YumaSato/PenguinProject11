@@ -192,6 +192,13 @@ void turnFinal() {//‘f‘‚³‡‚Émob‚ªs“®‚µ‚Ä‚¢‚­ŠÖ”B
 
 	for (int i = 0; i < mobNumberNow; i++) {
 
+
+
+
+
+
+
+
 		//if (mobsspeedorder[i] == null) {
 		//	continue;
 		//}

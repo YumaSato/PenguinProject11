@@ -18,10 +18,59 @@ bool Character::selectAction() {
 	int XBuf = -49;
 	int YBuf = -49;
 	int mouse = NULL;
+	int dx = 0;
+	int dy = 0;
 	mainMsg = name + msg;
 	exhibitScreen(x,y,TRUE);
 	WaitKey();
 	while (1) {
+
+
+
+
+		//GetMousePoint(&xClick, &yClick);
+		//xClick = xClick / 48;
+		//yClick = yClick / 48;
+		//if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+		//	dx = xClick - x;
+		//	dy = yClick - y;
+		//	if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスをクリックしている場合
+
+		//		//SETdirection(dx, dy);//その方向を向く。
+		//		//exhibitScreen(x, y, TRUE);
+
+		//		if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//さらにそのマスに生物がいない、かつVACANTだった場合
+
+		//			int StringColor = 0;
+		//			string Msg = "";
+		//			bool colorUpOrDown = TRUE;
+
+		//			exhibitScreen(x, y, TRUE);
+		//			DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(StringColor, 255, 50), TRUE);
+
+		//			if (colorUpOrDown == TRUE) {
+		//				StringColor += 9;
+		//			}
+		//			if (colorUpOrDown == FALSE) {
+		//				StringColor -= 9;
+		//			}
+		//			if (StringColor >= 240) {
+		//				colorUpOrDown = FALSE;
+		//			}
+		//			if (StringColor <= 10) {
+		//				colorUpOrDown = TRUE;
+		//			}
+		//		}
+		//	}
+		//	else{
+		//		exhibitScreen(x, y, TRUE);
+		//	}
+
+		//}
+
+
+
+
 
 		mouse = GetMouseInput();
 		if (mouse & MOUSE_INPUT_RIGHT) {
@@ -46,55 +95,20 @@ bool Character::selectAction() {
 				}
 			}
 		}
-
-
-
-		mouse = GetMouseInput();
 		if (mouse & MOUSE_INPUT_LEFT) {
-
-			GetMousePoint(&xClick, &yClick);
-			int dx = 0;
-			int dy = 0;
 			xClick = xClick / 48;
 			yClick = yClick / 48;
 			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-				dx = xClick - x;
-				dy = yClick - y;
-				if ((dx > -1 || dx < 1) && (dy > -1 || dy < 1)&&(dx != 0 || dy != 0)){//自分の隣のマスをクリックしている場合
-					SETdirection(dx, dy);//その方向を向く。
-					exhibitScreen(x, y, TRUE);
-					if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//さらにそのマスに生物がいない、かつVACANTだった場合
-
-						int StringColor = 0;
-						bool colorUpOrDown = TRUE;
-						DrawBox(xClick * 48 + 40, yClick * 48 + 5, xClick * 48 + 200, yClick * 48 + 43, GetColor(225, 200, 0), TRUE);
-						DrawBox(xClick * 48 + 40, yClick * 48 + 5, xClick * 48 + 200, yClick * 48 + 43, GetColor(125, 000, 0), FALSE);
-
-						while (1) {
-							DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(StringColor, 255, 50),TRUE);
-
-							
-
-							if (colorUpOrDown == TRUE) {
-								StringColor += 5;
-							}
-							if (colorUpOrDown == FALSE) {
-								StringColor -= 5;
-							}
-							if (StringColor >= 190) {
-								colorUpOrDown = FALSE;
-							}
-							if (StringColor <= 8) {
-								colorUpOrDown = TRUE;
-							}
-							//WaitKey();
-						}
-					}
-
+				if (walk(FIELDSIZE) == TRUE) {
+					break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 				}
-				
 			}
+
 		}
+
+
+
+			
 
 
 
@@ -251,6 +265,14 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		return FALSE;
 	}
 
+	int xClick = 0;
+	int yClick = 0;
+	int dx;
+	int dy;
+
+	actionMsg = "歩こう!　1:移動終了　SHIFT:斜めサポート";
+
+
 	for (int i = 1; i <= distance; i++) {//1歩歩く
 
 		if (stamina < staminaNeed) {//スタミナが必要数に満たない場合walk中断でリターン。
@@ -259,13 +281,61 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 			return TRUE;
 		}
 
-		actionMsg = "歩こう!　1:移動終了　SHIFT:斜めサポート";
+		
 		exhibitScreen(x, y, TRUE);
 
 		while (1) {
+
+
+
+
+			GetMousePoint(&xClick, &yClick);
+			xClick = xClick / 48;
+			yClick = yClick / 48;
+			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+				dx = xClick - x;
+				dy = yClick - y;
+				if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスをクリックしている場合
+
+					//SETdirection(dx, dy);//その方向を向く。
+					//exhibitScreen(x, y, TRUE);
+
+					if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//さらにそのマスに生物がいない、かつVACANTだった場合
+
+						int StringColor = 0;
+						string Msg = "";
+						bool colorUpOrDown = TRUE;
+
+						exhibitScreen(x, y, TRUE);
+						DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(StringColor, 255, 50), TRUE);
+
+						if (colorUpOrDown == TRUE) {
+							StringColor += 9;
+						}
+						if (colorUpOrDown == FALSE) {
+							StringColor -= 9;
+						}
+						if (StringColor >= 240) {
+							colorUpOrDown = FALSE;
+						}
+						if (StringColor <= 10) {
+							colorUpOrDown = TRUE;
+						}
+					}
+				}
+				else {
+					exhibitScreen(x, y, TRUE);
+				}
+
+			}
+
+
+
+
+
 			checkX = this->x;//自分のいる座標を代入。
 			checkY = this->y;//checkXとcheckYで進めるマスか探知。
-			WaitKey();
+			
 			if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
 				return TRUE;
 			}
@@ -362,8 +432,9 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		stamina = stamina - staminaNeed;//スタミナの消費を実行。
 		staminaNeed = staminaNeed + i * 5;//次の歩みで減少するスタミナを決定。
 
-
+		
 		exhibitScreen(x, y, TRUE);
+		WaitKey();
 	};
 
 
