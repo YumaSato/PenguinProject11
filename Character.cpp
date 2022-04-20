@@ -48,6 +48,57 @@ bool Character::selectAction() {
 		}
 
 
+
+		mouse = GetMouseInput();
+		if (mouse & MOUSE_INPUT_LEFT) {
+
+			GetMousePoint(&xClick, &yClick);
+			int dx = 0;
+			int dy = 0;
+			xClick = xClick / 48;
+			yClick = yClick / 48;
+			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+				dx = xClick - x;
+				dy = yClick - y;
+				if ((dx > -1 || dx < 1) && (dy > -1 || dy < 1)&&(dx != 0 || dy != 0)){//自分の隣のマスをクリックしている場合
+					SETdirection(dx, dy);//その方向を向く。
+					exhibitScreen(x, y, TRUE);
+					if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//さらにそのマスに生物がいない、かつVACANTだった場合
+
+						int StringColor = 0;
+						bool colorUpOrDown = TRUE;
+						DrawBox(xClick * 48 + 40, yClick * 48 + 5, xClick * 48 + 200, yClick * 48 + 43, GetColor(225, 200, 0), TRUE);
+						DrawBox(xClick * 48 + 40, yClick * 48 + 5, xClick * 48 + 200, yClick * 48 + 43, GetColor(125, 000, 0), FALSE);
+
+						while (1) {
+							DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(StringColor, 255, 50),TRUE);
+
+							
+
+							if (colorUpOrDown == TRUE) {
+								StringColor += 5;
+							}
+							if (colorUpOrDown == FALSE) {
+								StringColor -= 5;
+							}
+							if (StringColor >= 190) {
+								colorUpOrDown = FALSE;
+							}
+							if (StringColor <= 8) {
+								colorUpOrDown = TRUE;
+							}
+							//WaitKey();
+						}
+					}
+
+				}
+				
+			}
+		}
+
+
+
+
 		if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//向きだけ変わる:右
 			//directionX = 1;
 			//directionY = 0;
