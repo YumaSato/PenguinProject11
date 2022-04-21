@@ -269,6 +269,9 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 	int yClick = 0;
 	int dx;
 	int dy;
+	int StringColor = 0;
+	string Msg = "";
+	bool colorUpOrDown = TRUE;
 
 	actionMsg = "歩こう!　1:移動終了　SHIFT:斜めサポート";
 
@@ -284,50 +287,62 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		
 		exhibitScreen(x, y, TRUE);
 
+
+		
+
+
+
+
 		while (1) {
 
-
-
-
-			GetMousePoint(&xClick, &yClick);
-			xClick = xClick / 48;
-			yClick = yClick / 48;
-			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-				dx = xClick - x;
-				dy = yClick - y;
-				if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスをクリックしている場合
-
-					//SETdirection(dx, dy);//その方向を向く。
-					//exhibitScreen(x, y, TRUE);
-
-					if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//さらにそのマスに生物がいない、かつVACANTだった場合
-
-						int StringColor = 0;
-						string Msg = "";
-						bool colorUpOrDown = TRUE;
-
-						exhibitScreen(x, y, TRUE);
-						DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(StringColor, 255, 50), TRUE);
-
-						if (colorUpOrDown == TRUE) {
-							StringColor += 9;
-						}
-						if (colorUpOrDown == FALSE) {
-							StringColor -= 9;
-						}
-						if (StringColor >= 240) {
-							colorUpOrDown = FALSE;
-						}
-						if (StringColor <= 10) {
-							colorUpOrDown = TRUE;
-						}
+			for (int iix = -1; iix <= 1; iix++) {
+				for (int iiy = -1; iiy <= 1; iiy++) {
+					if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
+						DrawBox((x + iix) * 48, (y + iiy) * 48, (x + iix) * 48 + 48, (y + iiy) * 48 + 48, GetColor(StringColor, 255, 50), TRUE);
 					}
 				}
-				else {
-					exhibitScreen(x, y, TRUE);
-				}
-
 			}
+			DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(StringColor, 255 - StringColor, 50), TRUE);
+
+			if (colorUpOrDown == TRUE) {
+				StringColor += 9;
+			}
+			if (colorUpOrDown == FALSE) {
+				StringColor -= 9;
+			}
+			if (StringColor >= 240) {
+				colorUpOrDown = FALSE;
+			}
+			if (StringColor <= 10) {
+				colorUpOrDown = TRUE;
+			}
+
+
+		//
+		//	GetMousePoint(&xClick, &yClick);
+		//	xClick = xClick / 48;
+		//	yClick = yClick / 48;
+		//	if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+		//		dx = xClick - x;
+		//		dy = yClick - y;
+		//		if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスの上にマウスポインタがある場合
+
+		//			//SETdirection(dx, dy);//その方向を向く。
+		//			//exhibitScreen(x, y, TRUE);
+
+		//			if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//さらにそのマスに生物がいない、かつVACANTだった場合
+
+		//				
+
+		//				
+
+		//			}
+		//		}
+		//		else {
+		//			exhibitScreen(x, y, TRUE);
+		//		}
+
+		//	}
 
 
 
@@ -335,7 +350,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 			checkX = this->x;//自分のいる座標を代入。
 			checkY = this->y;//checkXとcheckYで進めるマスか探知。
-			
+			WaitKey();
 			if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
 				return TRUE;
 			}
@@ -434,7 +449,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 		
 		exhibitScreen(x, y, TRUE);
-		WaitKey();
+		/*WaitKey();*/
 	};
 
 
