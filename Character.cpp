@@ -24,6 +24,9 @@ bool Character::selectAction() {
 	exhibitScreen(x,y,TRUE);
 	WaitKey();
 	while (1) {
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+			return FALSE;
+		}
 
 
 
@@ -301,7 +304,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 	string Msg = "";
 	bool colorUpOrDown = TRUE;
 
-	actionMsg = "歩こう!　1:移動終了　SHIFT:斜めサポート";
+	actionMsg = "歩こう!　Esc:移動終了　SHIFT:斜めサポート";
 
 
 
@@ -483,7 +486,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 	
 
 
-		if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {//1を押したら歩行終了。
 			if (distance == 0) {
 				WaitTimer(100);
 				exhibitScreen(x, y, TRUE);

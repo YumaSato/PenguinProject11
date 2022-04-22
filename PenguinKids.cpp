@@ -38,7 +38,9 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	staminaLimit = NULL;
 	attackPower = 30 + GetRand(3);
 	defensePower = 1;
-	speed = parentSpeed - 40 - GetRand(32) * 2;//素早さは世代を重ねるごとに低下する。減少量はランダム。
+
+	int random = GetRand(100) + 30;
+	speed = (parentSpeed -1)*(random - GetRand(20)) / random;//素早さは世代を重ねるごとに低下する。減少量はランダム。
 	//
 	if (speed < 1) { speed = 1; }
 	staminaRecoverAbility = NULL;

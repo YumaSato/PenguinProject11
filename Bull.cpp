@@ -33,7 +33,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 		staminaLimit = NULL;
 		attackPower = 38;
 		defensePower = 100;
-		speed = 500900 - GetRand(260);//素早さはランダム。
+		speed = 999 - GetRand(260);//素早さはランダム。
 		staminaRecoverAbility = NULL;
 		num = mobNumber;
 		skip = FALSE;//TRUEのとき、ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
@@ -55,7 +55,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 		staminaLimit = NULL;
 		attackPower = 58;
 		defensePower = 160;
-		speed = 501000 - GetRand(560);//素早さはランダム。
+		speed = 999 - GetRand(460);//素早さはランダム。
 		staminaRecoverAbility = NULL;
 		num = mobNumber;
 		skip = FALSE;//TRUEのとき、ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）

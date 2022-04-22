@@ -56,11 +56,18 @@ bool BattleMode_GameManager::BattleMode() {
 	gameMode = 1;
 
 	while (gameMode == 1) {
+
+		
+
 		if (Emperor1.HP > 0) {
-			Emperor1.selectAction();
+			if (Emperor1.selectAction() == FALSE) {
+				return FALSE;
+			}
 		}
 		if (Emperor2.HP > 0) {
-			Emperor2.selectAction();
+			if (Emperor2.selectAction() == FALSE) {
+				return FALSE;
+			}
 		}
 
 		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 ) {
