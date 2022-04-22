@@ -99,7 +99,7 @@ bool Character::selectAction() {
 			xClick = xClick / 48;
 			yClick = yClick / 48;
 			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-				WaitTimer(150);
+				WaitTimer(200);
 				if (walk(FIELDSIZE) == TRUE) {
 					break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 				}
@@ -291,6 +291,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 
 	while (distance < 3) {//各歩行の入力待機
+		exhibitScreen(x, y, TRUE);
 		checkX = 0;
 		checkY = 0;
 		mouseLeft = 0;
@@ -312,7 +313,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		for (int iix = -1; iix <= 1; iix++) {
 			for (int iiy = -1; iiy <= 1; iiy++) {
 				if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
-					DrawBox((x + iix) * 48 + 1, (y + iiy) * 48 + 1, (x + iix) * 48 + 47, (y + iiy) * 48 + 47, GetColor(StringColor + (iiy + 1) * 5 + iiy * 5, 255, 120), TRUE);
+					DrawBox((x + iix) * 48 + 1, (y + iiy) * 48 + 1, (x + iix) * 48 + 47, (y + iiy) * 48 + 47, GetColor(StringColor + (iix + 1) * 5 + iiy * 5, 255, 120), TRUE);
 				}
 			}
 		}
@@ -322,57 +323,59 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		GetMousePoint(&xClick, &yClick);
 		xClick = xClick / 48;
 		yClick = yClick / 48;
-		
+
 
 		if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-			
+
 			dx = xClick - x;
 			dy = yClick - y;
 			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1)) {//自分の隣のマスの上にマウスポインタがある場合
 				if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//空白マスにカーソルがある場合、キラキラ表示
 					DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(10 + (StringColor / 5), 145 + (StringColor / 3), 0), TRUE);
 
-
 					mouseLeft = GetMouseInput();
 					if (mouseLeft & MOUSE_INPUT_LEFT) {
-						if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {
+						board[xClick][yClick].creature = this;
+						board[x][y].creature = NULL;
 
-							board[xClick][yClick].creature = this;
-							board[x][y].creature = NULL;
-
-							x = xClick;//居場所を新たなマスに設定。
-							y = yClick;
-							SETdirection(dx, dy);
+						x = xClick;//居場所を新たなマスに設定。
+						y = yClick;
+						SETdirection(dx, dy);
 
 
-							distance++;
+						distance++;
 
-							stamina = stamina - staminaNeed;//スタミナの消費を実行。
-							staminaNeed = staminaNeed + distance * 3;//次の歩みで減少するスタミナを決定。
+						stamina = stamina - staminaNeed;//スタミナの消費を実行。
+						staminaNeed = staminaNeed + distance * 3;//次の歩みで減少するスタミナを決定。
 
-							WaitTimer(150);//次の歩行クリックが即座に行われないよう、クリック直後に硬直時間を設ける。
-						}
-						if (mouseLeft & MOUSE_INPUT_LEFT) {
-							if (dx == 0 && dy == 0) {//自分のマスをクリックしたら
-								exhibitScreen(x, y, TRUE);//歩行可能マス表示を消す。
-								WaitTimer(150);
-								if (distance == 0) {
-									return FALSE;
-								}
-								else if (distance > 0) {
-									return TRUE;
-								}
-							}
+						WaitTimer(10);//次の歩行クリックが即座に行われないよう、クリック直後に硬直時間を設ける。
 
-						}
 					}
+				}
+			}
+			else {//「自分の隣のマスの上にマウスポインタがある場合」でない場合
+				mouseLeft = GetMouseInput();
+				if (mouseLeft & MOUSE_INPUT_LEFT) {
 
+					exhibitScreen(x, y, TRUE);//歩行可能マス表示を消す。
+					WaitTimer(130);
+					if (distance == 0) {
+						return FALSE;//0歩目なら行動はなかったことになる
+					}
+					else if (distance > 0) {
+						return TRUE;//1歩以上進んでいたら行動した判定になる。
+					}
 
 				}
 
 
 			}
+
+			
+
+
 		}
+				
 
 
 		if (colorUpOrDown == TRUE) {
@@ -401,76 +404,70 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 
 
-
-		if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {
-			checkX -= 1;
-			//directionX = -1;
-			//directionY = 0;
-			SETdirection(-1, 0);
-		}
-		else if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {
-			checkX += 1;
-			//directionX = 1;
-			//directionY = 0;
-			SETdirection(1, 0);
-		}
-		else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {
-			checkY -= 1;
-			//directionY = -1;
-			//directionX = 0;
-			SETdirection(0, -1);
-		}
-		else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {
-			checkY += 1;
-			//directionY = 1;
-			//directionX = 0;
-			SETdirection(0, 1);
-		}
-
-
-		else if (CheckHitKey(KEY_INPUT_LSHIFT) == TRUE or CheckHitKey(KEY_INPUT_RSHIFT) == TRUE) {//斜め補助シフトが押されていたら
-			while (1) {
-				DrawString(820, 85, "斜め移動モードオン!", WHITE);
-				WaitKey();
-				if (CheckHitKey(KEY_INPUT_UP) == TRUE && CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//左上
-					checkX -= 1;
-					checkY -= 1;
-					//directionY = -1;
-					SETdirection(-1, -1);
-					break;
-				}
-				else if (CheckHitKey(KEY_INPUT_UP) == TRUE && CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//右上
-					checkX += 1;
-					checkY -= 1;
-					//directionY = -1;
-					SETdirection(1, -1);
-					break;
-				}
-				else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE && CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//左下
-					checkX -= 1;
-					checkY += 1;
-					//directionY = -1;
-					SETdirection(-1, +1);
-					break;
-				}
-				else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE && CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//右下
-					checkX += 1;
-					checkY += 1;
-					//directionY = -1;
-					SETdirection(1, +1);
-					break;
-				}
-
-				else if (CheckHitKey(KEY_INPUT_LSHIFT) == TRUE or CheckHitKey(KEY_INPUT_RSHIFT) == TRUE) {//斜め補助解除
-					exhibitScreen(x, y, TRUE);
-					DrawString(800, 70, "歩こう! 1:移動終了　SHIFT:斜めサポート", WHITE);
-					break;
-				}
-				else if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
-					return TRUE;
-				}
+		if (CheckHitKey(KEY_INPUT_LSHIFT) == FALSE && CheckHitKey(KEY_INPUT_RSHIFT) == FALSE) {
+			if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {
+				checkX -= 1;
+				//directionX = -1;
+				//directionY = 0;
+				SETdirection(-1, 0);
+			}
+			else if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {
+				checkX += 1;
+				//directionX = 1;
+				//directionY = 0;
+				SETdirection(1, 0);
+			}
+			else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {
+				checkY -= 1;
+				//directionY = -1;
+				//directionX = 0;
+				SETdirection(0, -1);
+			}
+			else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {
+				checkY += 1;
+				//directionY = 1;
+				//directionX = 0;
+				SETdirection(0, 1);
 			}
 		}
+		if (CheckHitKey(KEY_INPUT_LSHIFT) == TRUE or CheckHitKey(KEY_INPUT_RSHIFT) == TRUE) {//斜め補助シフトが押されていたら
+			DrawString(820, 85, "斜め移動モードオン!", WHITE);
+			if (CheckHitKey(KEY_INPUT_UP) == TRUE && CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//左上
+				checkX -= 1;
+				checkY -= 1;
+				//directionY = -1;
+				SETdirection(-1, -1);
+				
+			}
+			else if (CheckHitKey(KEY_INPUT_UP) == TRUE && CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//右上
+				checkX += 1;
+				checkY -= 1;
+				//directionY = -1;
+				SETdirection(1, -1);
+				
+			}
+			else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE && CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//左下
+				checkX -= 1;
+				checkY += 1;
+				//directionY = -1;
+				SETdirection(-1, +1);
+				
+			}
+			else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE && CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//右下
+				checkX += 1;
+				checkY += 1;
+				//directionY = -1;
+				SETdirection(1, +1);
+				
+			}	
+		}
+	
+
+
+		if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
+			return TRUE;
+		}
+
 		if (x + checkX >= 0 && x + checkX < size && y + checkY >= 0 && y + checkY < size) {
 			if (board[x + checkX][y + checkY].creature == NULL && board[x + checkX][y + checkY].state == VACANT) {//押したマスの方向が空いていたらループ抜け
 
@@ -489,7 +486,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 				stamina = stamina - staminaNeed;//スタミナの消費を実行。
 				staminaNeed = staminaNeed + distance * 3;//次の歩みで減少するスタミナを決定。
 
-				WaitTimer(80);
+				WaitTimer(150);
 			}
 		}
 
