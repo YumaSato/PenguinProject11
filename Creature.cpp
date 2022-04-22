@@ -87,21 +87,24 @@ bool Creature::kick(int size) {
 		}
 
 		if (board[cX][cY].creature->status == EGG) {
-			exhibitScreen(x, y, TRUE);
-			DrawString(800, 180, "kick開始", WHITE);
-			WaitKey();
+			//exhibitScreen(x, y, TRUE);
+			//DrawString(800, 180, "kick開始", WHITE);
+			//WaitKey();
 
-			while (1) {
+			for (int i = 0; i < FIELDSIZE; i++) {
 				cX = cX + drctnX;//転がる方向のマスをひとつづつ調べる。
 				cY = cY + drctnY;
 
-				s = "";
+				/*s = "";
 				s = "X:" + std::to_string(cX) + "Y:" + std::to_string(cY);
 				exhibitScreen(x, y, TRUE);
 				DrawString(800, 570, s.c_str(), WHITE);
-				WaitKey();
+				WaitKey();*/
 
 				if (cX < 0 || cX > size || cY < 0 || cY > size ||(cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
+
+					exhibitRolling(x, y, drctnX, drctnY, i);
+
 					board[x + drctnX][y + drctnY].creature->DeleteCreature();
 					board[x + drctnX][y + drctnY].creature = NULL;
 					break;
@@ -111,20 +114,25 @@ bool Creature::kick(int size) {
 
 					if (board[cX][cY].creature->status == EMPEROR || board[cX][cY].creature->status == ELDER || board[cX][cY].creature->status == NORMAL) {//大人ペンギンが見つかったら
 
+						exhibitRolling(x, y, drctnX, drctnY, i);
+
 						board[x + drctnX][y + drctnY].creature->x = cX - drctnX;//元の居場所から動くペンギンを指定し、そのXYを変更。
 						board[x + drctnX][y + drctnY].creature->y = cY - drctnY;
 						board[cX - drctnX][cY - drctnY].creature = board[x + drctnX][y + drctnY].creature;//新しいますに卵アドレスを代入。
 						board[x + drctnX][y + drctnY].creature = NULL;//元の位置の卵アドレスを削除。
 
-						s = "";
+					/*	s = "";
 						s = "NewPlace X:" + std::to_string(cX - drctnX) + "Y:" + std::to_string(cY - drctnY);
 						exhibitScreen(x, y, TRUE);
 						DrawString(800, 570, s.c_str(), WHITE);
-						WaitKey();
+						WaitKey();*/
 					}
 
 
-					if (board[cX][cY].creature->status == EGG) {//卵が見つかったら
+					else if (board[cX][cY].creature->status == EGG) {//卵が見つかったら
+
+						exhibitRolling(x, y, drctnX, drctnY, i);
+
 						board[cX][cY].creature->DeleteCreature();
 						board[cX][cY].creature = NULL;
 
@@ -133,12 +141,16 @@ bool Creature::kick(int size) {
 					}
 
 
-					if (board[cX][cY].creature->status == BULL) {//この警告はどういうこと？？
+					else if (board[cX][cY].creature->status == BULL) {//この警告はどういうこと？？
+
+						exhibitRolling(x, y, drctnX, drctnY, i);
+						board[x + drctnX][y + drctnY].creature->DeleteCreature();
+						board[x + drctnX][y + drctnY].creature = NULL;
 					}
-					s = "卵がぶつかった！";
+					/*s = "卵がぶつかった！";
 					exhibitScreen(x, y, TRUE);
 					DrawString(800, 570, s.c_str(), WHITE);
-					WaitKey();
+					WaitKey();*/
 
 					break;
 				}

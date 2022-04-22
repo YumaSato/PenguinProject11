@@ -226,6 +226,27 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 
 
 
+void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance) {
+	
+	Creature* kicked = board[kickX + dx][kickY + dy].creature;//蹴られた卵のポインタを仮置き場に代入し保持。
+	int handleEgg = handle[board[kickX + dx][kickY + dy].creature->team][EGG][NW];
+	board[kickX + dx][kickY + dy].creature = NULL;
+	for (int i = 0; i < distance * SQUARESIZE/2; i=i++) {
+
+		exhibitScreen(kickX, kickY, TRUE);
+		DrawGraph((kickX + dx) * SQUARESIZE + (i*2 * dx), (kickY + dy) * SQUARESIZE + (i*2 * dy), handleEgg, TRUE);
+		WaitTimer(10);
+	}
+
+	board[kickX + dx][kickY + dy].creature = kicked;
+}
+
+
+
+
+
+
+
 
 
 

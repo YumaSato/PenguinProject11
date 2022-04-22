@@ -12,7 +12,7 @@ using std::string;
 Character::Character() : Creature() {}
 
 bool Character::selectAction() {
-	string msg = "は何する?\n\n空白マスを左クリック(または1ボタン):歩く\n隣のマスを右クリック:向きを変える\n\n2:産卵 3:孵化 4:攻撃 5:蹴る\n\nキャラクタを左クリック:状態を表示\n\n\n\n\n  　　　　攻撃:相手にダメージを与えるぞ！\n\n  　　　　蹴る:自分と同じ方向を向かせるぞ。\n       　　　　卵は蹴ったら転がるぞ！";
+	string msg = "は何する?\n\n空白マスを左クリック(1ボタン):歩く\n隣のマスを右クリック(十字キー):向き変更\n\n2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\n  　　　　攻撃:相手にダメージを与えるぞ！\n\n  　　　　蹴る:自分と同じ方向を向かせるぞ。\n       　　　　卵は蹴ったら転がるぞ！";
 	int xClick = 0;
 	int yClick = 0;
 	int XBuf = -49;
@@ -189,7 +189,7 @@ bool Character::selectAction() {
 
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
-			WaitTimer(180);
+			WaitTimer(100);
 			if (walk(FIELDSIZE) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
@@ -213,6 +213,9 @@ bool Character::selectAction() {
 			if (kick(FIELDSIZE) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
+		}
+		if (CheckHitKey(KEY_INPUT_6) == TRUE) {
+			break;
 		}
 	}
 
@@ -481,7 +484,15 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
-			return TRUE;
+			if (distance == 0) {
+				WaitTimer(100);
+				exhibitScreen(x, y, TRUE);
+				return FALSE;
+			}
+			else {
+				return TRUE;
+				WaitTimer(80);
+			}
 		}
 
 		if (x + checkX >= 0 && x + checkX < size && y + checkY >= 0 && y + checkY < size) {
