@@ -87,7 +87,7 @@ bool Emperor::specialMovement1(int size) {//“Áê‹ZFY—‘
 
 
 
-			stamina -= 15;
+			
 			exhibitScreen(x, y, TRUE);
 			return TRUE;
 		}

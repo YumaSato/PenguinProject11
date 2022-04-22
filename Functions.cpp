@@ -137,7 +137,7 @@ void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステ
 
 		}
 	}
-	exhibitStatusMsg();//キャラクタ0のメッセージを代入。
+	//exhibitStatusMsg();//キャラクタ0のメッセージを代入。
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 380, actionMsg.c_str(), GetColor(255, 200, 255));
 

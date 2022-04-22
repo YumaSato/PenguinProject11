@@ -316,17 +316,17 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		mouseLeft = 0;
 
 
-		if (stamina < staminaNeed) {//スタミナが必要数に満たない場合walk中断でリターン。
-			actionMsg = "スタミナ切れだ！";
-			exhibitScreen(x, y, TRUE);
-			WaitKey();
-			if (distance == 0) {
-				return FALSE;
-			}
-			else {
-				return TRUE;
-			}
-		}
+		//if (stamina < staminaNeed) {//スタミナが必要数に満たない場合walk中断でリターン。
+		//	actionMsg = "スタミナ切れだ！";
+		//	exhibitScreen(x, y, TRUE);
+		//	WaitKey();
+		//	if (distance == 0) {
+		//		return FALSE;
+		//	}
+		//	else {
+		//		return TRUE;
+		//	}
+		//}
 
 		exhibitScreen(x, y, TRUE);//歩けるマスは表示色変更。
 		for (int iix = -1; iix <= 1; iix++) {
