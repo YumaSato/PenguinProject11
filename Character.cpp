@@ -20,6 +20,10 @@ bool Character::selectAction() {
 	int mouse = NULL;
 	int dx = 0;
 	int dy = 0;
+	bool colorUpOrDown = TRUE;
+	bool exhibitOrNot = FALSE;
+	int color = 10;
+
 	mainMsg = name + msg;
 	exhibitScreen(x,y,TRUE);
 	WaitKey();
@@ -29,6 +33,20 @@ bool Character::selectAction() {
 		}
 
 
+		if (colorUpOrDown == TRUE) {
+			color += 25;
+		}
+		if (colorUpOrDown == FALSE) {
+			color -= 25;
+		}
+		if (color >= 225) {
+			colorUpOrDown = FALSE;
+		}
+		if (color <= 26) {
+			colorUpOrDown = TRUE;
+		}
+
+		
 
 
 		//GetMousePoint(&xClick, &yClick);
@@ -93,10 +111,52 @@ bool Character::selectAction() {
 		}
 		if (mouse & MOUSE_INPUT_LEFT) {//フィールド内をクリックしたら歩き始める
 			GetMousePoint(&xClick, &yClick);
+
+			if (exhibitOrNot == TRUE) {
+				for (int iii = 0; iii < 5; iii++) {
+					if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
+						if (iii == 0) {
+							if (specialMovement1(FIELDSIZE) == TRUE) { return TRUE; }
+						}
+						if (iii == 1) {
+							if (specialMovement2(FIELDSIZE) == TRUE) { return TRUE; }
+						}
+						if (iii == 2) {
+							if (attack(FIELDSIZE) == TRUE) { return TRUE; }
+						}
+						if (iii == 3) {
+							if (kick(FIELDSIZE) == TRUE) { return TRUE; }
+						}
+						if (iii == 4) {
+							return TRUE;
+						}
+					}
+				}
+			}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			xClick = xClick / 48;
 			yClick = yClick / 48;
 			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-				if (board[xClick][yClick].creature == NULL) {
+				if (board[xClick][yClick].creature == NULL) {//クリックした場所が空白マスならば、歩行メソッドを実行
 					WaitTimer(170);
 					if (walk(FIELDSIZE) == TRUE) {
 						break;//1が返ってくる、つまり成功すればループ抜けでターン終了
@@ -105,26 +165,79 @@ bool Character::selectAction() {
 				if (board[xClick][yClick].creature != NULL) {
 					if (xClick == XBuf && yClick == YBuf) {//もともとの表示座標と同じところをクリックしたら
 						exhibitScreen(x, y, TRUE);//ステータス詳細を消す。
-						WaitTimer(160);
+						exhibitOrNot = FALSE;
+						WaitTimer(70);
 						XBuf = -1;
 						YBuf = -1;
 					}
 					else if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
-						XBuf = xClick;
-						YBuf = yClick;
-						if (board[XBuf][YBuf].creature != NULL) {//ステータス詳細を表示。
-							exhibitStatus(x, y, XBuf, YBuf, TRUE);
-							WaitTimer(200);
-						}
-						if (board[XBuf][YBuf].creature == NULL) {
-							exhibitScreen(x, y, TRUE);
-						}
+						exhibitOrNot = TRUE;
+					}
+				}
+			}
+			
+
+		}
+
+
+		if (exhibitOrNot == TRUE) {//誰かキャラクタがいるマスを左クリックしたときの詳細表示。
+			XBuf = xClick;
+			YBuf = yClick;
+			if (board[XBuf][YBuf].creature != NULL) {//ステータス詳細を表示。
+				if (board[XBuf][YBuf].creature == this) {//それが自分であれば、選択肢を表示してクリックを受け付ける。
+
+					
+
+					exhibitScreen(x, y, TRUE);
+					string Msg1 = "";
+					string Msg2 = "";
+
+					DrawBox(x * 48 + 40, y * 48 + 2, x * 48 + 325, y * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
+					DrawBox(x * 48 + 39, y * 48 + 1, x * 48 + 326, y * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
+
+					for (int iii = 0; iii < 5; iii++) {
+						DrawBox(x * 48 + 50 + iii * 51, y * 48 + 24, x * 48 + 85 + iii * 51, y * 48 + 43, GetColor(50+((color + iii*3) / 10), 220 + iii*5 - (color / 3), 100), TRUE);//選択ボックス
+
+						/*if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
+							if (iii == 0) {
+								if (specialMovement1(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 1) {
+								if (specialMovement2(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 2) {
+								if (attack(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 3) {
+								if (kick(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 0) {
+								return TRUE;
+							}
+						}*/
 					}
 
+					Msg1 = board[x][y].creature->name + "のHP:" + std::to_string(board[x][y].creature->HP) + "/" + std::to_string(board[x][y].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[x][y].creature->speed);
+					Msg2 = " 産卵　孵化　攻撃　蹴る　パス";
+
+					DrawString(x * 48 + 42, y * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
+					DrawString(x * 48 + 42, y * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
+
+					WaitTimer(70);
+
 				}
+				else {//クリックしたのが操作しているキャラじゃない場合、普通にステータスを表示する。
+					exhibitStatus(x, y, XBuf, YBuf, TRUE);
+					WaitTimer(70);
+				}
+			}
+			if (board[XBuf][YBuf].creature == NULL) {
+				exhibitScreen(x, y, TRUE);
 			}
 
 		}
+
+
 
 
 
@@ -220,6 +333,8 @@ bool Character::selectAction() {
 		if (CheckHitKey(KEY_INPUT_6) == TRUE) {
 			break;
 		}
+
+		WaitTimer(20);
 	}
 
 	stamina += staminaRecoverAbility;//スタミナ回復
