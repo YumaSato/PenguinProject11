@@ -12,7 +12,7 @@ using std::string;
 Character::Character() : Creature() {}
 
 bool Character::selectAction() {
-	string msg = "は何する?\n\n左クリック(または1ボタン):歩く\n\n2:産卵 3:孵化 4:攻撃 5:蹴る\n\nキャラを右クリック:状態を表示\n\n\n\n\n  攻撃:相手にダメージを与えるぞ！\n\n  蹴る:自分と同じ方向を向かせるぞ。\n       卵は蹴ったら転がるぞ！";
+	string msg = "は何する?\n\n空白マスを左クリック(または1ボタン):歩く\n隣のマスを右クリック:向きを変える\n\n2:産卵 3:孵化 4:攻撃 5:蹴る\n\nキャラクタを左クリック:状態を表示\n\n\n\n\n  　　　　攻撃:相手にダメージを与えるぞ！\n\n  　　　　蹴る:自分と同じ方向を向かせるぞ。\n       　　　　卵は蹴ったら転がるぞ！";
 	int xClick = 0;
 	int yClick = 0;
 	int XBuf = -49;
@@ -77,31 +77,47 @@ bool Character::selectAction() {
 			GetMousePoint(&xClick, &yClick);
 			xClick = xClick / 48;
 			yClick = yClick / 48;
-
-			if (xClick == XBuf && yClick == YBuf) {//もともとの表示座標と同じところをクリックしたら
-				exhibitScreen(x, y, TRUE);//ステータス詳細を消す。
-				WaitTimer(160);
-				XBuf = -1;
-				YBuf = -1;
-			}else if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
-				XBuf = xClick;
-				YBuf = yClick;
-				if (board[XBuf][YBuf].creature != NULL) {//ステータス詳細を表示。
-					exhibitStatus(x, y, XBuf, YBuf, TRUE);
-					WaitTimer(200);
-				}
-				if (board[XBuf][YBuf].creature == NULL) {
-					exhibitScreen(x, y, TRUE);
-				}
+			
+			dx = xClick - x;
+			dy = yClick - y;
+			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1)) {//自分の隣のマスの上にマウスポインタがある場合
+				SETdirection(dx, dy);
+				exhibitScreen(x, y, TRUE);
 			}
+					
+
+			
 		}
 		if (mouse & MOUSE_INPUT_LEFT) {//フィールド内をクリックしたら歩き始める
+			GetMousePoint(&xClick, &yClick);
 			xClick = xClick / 48;
 			yClick = yClick / 48;
 			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-				WaitTimer(170);
-				if (walk(FIELDSIZE) == TRUE) {
-					break;//1が返ってくる、つまり成功すればループ抜けでターン終了
+				if (board[xClick][yClick].creature == NULL) {
+					WaitTimer(170);
+					if (walk(FIELDSIZE) == TRUE) {
+						break;//1が返ってくる、つまり成功すればループ抜けでターン終了
+					}
+				}
+				if (board[xClick][yClick].creature != NULL) {
+					if (xClick == XBuf && yClick == YBuf) {//もともとの表示座標と同じところをクリックしたら
+						exhibitScreen(x, y, TRUE);//ステータス詳細を消す。
+						WaitTimer(160);
+						XBuf = -1;
+						YBuf = -1;
+					}
+					else if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
+						XBuf = xClick;
+						YBuf = yClick;
+						if (board[XBuf][YBuf].creature != NULL) {//ステータス詳細を表示。
+							exhibitStatus(x, y, XBuf, YBuf, TRUE);
+							WaitTimer(200);
+						}
+						if (board[XBuf][YBuf].creature == NULL) {
+							exhibitScreen(x, y, TRUE);
+						}
+					}
+
 				}
 			}
 
