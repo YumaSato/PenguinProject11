@@ -13,8 +13,8 @@ Character::Character() : Creature() {}
 
 bool Character::selectAction() {
 	string msg = "は何する?\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る\nキャラを右クリック:状態を表示";
-	int xClick = NULL;
-	int yClick = NULL;
+	int xClick = 0;
+	int yClick = 0;
 	int XBuf = -49;
 	int YBuf = -49;
 	int mouse = NULL;
@@ -80,7 +80,7 @@ bool Character::selectAction() {
 
 			if (xClick == XBuf && yClick == YBuf) {//もともとの表示座標と同じところをクリックしたら
 				exhibitScreen(x, y, TRUE);//ステータス詳細を消す。
-				WaitTimer(250);
+				WaitTimer(160);
 				XBuf = -1;
 				YBuf = -1;
 			}else if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
@@ -88,17 +88,18 @@ bool Character::selectAction() {
 				YBuf = yClick;
 				if (board[XBuf][YBuf].creature != NULL) {//ステータス詳細を表示。
 					exhibitStatus(x, y, XBuf, YBuf, TRUE);
-					WaitTimer(250);
+					WaitTimer(200);
 				}
 				if (board[XBuf][YBuf].creature == NULL) {
 					exhibitScreen(x, y, TRUE);
 				}
 			}
 		}
-		if (mouse & MOUSE_INPUT_LEFT) {
+		if (mouse & MOUSE_INPUT_LEFT) {//フィールド内をクリックしたら歩き始める
 			xClick = xClick / 48;
 			yClick = yClick / 48;
 			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+				WaitTimer(150);
 				if (walk(FIELDSIZE) == TRUE) {
 					break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 				}
@@ -172,6 +173,7 @@ bool Character::selectAction() {
 
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
+			WaitTimer(60);
 			if (walk(FIELDSIZE) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
@@ -198,7 +200,7 @@ bool Character::selectAction() {
 		}
 	}
 
-	stamina += 20;//スタミナ回復
+	stamina += staminaRecoverAbility;//スタミナ回復
 	if (stamina > staminaLimit) {
 		stamina = staminaLimit;//スタミナが満タンになるとき。
 	}
@@ -210,7 +212,7 @@ bool Character::selectAction() {
 
 	
 
-	actionMsg = "行動終了。スタミナが回復します。";
+	actionMsg = "行動終了。スタミナと体力が回復します。";
 	exhibitScreen(x, y, TRUE);
 	WaitKey();
 	mainMsg = "";
@@ -255,207 +257,251 @@ void Character::changeDirection() {//歩かずに向きを変える
 };
 
 
-bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
-	int distance = 3;
-	int checkX;
-	int checkY;
-	int staminaNeed = 10;
 
-	if (stamina < 20) {//最低スタミナ消費数である20以下しかスタミナがない場合、walkできずリターン。
-		return FALSE;
-	}
+
+
+
+
+
+
+
+
+
+bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
+	int distance = 0;
+	int checkX = 0;
+	int checkY = 0;
+	int staminaNeed = 10;
 
 	int xClick = 0;
 	int yClick = 0;
-	int dx;
-	int dy;
+	int dx = 0;
+	int dy = 0;
 	int StringColor = 0;
+	int mouseLeft = 0;
 	string Msg = "";
 	bool colorUpOrDown = TRUE;
 
 	actionMsg = "歩こう!　1:移動終了　SHIFT:斜めサポート";
 
 
-	for (int i = 1; i <= distance; i++) {//1歩歩く
+
+
+
+
+
+	while (distance < 3) {//各歩行の入力待機
+		checkX = 0;
+		checkY = 0;
+		mouseLeft = 0;
+
 
 		if (stamina < staminaNeed) {//スタミナが必要数に満たない場合walk中断でリターン。
 			actionMsg = "スタミナ切れだ！";
 			exhibitScreen(x, y, TRUE);
-			return TRUE;
-		}
-
-		
-		exhibitScreen(x, y, TRUE);
-
-
-		
-
-
-
-
-		while (1) {
-
-			for (int iix = -1; iix <= 1; iix++) {
-				for (int iiy = -1; iiy <= 1; iiy++) {
-					if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
-						DrawBox((x + iix) * 48, (y + iiy) * 48, (x + iix) * 48 + 48, (y + iiy) * 48 + 48, GetColor(StringColor, 255, 50), TRUE);
-					}
-				}
-			}
-			DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(StringColor, 255 - StringColor, 50), TRUE);
-
-			if (colorUpOrDown == TRUE) {
-				StringColor += 9;
-			}
-			if (colorUpOrDown == FALSE) {
-				StringColor -= 9;
-			}
-			if (StringColor >= 240) {
-				colorUpOrDown = FALSE;
-			}
-			if (StringColor <= 10) {
-				colorUpOrDown = TRUE;
-			}
-
-
-		//
-		//	GetMousePoint(&xClick, &yClick);
-		//	xClick = xClick / 48;
-		//	yClick = yClick / 48;
-		//	if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-		//		dx = xClick - x;
-		//		dy = yClick - y;
-		//		if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスの上にマウスポインタがある場合
-
-		//			//SETdirection(dx, dy);//その方向を向く。
-		//			//exhibitScreen(x, y, TRUE);
-
-		//			if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//さらにそのマスに生物がいない、かつVACANTだった場合
-
-		//				
-
-		//				
-
-		//			}
-		//		}
-		//		else {
-		//			exhibitScreen(x, y, TRUE);
-		//		}
-
-		//	}
-
-
-
-
-
-			checkX = this->x;//自分のいる座標を代入。
-			checkY = this->y;//checkXとcheckYで進めるマスか探知。
 			WaitKey();
-			if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
+			if (distance == 0) {
+				return FALSE;
+			}
+			else {
 				return TRUE;
 			}
+		}
 
-
-
-
-			if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {
-				checkX -= 1;
-				//directionX = -1;
-				//directionY = 0;
-				SETdirection(-1, 0);
-			}
-			else if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {
-				checkX += 1;
-				//directionX = 1;
-				//directionY = 0;
-				SETdirection(1, 0);
-			}
-			else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {
-				checkY -= 1;
-				//directionY = -1;
-				//directionX = 0;
-				SETdirection(0, -1);
-			}
-			else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {
-				checkY += 1;
-				//directionY = 1;
-				//directionX = 0;
-				SETdirection(0, 1);
-			}
-
-
-			else if (CheckHitKey(KEY_INPUT_LSHIFT) == TRUE or CheckHitKey(KEY_INPUT_RSHIFT) == TRUE) {//斜め補助シフトが押されていたら
-				while (1) {
-					DrawString(800, 85, "斜め移動モードオン!", WHITE);
-					WaitKey();
-					if (CheckHitKey(KEY_INPUT_UP) == TRUE && CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//左上
-						checkX -= 1;
-						checkY -= 1;
-						//directionY = -1;
-						SETdirection(-1, -1);
-						break;
-					}
-					else if (CheckHitKey(KEY_INPUT_UP) == TRUE && CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//右上
-						checkX += 1;
-						checkY -= 1;
-						//directionY = -1;
-						SETdirection(1, -1);
-						break;
-					}
-					else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE && CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//左下
-						checkX -= 1;
-						checkY += 1;
-						//directionY = -1;
-						SETdirection(-1, +1);
-						break;
-					}
-					else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE && CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//右下
-						checkX += 1;
-						checkY += 1;
-						//directionY = -1;
-						SETdirection(1, +1);
-						break;
-					}
-
-					else if (CheckHitKey(KEY_INPUT_LSHIFT) == TRUE or CheckHitKey(KEY_INPUT_RSHIFT) == TRUE) {//斜め補助解除
-						exhibitScreen(x, y, TRUE);
-						DrawString(800, 70, "歩こう! 1:移動終了　SHIFT:斜めサポート", WHITE);
-						break;
-					}
-					else if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
-						return TRUE;
-					}
-				}
-			}
-
-			if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
-				if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//押したマスの方向が空いていたらループ抜け
-					break;
+		exhibitScreen(x, y, TRUE);//歩けるマスは表示色変更。
+		for (int iix = -1; iix <= 1; iix++) {
+			for (int iiy = -1; iiy <= 1; iiy++) {
+				if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
+					DrawBox((x + iix) * 48 + 1, (y + iiy) * 48 + 1, (x + iix) * 48 + 47, (y + iiy) * 48 + 47, GetColor(StringColor + (iiy + 1) * 5 + iiy * 5, 255, 120), TRUE);
 				}
 			}
 		}
 
 
-		board[checkX][checkY].creature = this;
 
-		board[x][y].creature = NULL;
-
-		x = checkX;//居場所を新たなマスに設定。
-		y = checkY;
-
-
-		stamina = stamina - staminaNeed;//スタミナの消費を実行。
-		staminaNeed = staminaNeed + i * 5;//次の歩みで減少するスタミナを決定。
-
+		GetMousePoint(&xClick, &yClick);
+		xClick = xClick / 48;
+		yClick = yClick / 48;
 		
-		exhibitScreen(x, y, TRUE);
-		/*WaitKey();*/
-	};
+
+		if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+			
+			dx = xClick - x;
+			dy = yClick - y;
+			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1)) {//自分の隣のマスの上にマウスポインタがある場合
+				if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//空白マスにカーソルがある場合、キラキラ表示
+					DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(10 + (StringColor / 5), 145 + (StringColor / 3), 0), TRUE);
 
 
-	actionMsg = "walkの実行が終了";
-	exhibitScreen(x, y, TRUE);
+					mouseLeft = GetMouseInput();
+					if (mouseLeft & MOUSE_INPUT_LEFT) {
+						if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {
+
+							board[xClick][yClick].creature = this;
+							board[x][y].creature = NULL;
+
+							x = xClick;//居場所を新たなマスに設定。
+							y = yClick;
+							SETdirection(dx, dy);
+
+
+							distance++;
+
+							stamina = stamina - staminaNeed;//スタミナの消費を実行。
+							staminaNeed = staminaNeed + distance * 3;//次の歩みで減少するスタミナを決定。
+
+							WaitTimer(150);//次の歩行クリックが即座に行われないよう、クリック直後に硬直時間を設ける。
+						}
+						if (mouseLeft & MOUSE_INPUT_LEFT) {
+							if (dx == 0 && dy == 0) {//自分のマスをクリックしたら
+								exhibitScreen(x, y, TRUE);//歩行可能マス表示を消す。
+								WaitTimer(150);
+								if (distance == 0) {
+									return FALSE;
+								}
+								else if (distance > 0) {
+									return TRUE;
+								}
+							}
+
+						}
+					}
+
+
+				}
+
+
+			}
+		}
+
+
+		if (colorUpOrDown == TRUE) {
+			StringColor += 9;
+		}
+		if (colorUpOrDown == FALSE) {
+			StringColor -= 9;
+		}
+		if (StringColor >= 230) {
+			colorUpOrDown = FALSE;
+		}
+		if (StringColor <= 11) {
+			colorUpOrDown = TRUE;
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {
+			checkX -= 1;
+			//directionX = -1;
+			//directionY = 0;
+			SETdirection(-1, 0);
+		}
+		else if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {
+			checkX += 1;
+			//directionX = 1;
+			//directionY = 0;
+			SETdirection(1, 0);
+		}
+		else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {
+			checkY -= 1;
+			//directionY = -1;
+			//directionX = 0;
+			SETdirection(0, -1);
+		}
+		else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {
+			checkY += 1;
+			//directionY = 1;
+			//directionX = 0;
+			SETdirection(0, 1);
+		}
+
+
+		else if (CheckHitKey(KEY_INPUT_LSHIFT) == TRUE or CheckHitKey(KEY_INPUT_RSHIFT) == TRUE) {//斜め補助シフトが押されていたら
+			while (1) {
+				DrawString(820, 85, "斜め移動モードオン!", WHITE);
+				WaitKey();
+				if (CheckHitKey(KEY_INPUT_UP) == TRUE && CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//左上
+					checkX -= 1;
+					checkY -= 1;
+					//directionY = -1;
+					SETdirection(-1, -1);
+					break;
+				}
+				else if (CheckHitKey(KEY_INPUT_UP) == TRUE && CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//右上
+					checkX += 1;
+					checkY -= 1;
+					//directionY = -1;
+					SETdirection(1, -1);
+					break;
+				}
+				else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE && CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//左下
+					checkX -= 1;
+					checkY += 1;
+					//directionY = -1;
+					SETdirection(-1, +1);
+					break;
+				}
+				else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE && CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//右下
+					checkX += 1;
+					checkY += 1;
+					//directionY = -1;
+					SETdirection(1, +1);
+					break;
+				}
+
+				else if (CheckHitKey(KEY_INPUT_LSHIFT) == TRUE or CheckHitKey(KEY_INPUT_RSHIFT) == TRUE) {//斜め補助解除
+					exhibitScreen(x, y, TRUE);
+					DrawString(800, 70, "歩こう! 1:移動終了　SHIFT:斜めサポート", WHITE);
+					break;
+				}
+				else if (CheckHitKey(KEY_INPUT_1) == TRUE) {//1を押したら歩行終了。
+					return TRUE;
+				}
+			}
+		}
+		if (x + checkX >= 0 && x + checkX < size && y + checkY >= 0 && y + checkY < size) {
+			if (board[x + checkX][y + checkY].creature == NULL && board[x + checkX][y + checkY].state == VACANT) {//押したマスの方向が空いていたらループ抜け
+
+				SETdirection(checkX, checkY);
+
+				board[x + checkX][y + checkY].creature = this;
+				board[x][y].creature = NULL;
+
+				x += checkX;//居場所を新たなマスに設定。
+				y += checkY;
+
+
+
+				distance += 1;
+
+				stamina = stamina - staminaNeed;//スタミナの消費を実行。
+				staminaNeed = staminaNeed + distance * 3;//次の歩みで減少するスタミナを決定。
+
+				WaitTimer(80);
+			}
+		}
+
+	
+		WaitTimer(20);
+	}
 	return TRUE;
+	actionMsg = "walkの実行が終了";
+		
+	exhibitScreen(x, y, TRUE);
+	
+
 }
 
 
