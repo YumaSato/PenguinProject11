@@ -238,7 +238,7 @@ void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance) {
 		WaitTimer(10);
 	}
 
-	board[kickX + dx][kickY + dy].creature = kicked;
+	board[kickX + dx][kickY + dy].creature = kicked;//元の位置にポインタを戻す。
 }
 
 

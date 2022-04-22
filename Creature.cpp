@@ -101,7 +101,7 @@ bool Creature::kick(int size) {
 				DrawString(800, 570, s.c_str(), WHITE);
 				WaitKey();*/
 
-				if (cX < 0 || cX > size || cY < 0 || cY > size ||(cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
+				if (cX < 0 || cX >= size || cY < 0 || cY >= size ||(cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
 
 					exhibitRolling(x, y, drctnX, drctnY, i);
 
