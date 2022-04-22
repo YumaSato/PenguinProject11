@@ -93,7 +93,7 @@ bool Character::selectAction() {
 
 
 
-		mouse = GetMouseInput();
+		mouse = GetMouseInput();//右クリックしたときの反応
 		if (mouse & MOUSE_INPUT_RIGHT) {
 			GetMousePoint(&xClick, &yClick);
 			xClick = xClick / 48;
@@ -103,7 +103,7 @@ bool Character::selectAction() {
 			dy = yClick - y;
 			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1)) {//自分の隣のマスの上にマウスポインタがある場合
 				SETdirection(dx, dy);
-				exhibitScreen(x, y, TRUE);
+				exhibitScreen(x, y, TRUE);//その方向を向く。
 			}
 					
 
@@ -223,12 +223,12 @@ bool Character::selectAction() {
 					DrawString(x * 48 + 42, y * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
 					DrawString(x * 48 + 42, y * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
 
-					WaitTimer(70);
+					WaitTimer(90);
 
 				}
 				else {//クリックしたのが操作しているキャラじゃない場合、普通にステータスを表示する。
 					exhibitStatus(x, y, XBuf, YBuf, TRUE);
-					WaitTimer(70);
+					WaitTimer(90);
 				}
 			}
 			if (board[XBuf][YBuf].creature == NULL) {
@@ -489,6 +489,13 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 					}
 				}
+				else if(dx == 0 && dy == 0){//なんでこれクリックを条件にしてるのにカーソル乗せるだけで反応しちゃうんだよ～！！？！？
+					mouseLeft = GetMouseInput();
+					if (mouseLeft & MOUSE_INPUT_LEFT) {
+						return FALSE;
+					}
+				}
+				
 			}
 			if((dx < -1 || dx > 1 || dy < -1 || dy > 1 || board[xClick][yClick].creature != NULL || board[xClick][yClick].state != VACANT) && (board[xClick][yClick].creature != this)) {//「進めないマスをクリックしている（自分を除く）場合
 				mouseLeft = GetMouseInput();
@@ -504,10 +511,10 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 					}
 
 				}
-
-
 			}
-
+			
+			
+			
 			
 
 
