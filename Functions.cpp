@@ -20,7 +20,7 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 
 	string HP_Msg = "";
 	string staminaMsg = "";
-	int exhibitY = 400;
+	int exhibitY = 600;
 	for (int i = 0; i < CHARACTERNUM; i++) {
 
 		string numHP;
@@ -139,7 +139,7 @@ void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステ
 	}
 	exhibitStatusMsg();//キャラクタ0のメッセージを代入。
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
-	DrawString(FIELDSIZE * SQUARESIZE + 5, 130, actionMsg.c_str(), GetColor(255, 200, 255));
+	DrawString(FIELDSIZE * SQUARESIZE + 5, 380, actionMsg.c_str(), GetColor(255, 200, 255));
 
 	turn = "現在のターン:" + std::to_string(turnNum);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20 ,turn.c_str(), GetColor(255, 200, 255));

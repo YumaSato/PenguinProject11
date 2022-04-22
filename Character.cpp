@@ -12,7 +12,7 @@ using std::string;
 Character::Character() : Creature() {}
 
 bool Character::selectAction() {
-	string msg = "は何する?\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る\nキャラを右クリック:状態を表示";
+	string msg = "は何する?\n\n左クリック(または1ボタン):歩く\n\n2:産卵 3:孵化 4:攻撃 5:蹴る\n\nキャラを右クリック:状態を表示\n\n\n\n\n  攻撃:相手にダメージを与えるぞ！\n\n  蹴る:自分と同じ方向を向かせるぞ。\n       卵は蹴ったら転がるぞ！";
 	int xClick = 0;
 	int yClick = 0;
 	int XBuf = -49;
@@ -99,7 +99,7 @@ bool Character::selectAction() {
 			xClick = xClick / 48;
 			yClick = yClick / 48;
 			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-				WaitTimer(200);
+				WaitTimer(170);
 				if (walk(FIELDSIZE) == TRUE) {
 					break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 				}
@@ -173,7 +173,7 @@ bool Character::selectAction() {
 
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
-			WaitTimer(60);
+			WaitTimer(180);
 			if (walk(FIELDSIZE) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
@@ -353,7 +353,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 					}
 				}
 			}
-			else {//「自分の隣のマスの上にマウスポインタがある場合」でない場合
+			if((dx < -1 || dx > 1 || dy < -1 || dy > 1 || board[xClick][yClick].creature != NULL || board[xClick][yClick].state != VACANT) && (board[xClick][yClick].creature != this)) {//「進めないマスをクリックしている（自分を除く）場合
 				mouseLeft = GetMouseInput();
 				if (mouseLeft & MOUSE_INPUT_LEFT) {
 

@@ -170,18 +170,22 @@ void turnFinal() {//素早さ順にmobが行動していく関数。
 	//DrawString(800, 570, s.c_str(), WHITE);
 	//WaitKey();
 
-	sort(mobsSpeedOrder, mobsSpeedOrder + mobNumber, speedOrder);
 
-	s = "";
-	for (int i = 0; i < mobNumber; i++) {
-		if (mobsSpeedOrder[i]->speed > 0) {
-			s = "X" + std::to_string(mobsSpeedOrder[i]->x) + "Y" + std::to_string(mobsSpeedOrder[i]->y) + "の素早さ:" + to_string(mobsSpeedOrder[i]->speed) + " \n";//素早さ順アドレス配列のスピードを表示。
-			allS += s;
-		}
-	}
-	exhibitScreen(0, 0, FALSE);
-	DrawString(FIELDSIZE * SQUARESIZE, 570, allS.c_str(), WHITE);
-	WaitKey();
+
+
+
+	//sort(mobsSpeedOrder, mobsSpeedOrder + mobNumber, speedOrder);
+
+	//s = "";
+	//for (int i = 0; i < mobNumber; i++) {
+	//	if (mobsSpeedOrder[i]->speed > 0) {
+	//		s = "X" + std::to_string(mobsSpeedOrder[i]->x) + "Y" + std::to_string(mobsSpeedOrder[i]->y) + "の素早さ:" + to_string(mobsSpeedOrder[i]->speed) + " \n";//素早さ順アドレス配列のスピードを表示。
+	//		allS += s;
+	//	}
+	//}
+	//exhibitScreen(0, 0, FALSE);
+	//DrawString(FIELDSIZE * SQUARESIZE, 570, allS.c_str(), WHITE);
+	//WaitKey();
 
 
 
@@ -222,15 +226,15 @@ void turnFinal() {//素早さ順にmobが行動していく関数。
 		}
 
 
-		if (moveOrNot == TRUE) {//もし行動が行われていたら
-			exhibitScreen(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y,TRUE);
-			numSpeed = (to_string(mobsSpeedOrder[i]->speed));
-			numX = (to_string(mobsSpeedOrder[i]->x));
-			numY = (to_string(mobsSpeedOrder[i]->y));
-			mobStatusMsg = "X:" + numX + ",Y:" + numY + "の" + mobsSpeedOrder[i]->name + "\n 行動速度:" + numSpeed + " 体力:" + to_string(mobsSpeedOrder[i]->HP) + "/" + to_string(mobsSpeedOrder[i]->HP_Limit);
-			DrawString(FIELDSIZE * SQUARESIZE, 160, mobStatusMsg.c_str(), WHITE);
-			WaitKey();
-		}
+		//if (moveOrNot == TRUE) {//もし行動が行われていたら
+		//	exhibitScreen(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y,TRUE);
+		//	numSpeed = (to_string(mobsSpeedOrder[i]->speed));
+		//	numX = (to_string(mobsSpeedOrder[i]->x));
+		//	numY = (to_string(mobsSpeedOrder[i]->y));
+		//	mobStatusMsg = "X:" + numX + ",Y:" + numY + "の" + mobsSpeedOrder[i]->name + "\n 行動速度:" + numSpeed + " 体力:" + to_string(mobsSpeedOrder[i]->HP) + "/" + to_string(mobsSpeedOrder[i]->HP_Limit);
+		//	DrawString(FIELDSIZE * SQUARESIZE, 160, mobStatusMsg.c_str(), WHITE);
+		//	WaitKey();
+		//}
 	}
 
 }
