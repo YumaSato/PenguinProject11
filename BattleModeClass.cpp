@@ -16,7 +16,7 @@ using namespace std;
 
 
 
-void turnFinal();//ターンの最後にまとめて行われる操作。
+bool turnFinal();//ターンの最後にまとめて行われる操作。
 
 void enemyEnter(int turn, int level);//敵が襲来する動作。
 void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy);
@@ -94,7 +94,9 @@ bool BattleMode_GameManager::BattleMode(int level) {
 
 
 		mainMsg = "";
-		turnFinal();
+		if (turnFinal() == FALSE) {
+			return FALSE;
+		}
 
 		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
@@ -130,7 +132,7 @@ bool BattleMode_GameManager::BattleMode(int level) {
 
 
 
-void turnFinal() {//素早さ順にmobが行動していく関数。
+bool turnFinal() {//素早さ順にmobが行動していく関数。
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -198,10 +200,10 @@ void turnFinal() {//素早さ順にmobが行動していく関数。
 		//	continue;
 		//}
 		if (mobsSpeedOrder[i] == NULL) {//スピード順配列にもう何もなければ終了。
-			return;
+			return TRUE;
 		}
 		if (mobsSpeedOrder[i]->speed < 0) {//スピードがマイナス、つまり死んでいたら終了。
-			return;
+			return TRUE;
 		}
 
 
@@ -226,7 +228,12 @@ void turnFinal() {//素早さ順にmobが行動していく関数。
 		//	DrawString(FIELDSIZE * SQUARESIZE, 160, mobStatusMsg.c_str(), WHITE);
 		//	WaitKey();
 		//}
+		if (quitGame == TRUE) {
+			return FALSE;
+		}
+
 	}
+	return TRUE;
 
 }
 

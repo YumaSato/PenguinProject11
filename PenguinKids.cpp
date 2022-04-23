@@ -107,16 +107,25 @@ bool PenguinKids::selectAction() {
 	if (attack(FIELDSIZE) == TRUE) {
 		exhibitScreen(x, y, TRUE);
 		WaitKey();
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+			quitGame = TRUE;
+		}
 		return TRUE;
 	}
 	if (specialMovement1(FIELDSIZE) == TRUE) {
 		exhibitScreen(x, y, TRUE);
 		WaitKey();
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+			quitGame = TRUE;
+		}
 		return TRUE;
 	}
 	if (specialMovement2(FIELDSIZE) == TRUE) {
 		exhibitScreen(x, y, TRUE);
 		WaitKey();
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+			quitGame = TRUE;
+		}
 		return TRUE;
 	}
 	return FALSE;

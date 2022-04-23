@@ -91,15 +91,19 @@ bool Bull::selectAction() {
 	if (attack(FIELDSIZE) == TRUE) {
 		exhibitScreen(x, y, TRUE);
 		WaitKey();
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+			quitGame = TRUE;
+		}
 		return TRUE;
 	}
 	if (walk(FIELDSIZE) == TRUE) {
 		exhibitScreen(x, y, TRUE);
 		WaitKey();
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+			quitGame = TRUE;
+		}
 		return TRUE;
 	}
-	exhibitScreen(x, y, TRUE);
-	WaitKey();
 	return FALSE;
 }
 

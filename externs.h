@@ -14,7 +14,7 @@ class Character;
 class Bull;
 
 
-extern bool debug_mode;
+extern bool quitGame;
 extern int gameMode;
 extern int turnNum;
 

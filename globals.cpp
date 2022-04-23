@@ -8,7 +8,7 @@
 using std::string;
 using std::vector;
 
-bool debug_mode = FALSE;
+bool quitGame = FALSE;
 int gameMode = 0;
 int turnNum = 0;
 
