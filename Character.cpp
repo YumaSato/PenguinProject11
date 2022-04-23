@@ -217,7 +217,7 @@ bool Character::selectAction() {
 				}
 				else {//クリックしたのが操作しているキャラじゃない場合、普通にステータスを表示する。
 					exhibitStatus(x, y, XBuf, YBuf, TRUE);
-					WaitTimer(90);
+					WaitTimer(80);
 				}
 			}
 			if (board[XBuf][YBuf].creature == NULL) {

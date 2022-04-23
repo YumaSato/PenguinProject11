@@ -320,7 +320,7 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 		}
 	}
 
-	if ((turn % 2 == 0 && turn > 16 && turn < 29) || (turn % 3 == 2 && turn > 34)) {
+	if ((turn % 2 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 30)) {
 		
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
@@ -341,7 +341,7 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 
 
 
-	if (turn % 5 == 3 && level == 1) {
+	if (turn % 8 == 6 && level == 1) {
 
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
@@ -362,7 +362,11 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 
 
 
+	//yieldEnemy(BULL, blue, 1, 0, 0, 5);
+	//yieldEnemy(BULL, red, 1, 0, 0, 5);
 
+	//yieldEnemy(BULL, blue, 0, -1, 5, FIELDSIZE -1);
+	//yieldEnemy(BULL, red, 0, -1, 5, FIELDSIZE - 1);
 
 
 
@@ -426,11 +430,34 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 
 	if (enemyType == BULL) {
 		Bull bull = Bull();
-		bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000);
-		mobs_Bull[num_bull] = bull;
-		board[cx][cy].creature = &mobs_Bull[num_bull];
-		mobNumber += 1;
-		num_bull += 1;
+		
+		if (board[cx][cy].creature != NULL) {
+			int rand = GetRand(1);
+			if (cx == 0 || cx == FIELDSIZE - 1) {
+				if (rand == 0) {
+					cy += 1;
+				}
+				if (rand == 1) {
+					cy -= 1;
+				}
+			}
+			if (cy == 0 || cy == FIELDSIZE - 1) {
+				if (rand == 0) {
+					cx += 1;
+				}
+				if (rand == 1) {
+					cx -= 1;
+				}
+			}
+		}
+		if (board[cx][cy].creature == NULL) {
+			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000);
+			mobs_Bull[num_bull] = bull;
+			board[cx][cy].creature = &mobs_Bull[num_bull];
+			mobNumber += 1;
+			num_bull += 1;
+		}
+
 
 	}
 
