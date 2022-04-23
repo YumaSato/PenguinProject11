@@ -101,7 +101,7 @@ bool Character::selectAction() {
 			
 			dx = xClick - x;
 			dy = yClick - y;
-			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1)) {//自分の隣のマスの上にマウスポインタがある場合
+			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1)&&(dx!=0||dy!=0)) {//自分の隣のマスの上にマウスポインタがある場合
 				SETdirection(dx, dy);
 				exhibitScreen(x, y, TRUE);//その方向を向く。
 			}
@@ -109,12 +109,17 @@ bool Character::selectAction() {
 
 			
 		}
-		if (mouse & MOUSE_INPUT_LEFT) {//フィールド内をクリックしたら歩き始める
-			GetMousePoint(&xClick, &yClick);
+		if (mouse & MOUSE_INPUT_LEFT) {//左クリックが行われた際の処理
+			GetMousePoint(&xClick, &yClick);//マウスポインタがどこにあるかを取得
 
-			if (exhibitOrNot == TRUE) {
+			if (exhibitOrNot == TRUE) {//キャラ詳細表示を表示するフラグが立っていた場合
 				for (int iii = 0; iii < 5; iii++) {
 					if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
+
+
+
+
+
 						if (iii == 0) {
 							if (specialMovement1(FIELDSIZE) == TRUE) { return TRUE; }
 						}
@@ -133,22 +138,6 @@ bool Character::selectAction() {
 					}
 				}
 			}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -415,7 +404,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 	int dx = 0;
 	int dy = 0;
 	int StringColor = 0;
-	int mouseLeft = 0;
+	int mouse = 0;
 	string Msg = "";
 	bool colorUpOrDown = TRUE;
 
@@ -431,7 +420,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		exhibitScreen(x, y, TRUE);
 		checkX = 0;
 		checkY = 0;
-		mouseLeft = 0;
+		mouse = 0;
 
 
 		//if (stamina < staminaNeed) {//スタミナが必要数に満たない場合walk中断でリターン。
@@ -464,14 +453,16 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 		if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
 
+			
+
 			dx = xClick - x;
 			dy = yClick - y;
 			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1)) {//自分の隣のマスの上にマウスポインタがある場合
 				if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//空白マスにカーソルがある場合、キラキラ表示
 					DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(10 + (StringColor / 5), 145 + (StringColor / 3), 0), TRUE);
 
-					mouseLeft = GetMouseInput();
-					if (mouseLeft & MOUSE_INPUT_LEFT) {
+					mouse = GetMouseInput();
+					if (mouse & MOUSE_INPUT_LEFT) {
 						board[xClick][yClick].creature = this;
 						board[x][y].creature = NULL;
 
@@ -490,8 +481,8 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 					}
 				}
 				else if(dx == 0 && dy == 0){//なんでこれクリックを条件にしてるのにカーソル乗せるだけで反応しちゃうんだよ～！！？！？
-					mouseLeft = GetMouseInput();
-					if (mouseLeft & MOUSE_INPUT_LEFT) {
+					//mouse = GetMouseInput();
+					if (mouse & MOUSE_INPUT_LEFT) {
 						if (distance == 0) {
 							return FALSE;
 						}
@@ -500,8 +491,8 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 				
 			}
 			if((dx < -1 || dx > 1 || dy < -1 || dy > 1 || board[xClick][yClick].creature != NULL || board[xClick][yClick].state != VACANT) && (board[xClick][yClick].creature != this)) {//「進めないマスをクリックしている（自分を除く）場合
-				mouseLeft = GetMouseInput();
-				if (mouseLeft & MOUSE_INPUT_LEFT) {
+				mouse = GetMouseInput();
+				if (mouse & MOUSE_INPUT_LEFT) {
 
 					exhibitScreen(x, y, TRUE);//歩行可能マス表示を消す。
 					WaitTimer(130);
@@ -514,7 +505,15 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 				}
 			}
-			
+
+			mouse = GetMouseInput();
+			if (mouse & MOUSE_INPUT_RIGHT) {//右クリックされて、まだ歩いていなければ歩きをキャンセルするのに成功。
+				if (distance == 0) {
+					return FALSE;
+					exhibitScreen(x, y, TRUE);
+				}
+			}
+
 			
 			
 			

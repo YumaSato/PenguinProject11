@@ -212,12 +212,15 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 	exhibitScreen(markX, markY, attention);
 	string Msg = "";
 
-	DrawBox(statusX * 48 + 40, statusY * 48 +5, statusX * 48 + 200, statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
-	DrawBox(statusX * 48 + 40, statusY * 48 +5, statusX * 48 + 200, statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
+	if (statusX < FIELDSIZE && statusY < FIELDSIZE) {
 
-	Msg = board[statusX][statusY].creature->name + "‚ÌHP:" + to_string(board[statusX][statusY].creature->HP) + "/"+ to_string(board[statusX][statusY].creature->HP_Limit) + "\n‘f‘‚³’l:" + to_string(board[statusX][statusY].creature->speed);
+		DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 200, statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
+		DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 200, statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
 
-	DrawString(statusX * 48 + 42, statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
+		Msg = board[statusX][statusY].creature->name + "‚ÌHP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) + "\n‘f‘‚³’l:" + to_string(board[statusX][statusY].creature->speed);
+
+		DrawString(statusX * 48 + 42, statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
+	}
 }
 
 
