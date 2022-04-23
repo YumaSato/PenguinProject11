@@ -15,7 +15,7 @@ using std::string;
 class BattleMode_GameManager {
 public:
 	BattleMode_GameManager();
-	bool BattleMode();
+	bool BattleMode(int level);
 
 
 

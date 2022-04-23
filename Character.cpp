@@ -492,7 +492,9 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 				else if(dx == 0 && dy == 0){//なんでこれクリックを条件にしてるのにカーソル乗せるだけで反応しちゃうんだよ～！！？！？
 					mouseLeft = GetMouseInput();
 					if (mouseLeft & MOUSE_INPUT_LEFT) {
-						return FALSE;
+						if (distance == 0) {
+							return FALSE;
+						}
 					}
 				}
 				

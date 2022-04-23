@@ -18,8 +18,9 @@ using namespace std;
 
 void turnFinal();//ターンの最後にまとめて行われる操作。
 
-void enemyEnter(int turn);//敵が襲来する動作。
+void enemyEnter(int turn, int level);//敵が襲来する動作。
 void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy);
+bool ending();
 
 bool speedOrder(Creature* a, Creature* b);
 
@@ -44,7 +45,7 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 
 
 
-bool BattleMode_GameManager::BattleMode() {
+bool BattleMode_GameManager::BattleMode(int level) {
 
 	//string turnF = "";
 
@@ -78,32 +79,15 @@ bool BattleMode_GameManager::BattleMode() {
 			return FALSE;
 		}
 
-		if (turnNum == 60 || turnNum == 100) {
+		if ((level == 0 && turnNum == 60)||(level == 1 && turnNum == 100)) {
 			mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
 			actionMsg = "戦わされた子ペンギンの数:"+ std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
 			exhibitScreen(0, 0, FALSE);
 			WaitKey();
-			mainMsg = "ゲームを終了しますか？ 1:Yes 2:No";
-			exhibitScreen(0, 0, FALSE);
-			WaitKey();
-			while (1) {
-				if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。
-					mainMsg = "本当にゲームを終了してよろしいですか？ \n1:Yes 2:No";
-					exhibitScreen(0, 0, FALSE);
-					WaitKey();
-					while (1) {
-						if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。
-							return FALSE;
-						}
-						if (CheckHitKey(KEY_INPUT_2) == TRUE) {//なぜ上下左右が逆なの？謎。
-							break;
-						}
-					}
-				}
-				if (CheckHitKey(KEY_INPUT_2) == TRUE) {//なぜ上下左右が逆なの？謎。
-					break;
-				}
+			if (ending() == FALSE) {
+				return FALSE;
 			}
+			
 			exhibitScreen(0, 0, FALSE);
 			WaitKey();
 		}
@@ -121,7 +105,7 @@ bool BattleMode_GameManager::BattleMode() {
 		}
 		
 
-		enemyEnter(turnNum);
+		enemyEnter(turnNum, level);
 		turnNum += 1;
 		exhibitScreen(0, 0, FALSE);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);
@@ -289,7 +273,7 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
+void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 	int side = 0;
 	int place = 0;
 
@@ -305,7 +289,7 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 
 
 	if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
-		if ((turn % 3 == 1 || turn % 3 == 0) || turn == 8) {
+		if ((turn % 3 == 2 || turn % 3 == 0) || turn == 8) {
 
 			side = GetRand(2);
 			if (side >= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
@@ -329,8 +313,29 @@ void enemyEnter(int turn) {//どのターンで敵が出現するかを決める。
 		}
 	}
 
-	if ((turn % 2 == 0 && turn > 16 && turn < 31) || (turn % 3 == 2 && turn > 34)) {
+	if ((turn % 2 == 0 && turn > 16 && turn < 29) || (turn % 3 == 2 && turn > 34)) {
 		
+		side = GetRand(3);
+		place = GetRand(FIELDSIZE - 3);
+		if (side == 0) {
+			yieldEnemy(BULL, blue, 0, 1, place + 1, 0);
+		}
+		if (side == 1) {
+			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1);
+		}
+		if (side == 2) {
+			yieldEnemy(BULL, blue, 1, 0, 0, place + 1);
+		}
+		if (side == 3) {
+			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1);
+		}
+	}
+
+
+
+
+	if (turn % 5 == 3 && level == 1) {
+
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
@@ -424,4 +429,102 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 
 
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+bool ending() {
+	
+
+	int height = FIELDSIZE * SQUARESIZE + 40;
+	const int msgNum = 8;
+	int msgCenter = (FIELDSIZE * 48 + 384) / 2;
+	string endingMsg[8];
+	endingMsg[0] = "PENGUIN ROBOT BATTLE!";
+	endingMsg[1] = "2022";
+	endingMsg[2] = "";
+	endingMsg[3] = "企画:iwashi";
+	endingMsg[4] = "ディレクター:iwashi";
+	endingMsg[5] = "メインプログラム:iwashi";
+	endingMsg[6] = "デザイナー:はぺぺ";
+	endingMsg[7] = "スペシャルサンクス:dolpast";
+	
+	int DrawWidth[msgNum];
+	int StrLen[msgNum];
+
+	string quitMsg = "";
+
+	ClearDrawScreen();
+
+	for (int i = 0; i < msgNum; i++) {
+		StrLen[i] = strlen(endingMsg[i].c_str());//文字数取得
+		DrawWidth[i] = GetDrawStringWidth(endingMsg[i].c_str(), StrLen[i]);//文字幅取得
+	}
+
+	while (1) {
+		ClearDrawScreen();
+		for (int i = 0; i < msgNum; i++) {
+			DrawString(msgCenter - DrawWidth[i] / 2, height + i*100, endingMsg[i].c_str(), GetColor(210, 255, 250));
+
+			if(DrawWidth[i] != 0){
+			DrawGraph(msgCenter - DrawWidth[i] / 2 - 78, height + i * 100-15, handle[blue][EGG][NW],TRUE);
+			DrawGraph(msgCenter + DrawWidth[i] / 2 + 30, height + i * 100-15, handle[red][EGG][NW], TRUE);
+			}
+		}
+		height--;
+		WaitTimer(20);
+
+		
+
+		if (height < -720) {
+			break;
+		}
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押される終了
+			return FALSE;
+		}
+		if (CheckHitKey(KEY_INPUT_SPACE) == TRUE || CheckHitKey(KEY_INPUT_1) == TRUE) {
+			height = height-4;
+		}
+		
+
+		ScreenFlip(); //裏画面を表画面に反映
+	}
+
+
+
+
+	quitMsg = "ゲームを終了しますか？ 1:Yes 2:No";
+	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, quitMsg.c_str(), WHITE);
+	WaitKey();
+	while (1) {
+		if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。
+			quitMsg = "本当にゲームを終了してよろしいですか？ \n1:Yes 2:No";
+			ClearDrawScreen();
+			DrawString(FIELDSIZE * SQUARESIZE + 5, 20, quitMsg.c_str(), WHITE);
+			WaitKey();
+			while (1) {
+				if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。
+					return FALSE;
+				}
+				if (CheckHitKey(KEY_INPUT_2) == TRUE) {//なぜ上下左右が逆なの？謎。
+					break;
+				}
+				WaitTimer(10);
+			}	
+		}
+		if (CheckHitKey(KEY_INPUT_2) == TRUE) {//なぜ上下左右が逆なの？謎。
+			break;
+		}
+		WaitTimer(10);
+	}
+	return TRUE;
 }

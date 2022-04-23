@@ -75,17 +75,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 		DrawGraph(0, 0, handleTitle, TRUE);
-		DrawString(960, 500, "モードを選択してください。\n1:大群襲来バトル\n2:対人戦「牛飼いとバトル！」\nEsc:やめる\n\nVERSION:2", GetColor(titleStringColor, 245,255));
+		DrawString(960, 320, "モードを選択してください。\n\n\n1:通常モード(Normal)\n60ターン生き残れ！\n\n\n2:難関モード(Lunatic)\n100ターン生き残れ！\n\n\nEsc:やめる\n\n\n\n\n\n\n\n\n\n\n\n            VERSION:2", GetColor(titleStringColor, 245,255));
 		
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			BattleMode_GameManager battle;
-			game = battle.BattleMode();
-			WaitKey();
+			game = battle.BattleMode(0);//FALSEだとゲーム終了。
+			
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
 			BattleMode_GameManager battle;
-			game = battle.BattleMode();
-			WaitKey();
+			game = battle.BattleMode(1);
+			
 		}
 
 
@@ -117,9 +117,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		ScreenFlip(); //裏画面を表画面に反映
 	}
 
-
-
-	WaitKey();
 
 	DxLib_End();    // ＤＸライブラリ使用の終了処理
 
