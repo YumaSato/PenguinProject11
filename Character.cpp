@@ -12,17 +12,20 @@ using std::string;
 Character::Character() : Creature() {}
 
 bool Character::selectAction() {
-	string msg = "は何する?\n\n空白マスを左クリック(1ボタン):歩く\n隣のマスを右クリック(十字キー):向き変更\n\n2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\n  　　　　攻撃:相手にダメージを与えるぞ！\n\n  　　　　蹴る:自分と同じ方向を向かせるぞ。\n       　　　　卵は蹴ったら転がるぞ！";
+	string msg = "は何する?\n\n自分を左クリック:行動を選択\n隣のマスを右クリック(十字キー):向き変更\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\n  　　　　攻撃:相手にダメージを与えるぞ！\n\n  　　　　蹴る:自分と同じ方向を向かせるぞ。\n       　　　　卵は蹴ったら転がるぞ！";
 	int xClick = 0;
 	int yClick = 0;
 	int XBuf = -49;
 	int YBuf = -49;
 	int mouse = NULL;
+	bool clickStop = FALSE;
 	int dx = 0;
 	int dy = 0;
 	bool colorUpOrDown = TRUE;
 	bool exhibitOrNot = FALSE;
 	int color = 10;
+
+	clicking = 0;
 
 	mainMsg = name + msg;
 	exhibitScreen(x,y,TRUE);
@@ -90,7 +93,7 @@ bool Character::selectAction() {
 
 		//}
 
-
+		//もしクリックされたら、clicking=1になる。1の間は処理は行われない。
 
 
 
@@ -98,90 +101,111 @@ bool Character::selectAction() {
 		mouse = GetMouseInput();//右クリックしたときの反応
 
 
-		if (mouse & MOUSE_INPUT_RIGHT) {//右クリックされたら
-
-			GetMousePoint(&xClick, &yClick);
-			xClick = xClick / 48;
-			yClick = yClick / 48;
-
-			dx = xClick - x;
-			dy = yClick - y;
-			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスの上にマウスポインタがある場合
-				SETdirection(dx, dy);
-				exhibitScreen(x, y, TRUE);//その方向を向く。
-			}
+		if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
+			clicking = 0;
 		}
 
+
+		if (mouse & MOUSE_INPUT_RIGHT) {//右クリックされたら
+
+			if (clicking == 0) {
+				clicking = 1;
+
+				GetMousePoint(&xClick, &yClick);
+				xClick = xClick / 48;
+				yClick = yClick / 48;
+
+				dx = xClick - x;
+				dy = yClick - y;
+				if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスの上にマウスポインタがある場合
+					SETdirection(dx, dy);
+					exhibitScreen(x, y, TRUE);//その方向を向く。
+				}
+			}
+		}
+		
+
 		if (mouse & MOUSE_INPUT_LEFT) {//左クリックが行われた際の処理
-			GetMousePoint(&xClick, &yClick);//マウスポインタがどこにあるかを取得
 
-			if (exhibitOrNot == TRUE) {//キャラ詳細表示を表示するフラグが立っていた場合
-				for (int iii = 0; iii < 5; iii++) {
-					if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
 
-						if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
-							if (walk(FIELDSIZE) == TRUE) { return TRUE; }
-						}
-						if (iii == 1) {
-							if (specialMovement1(FIELDSIZE) == TRUE) { return TRUE; }
-						}
-						if (iii == 2) {
-							if (specialMovement2(FIELDSIZE) == TRUE) { return TRUE; }
-						}
-						if (iii == 3) {
-							if (attack(FIELDSIZE) == TRUE) { return TRUE; }
-						}
-						if (iii == 4) {
-							if (kick(FIELDSIZE) == TRUE) { return TRUE; }
-						}
-						if (iii == 5) {
-							return TRUE;
+			if (clicking == 0) {
+				clicking = 1;
+
+				GetMousePoint(&xClick, &yClick);//マウスポインタがどこにあるかを取得
+
+				if (exhibitOrNot == TRUE) {//キャラ詳細表示を表示するフラグが立っていた場合
+					for (int iii = 0; iii < 5; iii++) {
+						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
+
+							if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
+								if (walk(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 1) {
+								if (specialMovement1(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 2) {
+								if (specialMovement2(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 3) {
+								if (attack(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 4) {
+								if (kick(FIELDSIZE) == TRUE) { return TRUE; }
+							}
+							if (iii == 5) {
+								return TRUE;
+							}
 						}
 					}
 				}
-			}
-			
 
 
 
-			xClick = xClick / 48;
-			yClick = yClick / 48;
-			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-				//if (board[xClick][yClick].creature == NULL) {//クリックした場所が空白マスならば、歩行メソッドを実行
-				//	dx = xClick - x;
-				//	dy = yClick - y;
-				//	if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {
-				//		WaitTimer(120);
-				//		if (walk(FIELDSIZE) == TRUE) {
-				//			break;//1が返ってくる、つまり成功すればループ抜けでターン終了
-				//		}
-				//	}
 
-				//	
-				//}
-				//if (board[xClick][yClick].creature != NULL) {
-				//	if (xClick == XBuf && yClick == YBuf) {//もともとの表示座標と同じところをクリックしたら
-				//		exhibitScreen(x, y, TRUE);//ステータス詳細を消す。
-				//		exhibitOrNot = FALSE;
-				//		WaitTimer(70);
-				//		XBuf = -1;
-				//		YBuf = -1;
-				//	}
-				if (board[xClick][yClick].creature == NULL) {
-					exhibitOrNot = FALSE;
-					exhibitScreen(x, y, TRUE);
-				}
+				xClick = xClick / 48;
+				yClick = yClick / 48;
+				if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+					//if (board[xClick][yClick].creature == NULL) {//クリックした場所が空白マスならば、歩行メソッドを実行
+					//	dx = xClick - x;
+					//	dy = yClick - y;
+					//	if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {
+					//		WaitTimer(120);
+					//		if (walk(FIELDSIZE) == TRUE) {
+					//			break;//1が返ってくる、つまり成功すればループ抜けでターン終了
+					//		}
+					//	}
 
-
-				if (board[xClick][yClick].creature != NULL) {
-
-					//if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
-					exhibitOrNot = TRUE;
+					//	
 					//}
+					//if (board[xClick][yClick].creature != NULL) {
+					//	if (xClick == XBuf && yClick == YBuf) {//もともとの表示座標と同じところをクリックしたら
+					//		exhibitScreen(x, y, TRUE);//ステータス詳細を消す。
+					//		exhibitOrNot = FALSE;
+					//		WaitTimer(70);
+					//		XBuf = -1;
+					//		YBuf = -1;
+					//	}
+					if (board[xClick][yClick].creature == NULL) {
+						exhibitOrNot = FALSE;
+						exhibitScreen(x, y, TRUE);
+					}
+					if (XBuf >= 0 && XBuf < FIELDSIZE && YBuf >= 0 && YBuf < FIELDSIZE) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
+						if (board[xClick][yClick].creature == board[XBuf][YBuf].creature) {//表示中のマスを触ったらステータス表示消える。
+							exhibitOrNot = FALSE;
+							exhibitScreen(x, y, TRUE);
+						}
+					}
+
+
+					if (board[xClick][yClick].creature != NULL) {
+
+						//if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
+						exhibitOrNot = TRUE;
+						//}
+					}
+
 				}
-
 			}
-
 		}
 
 		
@@ -230,18 +254,17 @@ bool Character::selectAction() {
 					DrawString(x * 48 + 42, y * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
 					DrawString(x * 48 + 42, y * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
 
-					WaitTimer(90);
+					WaitTimer(10);
 
 				}
 				else {//クリックしたのが操作しているキャラじゃない場合、普通にステータスを表示する。
 					exhibitStatus(x, y, XBuf, YBuf, TRUE);
-					WaitTimer(80);
+	/*				WaitTimer(10);*/
 				}
 			}
 			if (board[XBuf][YBuf].creature == NULL) {
 				exhibitScreen(x, y, TRUE);
 			}
-
 		}
 
 
@@ -431,7 +454,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 	actionMsg = "歩こう!　Esc:移動終了　SHIFT:斜めサポート";
 
-
+	clicking = 1;
 
 
 
@@ -442,6 +465,10 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 		checkX = 0;
 		checkY = 0;
 		mouse = 0;
+
+		//if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//両方クリックが解除されていたら、次のクリックを受け付ける。
+		//	clicking = 0;
+		//}
 
 
 		//if (stamina < staminaNeed) {//スタミナが必要数に満たない場合walk中断でリターン。
@@ -483,22 +510,35 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 					DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(10 + (StringColor / 5), 145 + (StringColor / 3), 0), TRUE);
 
 					mouse = GetMouseInput();
+
+					if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
+						clicking = 0;
+					}
+
+					
 					if (mouse & MOUSE_INPUT_LEFT) {
-						board[xClick][yClick].creature = this;
-						board[x][y].creature = NULL;
-
-						x = xClick;//居場所を新たなマスに設定。
-						y = yClick;
-						SETdirection(dx, dy);
 
 
-						distance++;
+				
+						if (clicking == 0) {
+							clicking = 1;
 
-						stamina = stamina - staminaNeed;//スタミナの消費を実行。
-						staminaNeed = staminaNeed + distance * 3;//次の歩みで減少するスタミナを決定。
+							board[xClick][yClick].creature = this;
+							board[x][y].creature = NULL;
 
-						WaitTimer(10);//次の歩行クリックが即座に行われないよう、クリック直後に硬直時間を設ける。
+							x = xClick;//居場所を新たなマスに設定。
+							y = yClick;
+							SETdirection(dx, dy);
 
+
+							distance++;
+
+							stamina = stamina - staminaNeed;//スタミナの消費を実行。
+							staminaNeed = staminaNeed + distance * 3;//次の歩みで減少するスタミナを決定。
+
+							WaitTimer(10);//次の歩行クリックが即座に行われないよう、クリック直後に硬直時間を設ける。
+
+						}
 					}
 				}
 				else if(dx == 0 && dy == 0){//なんでこれクリックを条件にしてるのにカーソル乗せるだけで反応しちゃうんだよ～！！？！？
@@ -515,15 +555,18 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 				mouse = GetMouseInput();
 				if (mouse & MOUSE_INPUT_LEFT) {
 
-					exhibitScreen(x, y, TRUE);//歩行可能マス表示を消す。
-					WaitTimer(130);
-					if (distance == 0) {
-						return FALSE;//0歩目なら行動はなかったことになる
-					}
-					else if (distance > 0) {
-						return TRUE;//1歩以上進んでいたら行動した判定になる。
-					}
+					if (clicking == 0) {
+						clicking = 1;
 
+						exhibitScreen(x, y, TRUE);//歩行可能マス表示を消す。
+						WaitTimer(130);
+						if (distance == 0) {
+							return FALSE;//0歩目なら行動はなかったことになる
+						}
+						else if (distance > 0) {
+							return TRUE;//1歩以上進んでいたら行動した判定になる。
+						}
+					}
 				}
 			}
 
