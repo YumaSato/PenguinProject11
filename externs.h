@@ -17,6 +17,7 @@ class Bull;
 extern bool quitGame;
 extern int gameMode;
 extern int turnNum;
+extern int clicking;
 
 //extern Creature mobs[1024];
 //extern vector<PenguinKids> kids;//ペンギンキッズのインスタンスを生成毎に入れていく可変長配列。
