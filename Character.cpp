@@ -134,29 +134,50 @@ bool Character::selectAction() {
 				GetMousePoint(&xClick, &yClick);//マウスポインタがどこにあるかを取得
 
 				if (exhibitOrNot == TRUE) {//キャラ詳細表示を表示するフラグが立っていた場合
+					bool turnFinish = FALSE;
 					for (int iii = 0; iii < 5; iii++) {
 						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
 
 							if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
-								if (walk(FIELDSIZE) == TRUE) { return TRUE; }
+								if (walk(FIELDSIZE) == TRUE) {
+									turnFinish = TRUE;
+									break;
+								}
 							}
 							if (iii == 1) {
-								if (specialMovement1(FIELDSIZE) == TRUE) { return TRUE; }
+								if (specialMovement1(FIELDSIZE) == TRUE) {
+									turnFinish = TRUE;
+									break;
+								}
 							}
 							if (iii == 2) {
-								if (specialMovement2(FIELDSIZE) == TRUE) { return TRUE; }
+								if (specialMovement2(FIELDSIZE) == TRUE) {
+									turnFinish = TRUE;
+									break;
+								}
 							}
 							if (iii == 3) {
-								if (attack(FIELDSIZE) == TRUE) { return TRUE; }
+								if (attack(FIELDSIZE) == TRUE) {
+									turnFinish = TRUE;
+									break;
+								}
 							}
 							if (iii == 4) {
-								if (kick(FIELDSIZE) == TRUE) { return TRUE; }
+								if (kick(FIELDSIZE) == TRUE) {
+									turnFinish = TRUE;
+									break;
+								}
 							}
 							if (iii == 5) {
-								return TRUE;
+								turnFinish = TRUE;
+								break;
 							}
 						}
 					}
+					if (turnFinish == TRUE) {
+						break;
+					}
+					
 				}
 
 
@@ -367,13 +388,13 @@ bool Character::selectAction() {
 			break;
 		}
 
-		WaitTimer(20);
+		WaitTimer(10);
 	}
 
-	stamina += staminaRecoverAbility;//スタミナ回復
-	if (stamina > staminaLimit) {
-		stamina = staminaLimit;//スタミナが満タンになるとき。
-	}
+	//stamina += staminaRecoverAbility;//スタミナ回復
+	//if (stamina > staminaLimit) {
+	//	stamina = staminaLimit;//スタミナが満タンになるとき。
+	//}
 
 	HP += 8;//HP回復
 	if (HP > HP_Limit) {
@@ -382,12 +403,26 @@ bool Character::selectAction() {
 
 	
 
-	actionMsg = "行動終了。スタミナと体力が回復します。";
+	actionMsg = "行動終了。体力が回復します。";
 	exhibitScreen(x, y, TRUE);
 	WaitKey();
 	mainMsg = "";
 	return TRUE;
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 void Character::test() {

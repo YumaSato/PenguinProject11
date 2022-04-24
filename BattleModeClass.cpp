@@ -71,11 +71,24 @@ bool BattleMode_GameManager::BattleMode(int level) {
 			}
 		}
 
-		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 ) {
+		if ((Emperor1.HP <= 0 && Emperor2.HP <= 0 ) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
-			actionMsg = "ゲームを終了します。";
+			actionMsg = "Escを押すと、ゲームを終了します。";
 			exhibitScreen(0, 0, FALSE);
 			WaitKey();
+			while (1) {
+				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
+					return FALSE;
+				}
+
+				if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+					return FALSE;
+				}
+				WaitTimer(10);
+			}
+
+
+
 			return FALSE;
 		}
 
@@ -98,13 +111,13 @@ bool BattleMode_GameManager::BattleMode(int level) {
 			return FALSE;
 		}
 
-		if (Emperor1.HP <= 0 && Emperor2.HP <= 0 || board[CASTLE_X][CASTLE_Y].state == VACANT) {
+		/*if (Emperor1.HP <= 0 && Emperor2.HP <= 0 || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "ゲームを終了します。";
 			exhibitScreen(0, 0, FALSE);
 			WaitKey();
 			return FALSE;
-		}
+		}*/
 		
 
 		enemyEnter(turnNum, level);
