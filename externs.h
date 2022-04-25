@@ -17,6 +17,7 @@ class Bull;
 extern bool quitGame;
 extern int gameMode;
 extern int turnNum;
+extern int score;
 extern int clicking;
 
 //extern Creature mobs[1024];

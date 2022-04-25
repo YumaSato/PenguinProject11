@@ -311,10 +311,18 @@ void Creature::damage(int checkX, int checkY) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñBUŒ‚‚
 
 
 	if (board[checkX][checkY].creature->HP <= 0) {//HP‚ªƒ}ƒCƒiƒX‚É‚È‚Á‚½‚ç€‚Ê
+		if (board[checkX][checkY].creature->status == BULL) {
+			score = score + 1000;
+			if (board[checkX][checkY].creature->team == blue) {
+				score = score + 3000;
+			}
+		}
+
 		board[checkX][checkY].creature->DeleteCreature();
 		board[checkX][checkY].creature = NULL;
 
 		string msg2 = "\n‘Šè‚ğ‚â‚Á‚Â‚¯‚½B";
 		actionMsg = name + msg1 + msg2;
+		
 	}
 }

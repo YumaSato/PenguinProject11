@@ -11,6 +11,7 @@ using std::vector;
 bool quitGame = FALSE;
 int gameMode = 0;
 int turnNum = 0;
+int score = 0;
 int clicking = 0;
 
 

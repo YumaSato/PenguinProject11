@@ -46,6 +46,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	staminaRecoverAbility = NULL;
 	num = mobNumber;
 	skip = TRUE;//ペンギンキッズが生まれた時点では、こいつは行動をスキップする（まだ動かない）
+	score += 5;
 
 
 	/*exhibitScreen();

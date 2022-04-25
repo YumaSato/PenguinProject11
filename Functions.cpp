@@ -137,11 +137,10 @@ void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステ
 
 		}
 	}
-	//exhibitStatusMsg();//キャラクタ0のメッセージを代入。
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 380, actionMsg.c_str(), GetColor(255, 200, 255));
 
-	turn = "現在のターン:" + std::to_string(turnNum);
+	turn = "現在のターン:" + std::to_string(turnNum) + "   現在のスコア:" + std::to_string(score);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20 ,turn.c_str(), GetColor(255, 200, 255));
 	actionMsg = "";
 }
