@@ -247,6 +247,28 @@ void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance) {
 
 
 
+void exhibitRule() {
+
+	string rule1 = "ペンギンロボットバトル・ルールブック\n\n 皇帝ペンギンをを動かして、城を守れ！\n 敵に城を壊されたらゲームオーバー！\n\nターンについて：\n  盤面上の全てのキャラクタは、素早さ順に行動するぞ！";
+	string rule2 = "行動について: \n  歩く:\n　　皇帝ペンギンは3歩まで歩ける。\n　産卵：\n　　向いている方向にクローンペンギンの卵を産む。";
+	string rule3 = "　孵化：\n　　向いている方向にいる卵を孵化させる。\n　　クローンは自分と同じ色の卵だけ孵化させる。\n　　生まれた子は孵化させたペンギンと同じ方向を向く。";
+	string rule4 = "\n　攻撃：\n　　向いている方向にいるキャラクタにダメージを与える。\n　蹴る：\n　　卵を蹴るとペンギンにぶつかるまで真っすぐ転がる。\n　　クローンペンギンを蹴ると、蹴った側と同じ方向を向く。";
+	string rule5 = "クローンペンギンについて:\n  クローンは歩けない。産卵と攻撃と孵化を行う。\n　クローンペンギンには、「卵・若者・老人」の3つの状態がある。\n　　若者：卵を産む前の状態。向いている方向に産卵しようとする。\n　　老人：卵を産むと老人になる。\n　　　　　周囲に敵がいれば攻撃し、卵があれば孵化させる。\n\n\n\nEsc:ルールを閉じる";
+
+
+	DrawBox(550, 30, 1150, 1150,GetColor(173, 255, 47), TRUE);
+	DrawBox(550, 30, 1150, 1150, GetColor(130,0,0), FALSE);
+	DrawString(560,50, rule1.c_str(), GetColor(0, 40, 55));
+	DrawString(560, 250, rule2.c_str(), GetColor(0, 40, 55));
+	DrawString(560, 340, rule3.c_str(), GetColor(0, 40, 55));
+	DrawString(560, 400, rule4.c_str(), GetColor(0, 40, 55));
+	DrawString(560, 550, rule5.c_str(), GetColor(0, 40, 55));
+}
+
+
+
+
+
 
 
 

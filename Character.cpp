@@ -12,13 +12,14 @@ using std::string;
 Character::Character() : Creature() {}
 
 bool Character::selectAction() {
-	string msg = "は何する?\n\n自分を左クリック:行動を選択\n隣のマスを右クリック(十字キー):向き変更\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\n  　　　　攻撃:相手にダメージを与えるぞ！\n\n  　　　　蹴る:自分と同じ方向を向かせるぞ。\n       　　　　卵は蹴ったら転がるぞ！";
+	string msg = "は何する?\n\n自分を左クリック:行動を選択\n隣のマスを右クリック(十字キー):向き変更\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\nスペースキー:ルールを表示";
 	int xClick = 0;
 	int yClick = 0;
 	int XBuf = -49;
 	int YBuf = -49;
 	int mouse = NULL;
 	bool clickStop = FALSE;
+	bool ruleExhibit = FALSE;
 	int dx = 0;
 	int dy = 0;
 	bool colorUpOrDown = TRUE;
@@ -34,6 +35,16 @@ bool Character::selectAction() {
 	while (1) {
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			return FALSE;
+		}
+
+		if (ruleExhibit == TRUE) {
+			while (1) {
+				WaitKey();
+				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
+					ruleExhibit = FALSE;
+					break;
+				}
+			}
 		}
 
 
@@ -388,6 +399,14 @@ bool Character::selectAction() {
 			break;
 		}
 
+		if (CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
+			ruleExhibit = TRUE;
+			exhibitRule();
+		}
+
+
+
+
 		WaitTimer(10);
 	}
 
@@ -402,11 +421,11 @@ bool Character::selectAction() {
 	}
 
 	
-
+	mainMsg = "";
 	actionMsg = "行動終了。体力が回復します。";
 	exhibitScreen(x, y, TRUE);
 	WaitKey();
-	mainMsg = "";
+	
 	return TRUE;
 };
 
