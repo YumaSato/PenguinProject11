@@ -38,6 +38,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
 
 	SetDrawScreen(DX_SCREEN_BACK); //描画先を裏画面に設定
+	SetMainWindowText("ペンギンロボットバトル");
 	if (ChangeWindowMode(TRUE) != 0) {//引数にTRUEを渡すとウィンドウモードになる。
 		return 0;
 	}

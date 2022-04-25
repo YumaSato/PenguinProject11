@@ -187,7 +187,7 @@ bool turnFinal() {//‘f‘‚³‡‚Émob‚ªs“®‚µ‚Ä‚¢‚­ŠÖ”B
 
 
 
-	//sort(mobsSpeedOrder, mobsSpeedOrder + mobNumber, speedOrder);
+	sort(mobsSpeedOrder, mobsSpeedOrder + mobNumber, speedOrder);
 
 	//s = "";
 	//for (int i = 0; i < mobNumber; i++) {
