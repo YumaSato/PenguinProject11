@@ -17,6 +17,8 @@ public:
 	BattleMode_GameManager();
 	bool BattleMode(int level);
 
+	PenguinKids mobs_PenguinKids[mobLimit];
+	Bull mobs_Bull[mobLimit];
 
 
 };
@@ -51,12 +53,12 @@ public:
 
 	Creature();
 	virtual void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed);
-	virtual bool selectAction();
+	virtual bool selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
 	virtual bool walk(int size);
 	virtual void changeDirection();
 	virtual bool attack(int size);
 	bool kick(int size);
-	virtual bool specialMovement1(int size);
+	virtual bool specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
 	virtual bool specialMovement2(int size);
 	virtual int useItem(int size);
 	virtual void test();
@@ -77,10 +79,10 @@ public:
 	PenguinKids();
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed)override;
 	void test();
-	bool specialMovement1(int size) override;
+	bool specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) override;
 	bool specialMovement2(int size) override;
 	bool attack(int size) override;
-	bool selectAction() override;
+	bool selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) override;
 };
 
 
@@ -93,7 +95,7 @@ public:
 
 class Character : public Creature {//マス目にいるキャラクター
 public:
-	bool selectAction();
+	bool selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
 	void test();
 	void changeDirection();
 	bool walk(int size) override;
@@ -104,7 +106,7 @@ public:
 class Emperor : public Character {
 public:
 	Emperor(Team team, int num);
-	bool specialMovement1(int size);
+	bool specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
 	bool specialMovement2(int size);
 };
 
@@ -125,10 +127,10 @@ public:
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed)override;
 	void test();
 	bool walk(int size);
-	bool specialMovement1(int size) override;
+	bool specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) override;
 	bool specialMovement2(int size) override;
 	bool attack(int size) override;
-	bool selectAction() override;
+	bool selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) override;
 };
 
 class Item {//マス目に落ちてるアイテム

@@ -61,7 +61,7 @@ Emperor::Emperor(Team team, int num) : Character() {//c’é‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
 }
 
 
-bool Emperor::specialMovement1(int size) {//“Áê‹ZFY—‘
+bool Emperor::specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {//“Áê‹ZFY—‘
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;

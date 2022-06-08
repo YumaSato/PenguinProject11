@@ -24,8 +24,8 @@ extern int clicking;
 //extern vector<PenguinKids> kids;//ペンギンキッズのインスタンスを生成毎に入れていく可変長配列。
 
 
-extern PenguinKids mobs_PenguinKids[mobLimit];
-extern Bull mobs_Bull[mobLimit];
+//extern PenguinKids mobs_PenguinKids[mobLimit];
+//extern Bull mobs_Bull[mobLimit];
 
 extern int mobNumber;
 extern int num_penguinKids;

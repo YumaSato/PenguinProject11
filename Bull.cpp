@@ -75,7 +75,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-bool Bull::selectAction() {
+bool Bull::selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
 
 	
 	if (skip == TRUE) {//skipÇ∑ÇÈèÛë‘Ç»ÇÁÅAë¶èIóπÅB
@@ -259,7 +259,7 @@ bool Bull::walk(int size) {
 
 
 
-bool Bull::specialMovement1(int size) {
+bool Bull::specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
 	return TRUE;
 }
 

@@ -11,7 +11,7 @@ using std::string;
 
 Character::Character() : Creature() {}
 
-bool Character::selectAction() {
+bool Character::selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
 	string msg = "は何する?\n\n自分を左クリック:行動を選択\n隣のマスを右クリック(十字キー):向き変更\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\nスペースキー:ルールを表示";
 	int xClick = 0;
 	int yClick = 0;
@@ -157,7 +157,7 @@ bool Character::selectAction() {
 								}
 							}
 							if (iii == 1) {
-								if (specialMovement1(FIELDSIZE) == TRUE) {
+								if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
@@ -379,7 +379,7 @@ bool Character::selectAction() {
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
-			if (specialMovement1(FIELDSIZE) == TRUE) {
+			if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}

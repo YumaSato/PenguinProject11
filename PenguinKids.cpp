@@ -65,7 +65,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 
 
-bool PenguinKids::selectAction() {
+bool PenguinKids::selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;//skip状態を解消。
@@ -94,7 +94,7 @@ bool PenguinKids::selectAction() {
 		if (iX >= 0 && iX < FIELDSIZE && iY >= 0 && iY < FIELDSIZE) {
 			if (board[iX][iY].creature != NULL) {//向いている方向のマスに何か居たら
 				if (board[iX][iY].creature->status == EGG && board[iX][iY].creature->team == team) {//同じチームの卵があれば
-					if (specialMovement1(FIELDSIZE) == TRUE) {//優先行動として産卵。
+					if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull) == TRUE) {//優先行動として産卵。
 						return TRUE;
 					}
 				}
@@ -113,7 +113,7 @@ bool PenguinKids::selectAction() {
 		}
 		return TRUE;
 	}
-	if (specialMovement1(FIELDSIZE) == TRUE) {
+	if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull) == TRUE) {
 		exhibitScreen(x, y, TRUE);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -242,7 +242,7 @@ bool PenguinKids::attack(int size) {
 
 
 
-bool PenguinKids::specialMovement1(int size) {//産卵
+bool PenguinKids::specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {//産卵
 	if (status == NORMAL) {
 		//exhibitScreen();
 		//DrawString(800, 300, "PenguinKids.specialMovement1メソッド実行", WHITE);

@@ -20,8 +20,8 @@ int clicking = 0;
 //PenguinKids sampleKids;
 
 
-PenguinKids mobs_PenguinKids[mobLimit];
-Bull mobs_Bull[mobLimit];
+//PenguinKids mobs_PenguinKids[mobLimit];
+//Bull mobs_Bull[mobLimit];
 
 
 int mobNumber = 0;

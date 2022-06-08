@@ -16,10 +16,10 @@ using namespace std;
 
 
 
-bool turnFinal();//ターンの最後にまとめて行われる操作。
+bool turnFinal(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);//ターンの最後にまとめて行われる操作。
 
-void enemyEnter(int turn, int level);//敵が襲来する動作。
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy);
+void enemyEnter(int turn, int level, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);//敵が襲来する動作。
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
 bool ending();
 
 
@@ -34,6 +34,8 @@ bool speedOrder(Creature* a, Creature* b);
 
 BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 	turnNum = 0;
+
+	
 	
 
 	for (int i = 0; i < FIELDSIZE; i++) {
@@ -64,12 +66,12 @@ bool BattleMode_GameManager::BattleMode(int level) {
 		
 
 		if (Emperor1.HP > 0) {
-			if (Emperor1.selectAction() == FALSE) {
+			if (Emperor1.selectAction(mobs_PenguinKids, mobs_Bull) == FALSE) {
 				return FALSE;
 			}
 		}
 		if (Emperor2.HP > 0) {
-			if (Emperor2.selectAction() == FALSE) {
+			if (Emperor2.selectAction(mobs_PenguinKids, mobs_Bull) == FALSE) {
 				return FALSE;
 			}
 		}
@@ -107,7 +109,7 @@ bool BattleMode_GameManager::BattleMode(int level) {
 
 
 		mainMsg = "";
-		if (turnFinal() == FALSE) {
+		if (turnFinal(mobs_PenguinKids, mobs_Bull) == FALSE) {
 			return FALSE;
 		}
 
@@ -130,7 +132,7 @@ bool BattleMode_GameManager::BattleMode(int level) {
 		}
 		
 
-		enemyEnter(turnNum, level);
+		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull);
 		turnNum += 1;
 		exhibitScreen(0, 0, FALSE);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);
@@ -155,7 +157,7 @@ bool BattleMode_GameManager::BattleMode(int level) {
 
 
 
-bool turnFinal() {//素早さ順にmobが行動していく関数。
+bool turnFinal(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {//素早さ順にmobが行動していく関数。
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -235,10 +237,18 @@ bool turnFinal() {//素早さ順にmobが行動していく関数。
 		//}
 
 		if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction();
+			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull);
+
+
+			//渡すべき引数、下の二つのうちどっちが正しんだ！？！？
+			//&mobs_PenguinKids[mobLimit], & mobs_Bull[mobLimit]
+			//mobs_PenguinKids, mobs_Bull
 		}
+
+
+
 		if (mobsSpeedOrder[i]->status == BULL) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction();
+			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull);
 		}
 
 
@@ -303,7 +313,7 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
+void enemyEnter(int turn, int level, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {//どのターンで敵が出現するかを決める。
 	int side = 0;
 	int place = 0;
 
@@ -329,16 +339,16 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 			place = GetRand(FIELDSIZE - 3);
 
 			if (side == 0) {
-				yieldEnemy(BULL, red, 0, 1, place + 1, 0);
+				yieldEnemy(BULL, red, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 			}
 			if (side == 1) {
-				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
+				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 			}
 			if (side == 2) {
-				yieldEnemy(BULL, red, 1, 0, 0, place + 1);
+				yieldEnemy(BULL, red, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 			}
 			if (side == 3) {
-				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 			}
 		}
 	}
@@ -348,16 +358,16 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, blue, 0, 1, place + 1, 0);
+			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1);
+			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, blue, 1, 0, 0, place + 1);
+			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1);
+			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 	}
 
@@ -369,16 +379,16 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, blue, 0, 1, place + 1, 0);
+			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1);
+			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, blue, 1, 0, 0, place + 1);
+			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1);
+			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 	}
 
@@ -401,16 +411,16 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 
 		place = GetRand(FIELDSIZE - 3);
 		if (randomSide == 0) {
-			yieldEnemy(BULL, red, 0, 1, place + 1, 0);
+			yieldEnemy(BULL, red, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (randomSide == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (randomSide == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place + 1);
+			yieldEnemy(BULL, red, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (randomSide == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 	}
 
@@ -421,20 +431,20 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, red, 0, 1, place + 1, 0);
+			yieldEnemy(BULL, red, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place + 1);
+			yieldEnemy(BULL, red, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
 		}
 
 	}
@@ -449,7 +459,7 @@ void enemyEnter(int turn, int level) {//どのターンで敵が出現するかを決める。
 
 
 
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy) {
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
 
 	if (enemyType == BULL) {
 		Bull bull = Bull();
