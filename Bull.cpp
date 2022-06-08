@@ -83,7 +83,7 @@ bool Bull::selectAction() {
 		return TRUE;
 	}
 
-	HP += 2;
+	HP += GetRand(2);
 	if (HP > HP_Limit) {//Ž©‘RŽ¡–ü
 		HP = HP_Limit;
 	}

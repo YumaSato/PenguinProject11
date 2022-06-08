@@ -109,7 +109,7 @@ bool Character::selectAction() {
 
 
 
-		mouse = GetMouseInput();//右クリックしたときの反応
+		mouse = GetMouseInput();
 
 
 		if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
@@ -147,7 +147,7 @@ bool Character::selectAction() {
 
 				if (exhibitOrNot == TRUE) {//キャラ詳細表示を表示するフラグが立っていた場合
 					bool turnFinish = FALSE;
-					for (int iii = 0; iii < 5; iii++) {
+					for (int iii = 0; iii < 6; iii++) {
 						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
 
 							if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
@@ -181,8 +181,10 @@ bool Character::selectAction() {
 								}
 							}
 							if (iii == 5) {
-								turnFinish = TRUE;
-								break;
+								if (turnFinish == FALSE) {
+									turnFinish = TRUE;
+									break;
+								}
 							}
 						}
 					}
