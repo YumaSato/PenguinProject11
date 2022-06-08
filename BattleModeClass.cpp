@@ -22,6 +22,9 @@ void enemyEnter(int turn, int level);//“G‚ªP—ˆ‚·‚é“®ìB
 void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy);
 bool ending();
 
+
+
+
 bool speedOrder(Creature* a, Creature* b);
 
 

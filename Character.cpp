@@ -136,6 +136,7 @@ bool Character::selectAction() {
 		}
 		
 
+
 		if (mouse & MOUSE_INPUT_LEFT) {//左クリックが行われた際の処理
 
 
