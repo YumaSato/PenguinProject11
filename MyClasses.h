@@ -12,17 +12,9 @@ using std::string;
 
 
 
-class BattleMode_GameManager {
-public:
-	BattleMode_GameManager();
-	bool BattleMode(int level);
-
-	PenguinKids mobs_PenguinKids[mobLimit];
-	Bull mobs_Bull[mobLimit];
-
-
-};
-
+class Bull;
+class PenguinKids;
+class Creature;
 
 
 
@@ -53,12 +45,12 @@ public:
 
 	Creature();
 	virtual void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed);
-	virtual bool selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
+	virtual bool selectAction(PenguinKids *mobs_PenguinKids, Bull *mobs_Bull);
 	virtual bool walk(int size);
 	virtual void changeDirection();
 	virtual bool attack(int size);
 	bool kick(int size);
-	virtual bool specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
+	virtual bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull);
 	virtual bool specialMovement2(int size);
 	virtual int useItem(int size);
 	virtual void test();
@@ -74,16 +66,54 @@ public:
 
 
 
+
+class Character : public Creature {//マス目にいるキャラクター
+public:
+	bool selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull);
+	void test();
+	void changeDirection();
+	bool walk(int size) override;
+	bool attack(int size);
+	Character();//キャラクタのコンストラクタ
+};
+
+
+
+class Bull : public Creature {
+public:
+	Bull();
+	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed)override;
+	void test();
+	bool walk(int size);
+	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull);
+	bool specialMovement2(int size);
+	bool attack(int size);
+	bool selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull);
+};
+
+
+
 class PenguinKids : public Creature {
 public:
 	PenguinKids();
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed)override;
 	void test();
-	bool specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) override;
+	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) override;
 	bool specialMovement2(int size) override;
 	bool attack(int size) override;
-	bool selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) override;
+	bool selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) override;
 };
+
+
+
+
+
+
+
+
+
+
+
 
 
 class Grid {//各マス
@@ -93,20 +123,12 @@ public:
 };
 
 
-class Character : public Creature {//マス目にいるキャラクター
-public:
-	bool selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
-	void test();
-	void changeDirection();
-	bool walk(int size) override;
-	bool attack(int size);
-	Character();//キャラクタのコンストラクタ
-};
+
 
 class Emperor : public Character {
 public:
 	Emperor(Team team, int num);
-	bool specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
+	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull);
 	bool specialMovement2(int size);
 };
 
@@ -121,22 +143,25 @@ class LiquidGod : public Character {
 };
 
 
-class Bull : public Character {
-public:
-	Bull();
-	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed)override;
-	void test();
-	bool walk(int size);
-	bool specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) override;
-	bool specialMovement2(int size) override;
-	bool attack(int size) override;
-	bool selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) override;
-};
 
 class Item {//マス目に落ちてるアイテム
 
 };
 
 class Trap {
+
+};
+
+
+
+
+class BattleMode_GameManager {
+public:
+	BattleMode_GameManager();
+	bool BattleMode(int level);
+
+	PenguinKids mobs_PenguinKids[mobLimit];
+	Bull mobs_Bull[mobLimit];
+
 
 };
