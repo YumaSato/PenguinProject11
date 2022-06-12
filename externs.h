@@ -43,7 +43,7 @@ extern int hHP;
 extern int HandleCastle;
 extern int handle[3][9][8];
 
-extern Grid board[FIELDSIZE][FIELDSIZE];//そのマスに何がいるか
+//extern Grid board[FIELDSIZE][FIELDSIZE];//そのマスに何がいるか
 
 extern Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレスを格納する変数。配列インデックスは、キャラ番号。
 //extern vector<Character*> handledCharacters(CHARACTERNUM);

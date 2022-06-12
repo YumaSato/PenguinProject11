@@ -45,14 +45,14 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 }
 
 
-void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed) {
+void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid* board) {
 }
 
-bool Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board) {
 	return TRUE;
 }
 
-bool Creature::walk(int size) {
+bool Creature::walk(int size, Grid* board) {
 	return FALSE;
 }
 
@@ -60,7 +60,7 @@ bool Creature::walk(int size) {
 
 
 
-bool Creature::kick(int size) {
+bool Creature::kick(int size, Grid* board) {
 	int cX = 0;
 	int cY = 0;
 	int drctnX, drctnY;
@@ -166,31 +166,31 @@ bool Creature::kick(int size) {
 
 
 
-void Creature::changeDirection() {
+void Creature::changeDirection(Grid* board) {
 }
 
-bool Creature::attack(int size) {
+bool Creature::attack(int size, Grid* board) {
 	return FALSE;
 }
 
-bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board) {
 	/*DrawString(800, 300, "Creature.specialMovement1メソッド実行", WHITE);
 	WaitKey();*/
 	return FALSE;
 }
 
-bool Creature::specialMovement2(int size) {
+bool Creature::specialMovement2(int size, Grid* board) {
 	return FALSE;
 }
 
-int Creature::useItem(int size) {
+int Creature::useItem(int size, Grid* board) {
 	return 0;
 };
 
 void Creature::test() {
 };
 
-void Creature::killed() {
+void Creature::killed(Grid* board) {
 	this->HP = NULL;
 	this->x = NULL;
 	this->y = NULL;

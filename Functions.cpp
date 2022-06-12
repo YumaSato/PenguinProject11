@@ -242,7 +242,7 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 		}
 
 		DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 235, "mobs_Bull", GetColor(255, 200, 255));
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 12; i++) {
 			Bulls = std::to_string(mobs_Bull[i].num) + " X:" + std::to_string(mobs_Bull[i].x) + " Y:" + std::to_string(mobs_Bull[i].y);
 			DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 220 + i * 13, Bulls.c_str(), GetColor(255, 200, 255));
 			DrawString(FIELDSIZE * SQUARESIZE + 295, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_Bull[i].name.c_str(), GetColor(255, 200, 255));

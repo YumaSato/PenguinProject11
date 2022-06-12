@@ -11,7 +11,7 @@ using std::string;
 
 Character::Character() : Creature() {}
 
-bool Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 	string msg = "は何する?\n\n自分を左クリック:行動を選択\n隣のマスを右クリック(十字キー):向き変更\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\nスペースキー:ルールを表示";
 	int xClick = 0;
 	int yClick = 0;
@@ -41,7 +41,7 @@ bool Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 		if (ruleExhibit == TRUE) {
 			while (1) {
 				WaitKey();
-				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
+				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE || CheckHitKey(KEY_INPUT_0) == TRUE) {
 					ruleExhibit = FALSE;
 					break;
 				}
@@ -370,6 +370,27 @@ bool Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 		if (CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
 			ruleExhibit = TRUE;
 			exhibitRule();
+		}
+
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
+		
+			while (1) {
+
+				mainMsg = "本当にゲームを終了してよろしいですか？ \nEnterキー:Yes 0:No";
+				ClearDrawScreen();
+				exhibitScreen(x, y, TRUE);
+				
+
+
+
+				if (CheckHitKey(KEY_INPUT_RETURN) == TRUE) {
+					return 2;
+				}
+				if (CheckHitKey(KEY_INPUT_0) == TRUE || CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
+					break;
+				}
+				WaitTimer(10);
+			}
 		}
 
 

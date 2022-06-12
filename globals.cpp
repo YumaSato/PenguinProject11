@@ -40,7 +40,7 @@ int hHP;
 int HandleCastle;
 int handle[3][9][8];//[team][status][direction]でペンギンの画像のハンドルを格納する3次元配列。
 
-Grid board[FIELDSIZE][FIELDSIZE];
+//Grid board[FIELDSIZE][FIELDSIZE];
 
 Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのポインタを格納する変数。配列インデックスは、キャラ番号。
 //vector<Character*> handledCharacters(CHARACTERNUM);

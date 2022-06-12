@@ -65,7 +65,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 
 
-bool PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;//skip状態を解消。

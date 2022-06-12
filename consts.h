@@ -43,7 +43,8 @@ enum State {
 
 constexpr int BUFFER = 256;
 
-constexpr int FIELDSIZE = 17;//フィールドのマス目の数
+//constexpr int FIELDSIZE = 17;//フィールドのマス目の数
+
 constexpr int SQUARESIZE = 48;
 
 const int CASTLE_X = 8;
@@ -54,3 +55,5 @@ constexpr int CHARACTERNUM = 2;//操作可能なキャラクタ数
 const int WHITE = GetColor(255, 255, 255);
 
 const int mobLimit = 1024;
+
+const int FIELDSIZE = 17;

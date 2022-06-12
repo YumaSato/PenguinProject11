@@ -16,10 +16,10 @@ using namespace std;
 
 
 
-bool turnFinal(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);//ƒ^[ƒ“‚ÌÅŒã‚É‚Ü‚Æ‚ß‚Äs‚í‚ê‚é‘€ìB
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board);//ƒ^[ƒ“‚ÌÅŒã‚É‚Ü‚Æ‚ß‚Äs‚í‚ê‚é‘€ìB
 
-void enemyEnter(int turn, int level, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);//“G‚ªP—ˆ‚·‚é“®ìB
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]);
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board);//“G‚ªP—ˆ‚·‚é“®ìB
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board);
 bool ending();
 
 
@@ -36,28 +36,30 @@ BattleMode_GameManager::BattleMode_GameManager() {//ƒRƒ“ƒXƒgƒ‰ƒNƒ^B
 	turnNum = 0;
 
 	
-	
-
-	for (int i = 0; i < FIELDSIZE; i++) {
-		board[i][0].state = ROCK;
-		board[i][FIELDSIZE -1].state = ROCK;
-		board[0][i].state = ROCK;
-		board[FIELDSIZE - 1][i].state = ROCK;
-
-		board[CASTLE_X][CASTLE_Y].state = CASTLE;
-	}
 }
 
 
 
-bool BattleMode_GameManager::BattleMode(int level) {
+
+int BattleMode_GameManager::BattleMode(int level) {
 
 	//string turnF = "";
+
+	for (int i = 0; i < FIELDSIZE; i++) {
+		board[i][0].state = ROCK;
+		board[i][FIELDSIZE - 1].state = ROCK;
+		board[0][i].state = ROCK;
+		board[FIELDSIZE - 1][i].state = ROCK;
+		board[CASTLE_X][CASTLE_Y].state = CASTLE;
+	}
+
+
 
 	Emperor Emperor1(red, 0);//ƒCƒ“ƒXƒ^ƒ“ƒX‰»
 	handledCharacters[0] = &Emperor1;
 	Emperor Emperor2(blue, 1);//ƒCƒ“ƒXƒ^ƒ“ƒX‰»
 	handledCharacters[1] = &Emperor2;
+	int actionReturn = 1;
 
 	gameMode = 1;
 
@@ -66,13 +68,22 @@ bool BattleMode_GameManager::BattleMode(int level) {
 		
 
 		if (Emperor1.HP > 0) {
-			if (Emperor1.selectAction(mobs_PenguinKids, mobs_Bull) == FALSE) {
-				return FALSE;
+			actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, &board[0][0]);
+			if (actionReturn ==0) {
+				return 0;
 			}
+			if (actionReturn == 2) {
+				return 2;
+			}
+
 		}
 		if (Emperor2.HP > 0) {
-			if (Emperor2.selectAction(mobs_PenguinKids, mobs_Bull) == FALSE) {
-				return FALSE;
+			actionReturn = Emperor2.selectAction(mobs_PenguinKids, mobs_Bull, &board[0][0]);
+			if (actionReturn == 0) {
+				return 0;//ƒQ[ƒ€’¼ÚI—¹
+			}
+			if (actionReturn == 2) {
+				return 2;//ƒ^ƒCƒgƒ‹‰æ–Ê‚É–ß‚é
 			}
 		}
 
@@ -109,7 +120,7 @@ bool BattleMode_GameManager::BattleMode(int level) {
 
 
 		mainMsg = "";
-		if (turnFinal(mobs_PenguinKids, mobs_Bull) == FALSE) {
+		if (turnFinal(mobs_PenguinKids, mobs_Bull, &board[0][0]) == FALSE) {
 			return FALSE;
 		}
 
@@ -132,7 +143,7 @@ bool BattleMode_GameManager::BattleMode(int level) {
 		}
 		
 
-		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull);
+		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, &board[0][0]);
 		turnNum += 1;
 		exhibitScreen(0, 0, FALSE);
 		/*turnF = "Œ»İ‚Ìƒ^[ƒ“:" + std::to_string(turnNum);
@@ -157,7 +168,7 @@ bool BattleMode_GameManager::BattleMode(int level) {
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//‘f‘‚³‡‚Émob‚ªs“®‚µ‚Ä‚¢‚­ŠÖ”B
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid *board) {//‘f‘‚³‡‚Émob‚ªs“®‚µ‚Ä‚¢‚­ŠÖ”B
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -194,36 +205,8 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//‘f‘‚³‡‚Émob‚
 
 	sort(mobsSpeedOrder, mobsSpeedOrder + mobNumber, speedOrder);
 
-	//s = "";
-	//for (int i = 0; i < mobNumber; i++) {
-	//	if (mobsSpeedOrder[i]->speed > 0) {
-	//		s = "X" + std::to_string(mobsSpeedOrder[i]->x) + "Y" + std::to_string(mobsSpeedOrder[i]->y) + "‚Ì‘f‘‚³:" + to_string(mobsSpeedOrder[i]->speed) + " \n";//‘f‘‚³‡ƒAƒhƒŒƒX”z—ñ‚ÌƒXƒs[ƒh‚ğ•\¦B
-	//		allS += s;
-	//	}
-	//}
-	//exhibitScreen(0, 0, FALSE);
-	//DrawString(FIELDSIZE * SQUARESIZE, 570, allS.c_str(), WHITE);
-	//WaitKey();
-
-
-
-
-
-
-
-
 	for (int i = 0; i < mobNumberNow; i++) {
 
-
-
-
-
-
-
-
-		//if (mobsspeedorder[i] == null) {
-		//	continue;
-		//}
 		if (mobsSpeedOrder[i] == NULL) {//ƒXƒs[ƒh‡”z—ñ‚É‚à‚¤‰½‚à‚È‚¯‚ê‚ÎI—¹B
 			return TRUE;
 		}
@@ -237,7 +220,7 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//‘f‘‚³‡‚Émob‚
 		//}
 
 		if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//•’Êor˜Vlƒyƒ“ƒMƒ“‚È‚çƒyƒ“ƒMƒ“‚ÌselectAction‚ğŒÄ‚ÔB
-			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull);
+			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board);
 
 
 			//“n‚·‚×‚«ˆø”A‰º‚Ì“ñ‚Â‚Ì‚¤‚¿‚Ç‚Á‚¿‚ª³‚µ‚ñ‚¾IHIH
@@ -248,19 +231,9 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//‘f‘‚³‡‚Émob‚
 
 
 		if (mobsSpeedOrder[i]->status == BULL) {//•’Êor˜Vlƒyƒ“ƒMƒ“‚È‚çƒyƒ“ƒMƒ“‚ÌselectAction‚ğŒÄ‚ÔB
-			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull);
+			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull ,board);
 		}
 
-
-		//if (moveOrNot == TRUE) {//‚à‚µs“®‚ªs‚í‚ê‚Ä‚¢‚½‚ç
-		//	exhibitScreen(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y,TRUE);
-		//	numSpeed = (to_string(mobsSpeedOrder[i]->speed));
-		//	numX = (to_string(mobsSpeedOrder[i]->x));
-		//	numY = (to_string(mobsSpeedOrder[i]->y));
-		//	mobStatusMsg = "X:" + numX + ",Y:" + numY + "‚Ì" + mobsSpeedOrder[i]->name + "\n s“®‘¬“x:" + numSpeed + " ‘Ì—Í:" + to_string(mobsSpeedOrder[i]->HP) + "/" + to_string(mobsSpeedOrder[i]->HP_Limit);
-		//	DrawString(FIELDSIZE * SQUARESIZE, 160, mobStatusMsg.c_str(), WHITE);
-		//	WaitKey();
-		//}
 		if (quitGame == TRUE) {
 			return FALSE;
 		}
@@ -313,7 +286,7 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//‚Ç‚Ìƒ^[ƒ“‚Å“G‚ªoŒ»‚·‚é‚©‚ğŒˆ‚ß‚éB
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board) {//‚Ç‚Ìƒ^[ƒ“‚Å“G‚ªoŒ»‚·‚é‚©‚ğŒˆ‚ß‚éB
 	int side = 0;
 	int place = 0;
 
@@ -339,16 +312,16 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 			place = GetRand(FIELDSIZE - 3);
 
 			if (side == 0) {
-				yieldEnemy(BULL, red, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+				yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
 			}
 			if (side == 1) {
-				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
 			}
 			if (side == 2) {
-				yieldEnemy(BULL, red, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+				yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
 			}
 			if (side == 3) {
-				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
 			}
 		}
 	}
@@ -358,16 +331,16 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 	}
 
@@ -379,16 +352,16 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 	}
 
@@ -411,16 +384,16 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 		place = GetRand(FIELDSIZE - 3);
 		if (randomSide == 0) {
-			yieldEnemy(BULL, red, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (randomSide == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (randomSide == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (randomSide == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 	}
 
@@ -431,20 +404,20 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, red, 0, 1, place + 1, 0, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
 			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
 			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, &mobs_PenguinKids[mobLimit], &mobs_Bull[mobLimit]);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
 		}
 
 	}
@@ -459,7 +432,7 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 
 
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid *board) {
 
 	if (enemyType == BULL) {
 		

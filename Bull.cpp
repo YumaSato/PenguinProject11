@@ -75,7 +75,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-bool Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 	
 	if (skip == TRUE) {//skip‚·‚éó‘Ô‚È‚çA‘¦I—¹B
