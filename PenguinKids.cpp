@@ -106,7 +106,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 
 
 	if (attack(FIELDSIZE, board) == TRUE) {
-		exhibitScreen(x, y, TRUE);
+		exhibitScreen(x, y, TRUE, board);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -114,7 +114,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 		return TRUE;
 	}
 	if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board) == TRUE) {
-		exhibitScreen(x, y, TRUE);
+		exhibitScreen(x, y, TRUE, board);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -122,7 +122,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 		return TRUE;
 	}
 	if (specialMovement2(FIELDSIZE, board) == TRUE) {
-		exhibitScreen(x, y, TRUE);
+		exhibitScreen(x, y, TRUE, board);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -140,8 +140,6 @@ void PenguinKids::test() {
 	string s;
 	s = "";
 	s = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "のtestメソッド実行";
-	exhibitScreen(x, y, TRUE);
-	DrawString(800, 300, s.c_str(), WHITE);
 	WaitKey();
 }
 

@@ -30,7 +30,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 	clicking = 0;
 
 	mainMsg = name + msg;
-	exhibitScreen(x,y,TRUE);
+	exhibitScreen(x,y,TRUE, board);
 	WaitKey();
 
 	while (1) {
@@ -88,7 +88,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 				dy = yClick - y;
 				if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスの上にマウスポインタがある場合
 					SETdirection(dx, dy);
-					exhibitScreen(x, y, TRUE);//その方向を向く。
+					exhibitScreen(x, y, TRUE, board);//その方向を向く。
 				}
 			}
 		}
@@ -180,12 +180,12 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 					//	}
 					if (board[xClick][yClick].creature == NULL) {
 						exhibitOrNot = FALSE;
-						exhibitScreen(x, y, TRUE);
+						exhibitScreen(x, y, TRUE, board);
 					}
 					if (XBuf >= 0 && XBuf < FIELDSIZE && YBuf >= 0 && YBuf < FIELDSIZE) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
 						if (board[xClick][yClick].creature == board[XBuf][YBuf].creature) {//表示中のマスを触ったらステータス表示消える。
 							exhibitOrNot = FALSE;
-							exhibitScreen(x, y, TRUE);
+							exhibitScreen(x, y, TRUE, board);
 						}
 					}
 
@@ -219,7 +219,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 					
 
-					exhibitScreen(x, y, TRUE);
+					exhibitScreen(x, y, TRUE, board);
 					string Msg1 = "";
 					string Msg2 = "";
 
@@ -258,12 +258,12 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 				}
 				else {//クリックしたのが操作しているキャラじゃない場合、普通にステータスを表示する。
-					exhibitStatus(x, y, XBuf, YBuf, TRUE, mobs_PenguinKids, mobs_Bull);
+					exhibitStatus(x, y, XBuf, YBuf, TRUE, mobs_PenguinKids, mobs_Bull, board);
 	/*				WaitTimer(10);*/
 				}
 			}
 			if (board[XBuf][YBuf].creature == NULL) {
-				exhibitScreen(x, y, TRUE);
+				exhibitScreen(x, y, TRUE, board);
 			}
 		}
 
@@ -272,7 +272,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
 			exhibitOrNot = FALSE;
-			exhibitScreen(x, y, TRUE);
+			exhibitScreen(x, y, TRUE, board);
 		}
 			
 
@@ -286,16 +286,16 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 			if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//向きだけ変わる:右上
 				//directionY = -1;
 				SETdirection(1, -1);
-				exhibitScreen(x, y, TRUE);
+				exhibitScreen(x, y, TRUE, board);
 				WaitTimer(200);
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//向きだけ変わる:右下
 				//directionY = 1;
 				SETdirection(1, 1);
-				exhibitScreen(x, y, TRUE);
+				exhibitScreen(x, y, TRUE, board);
 				WaitTimer(200);
 			}
-			exhibitScreen(x, y, TRUE);
+			exhibitScreen(x, y, TRUE, board);
 		}
 		else if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//向きだけ変わる:左
 			//directionX = -1;
@@ -304,28 +304,28 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 			if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//向きだけ変わる:左上
 				//directionY = -1;
 				SETdirection(-1, -1);
-				exhibitScreen(x, y, TRUE);
+				exhibitScreen(x, y, TRUE, board);
 				WaitTimer(200);
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//向きだけ変わる:左下
 				//directionY = 1;
 				SETdirection(-1, 1);
-				exhibitScreen(x, y, TRUE);
+				exhibitScreen(x, y, TRUE, board);
 				WaitTimer(200);
 			}
-			exhibitScreen(x, y, TRUE);
+			exhibitScreen(x, y, TRUE, board);
 		}
 		else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//向きだけ変わる:下
 			//directionX = 0;
 			//directionY = 1;
 			SETdirection(0, 1);
-			exhibitScreen(x, y, TRUE);
+			exhibitScreen(x, y, TRUE, board);
 		}
 		else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//向きだけ変わる:上
 			//directionX = 0;
 			//directionY = -1;
 			SETdirection(0, -1);
-			exhibitScreen(x, y, TRUE);
+			exhibitScreen(x, y, TRUE, board);
 		}
 
 
@@ -378,7 +378,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 				mainMsg = "本当にゲームを終了してよろしいですか？ \nEnterキー:Yes 0:No";
 				ClearDrawScreen();
-				exhibitScreen(x, y, TRUE);
+				exhibitScreen(x, y, TRUE, board);
 				
 
 
@@ -412,7 +412,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 	
 	mainMsg = "";
 	actionMsg = "行動終了。体力が回復します。";
-	exhibitScreen(x, y, TRUE);
+	exhibitScreen(x, y, TRUE, board);
 	WaitKey();
 	
 	return TRUE;
@@ -504,7 +504,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE]) {//歩く。盤面サイズ(size
 
 
 	while (distance < 3) {//各歩行の入力待機
-		exhibitScreen(x, y, TRUE);
+		exhibitScreen(x, y, TRUE, board);
 		checkX = 0;
 		checkY = 0;
 		mouse = 0;
@@ -526,7 +526,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE]) {//歩く。盤面サイズ(size
 		//	}
 		//}
 
-		exhibitScreen(x, y, TRUE);//歩けるマスは表示色変更。
+		exhibitScreen(x, y, TRUE, board);//歩けるマスは表示色変更。
 		for (int iix = -1; iix <= 1; iix++) {
 			for (int iiy = -1; iiy <= 1; iiy++) {
 				if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
@@ -601,7 +601,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE]) {//歩く。盤面サイズ(size
 					if (clicking == 0) {
 						clicking = 1;
 
-						exhibitScreen(x, y, TRUE);//歩行可能マス表示を消す。
+						exhibitScreen(x, y, TRUE, board);//歩行可能マス表示を消す。
 						WaitTimer(130);
 						if (distance == 0) {
 							return FALSE;//0歩目なら行動はなかったことになる
@@ -617,7 +617,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE]) {//歩く。盤面サイズ(size
 			if (mouse & MOUSE_INPUT_RIGHT) {//右クリックされて、まだ歩いていなければ歩きをキャンセルするのに成功。
 				if (distance == 0) {
 					return FALSE;
-					exhibitScreen(x, y, TRUE);
+					exhibitScreen(x, y, TRUE, board);
 				}
 			}
 
@@ -719,7 +719,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE]) {//歩く。盤面サイズ(size
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {//1を押したら歩行終了。
 			if (distance == 0) {
 				WaitTimer(100);
-				exhibitScreen(x, y, TRUE);
+				exhibitScreen(x, y, TRUE, board);
 				return FALSE;
 			}
 			else {
@@ -756,7 +756,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE]) {//歩く。盤面サイズ(size
 	return TRUE;
 	actionMsg = "walkの実行が終了";
 		
-	exhibitScreen(x, y, TRUE);
+	exhibitScreen(x, y, TRUE, board);
 	
 
 }
@@ -792,7 +792,7 @@ bool Character::attack(int size, Grid board[][FIELDSIZE]) {
 
 
 
-		exhibitScreen(x, y, TRUE);
+		exhibitScreen(x, y, TRUE, board);
 		DrawString(800, 180, actionMsg.c_str(), GetColor(255, 200, 255));
 		WaitKey();
 		return TRUE;

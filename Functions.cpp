@@ -189,7 +189,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 		if (damaging < damageHP) {
 			damaging += 1;
 		}
-		exhibitScreen(markX, markY, TRUE);
+		exhibitScreen(markX, markY, TRUE ,board);
 		DrawGraph(damageX * SQUARESIZE + 5, damageY * SQUARESIZE + 29, hHP, TRUE);
 		DrawBox(damageX * SQUARESIZE + 16, damageY * SQUARESIZE + 31, damageX * SQUARESIZE + 16 + (substitute.HP - damaging) / 2, damageY * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
 		
@@ -213,7 +213,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
-	exhibitScreen(markX, markY, attention);
+	exhibitScreen(markX, markY, attention, board);
 	string Msg = "";
 	string Bulls = "";
 
@@ -265,7 +265,7 @@ void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid boa
 	board[kickX + dx][kickY + dy].creature = NULL;
 	for (int i = 0; i < distance * SQUARESIZE/2; i=i++) {
 
-		exhibitScreen(kickX, kickY, TRUE);
+		exhibitScreen(kickX, kickY, TRUE, board);
 		DrawGraph((kickX + dx) * SQUARESIZE + (i*2 * dx), (kickY + dy) * SQUARESIZE + (i*2 * dy), handleEgg, TRUE);
 		WaitTimer(10);
 	}

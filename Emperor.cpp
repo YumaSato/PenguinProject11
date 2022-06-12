@@ -88,7 +88,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 
 
 			
-			exhibitScreen(x, y, TRUE);
+			exhibitScreen(x, y, TRUE, board);
 			return TRUE;
 		}
 		else {
@@ -116,7 +116,7 @@ bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE]) {//“ÁŽê‹ZF›z‰
 			incubate(checkX, checkY, board);
 			//board[checkX][checkY].creature->directionX = this->directionX;
 			//board[checkX][checkY].creature->directionY = this->directionY;
-			exhibitScreen(x, y, TRUE);
+			exhibitScreen(x, y, TRUE, board);
 			return TRUE;
 		}
 		else {

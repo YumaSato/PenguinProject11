@@ -64,7 +64,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-	exhibitScreen(x,y,TRUE);
+	exhibitScreen(x,y,TRUE, board);
 	numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));
@@ -89,7 +89,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid boar
 	}
 
 	if (attack(FIELDSIZE, board) == TRUE) {
-		exhibitScreen(x, y, TRUE);
+		exhibitScreen(x, y, TRUE, board);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -97,7 +97,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid boar
 		return TRUE;
 	}
 	if (walk(FIELDSIZE, board) == TRUE) {
-		exhibitScreen(x, y, TRUE);
+		exhibitScreen(x, y, TRUE, board);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;

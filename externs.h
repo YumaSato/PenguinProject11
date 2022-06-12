@@ -53,9 +53,9 @@ extern Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレ
 extern int randomSide;
 
 
-void exhibitScreen(int markX, int markY, bool attention);
+void exhibitScreen(int markX, int markY, bool attention, Grid board[][FIELDSIZE]);
 void exhibitStatusMsg();
-void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP);
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull);
-void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance);
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE]);
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
+void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE]);
 void exhibitRule();
