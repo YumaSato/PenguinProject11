@@ -65,7 +65,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 
 
-bool PenguinKids::selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
+bool PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;//skip状態を解消。
@@ -242,7 +242,7 @@ bool PenguinKids::attack(int size) {
 
 
 
-bool PenguinKids::specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {//産卵
+bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//産卵
 	if (status == NORMAL) {
 		//exhibitScreen();
 		//DrawString(800, 300, "PenguinKids.specialMovement1メソッド実行", WHITE);

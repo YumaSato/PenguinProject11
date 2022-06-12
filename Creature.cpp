@@ -48,7 +48,7 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed) {
 }
 
-bool Creature::selectAction(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
+bool Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 	return TRUE;
 }
 
@@ -173,7 +173,7 @@ bool Creature::attack(int size) {
 	return FALSE;
 }
 
-bool Creature::specialMovement1(int size, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
+bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 	/*DrawString(800, 300, "Creature.specialMovement1メソッド実行", WHITE);
 	WaitKey();*/
 	return FALSE;

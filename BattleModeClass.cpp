@@ -157,7 +157,7 @@ bool BattleMode_GameManager::BattleMode(int level) {
 
 
 
-bool turnFinal(PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {//素早さ順にmobが行動していく関数。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//素早さ順にmobが行動していく関数。
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -313,7 +313,7 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn, int level, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {//どのターンで敵が出現するかを決める。
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//どのターンで敵が出現するかを決める。
 	int side = 0;
 	int place = 0;
 
@@ -459,7 +459,7 @@ void enemyEnter(int turn, int level, PenguinKids mobs_PenguinKids[mobLimit], Bul
 
 
 
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids mobs_PenguinKids[mobLimit], Bull mobs_Bull[mobLimit]) {
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 	if (enemyType == BULL) {
 		Bull bull = Bull();
