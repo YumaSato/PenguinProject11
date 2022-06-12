@@ -11,7 +11,7 @@ using std::string;
 
 Character::Character() : Creature() {}
 
-int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
 	string msg = "は何する?\n\n自分を左クリック:行動を選択\n隣のマスを右クリック(十字キー):向き変更\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\nスペースキー:ルールを表示";
 	int xClick = 0;
 	int yClick = 0;
@@ -109,31 +109,31 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
 
 							if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
-								if (walk(FIELDSIZE) == TRUE) {
+								if (walk(FIELDSIZE, board) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 1) {
-								if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull) == TRUE) {
+								if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull,board) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 2) {
-								if (specialMovement2(FIELDSIZE) == TRUE) {
+								if (specialMovement2(FIELDSIZE, board) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 3) {
-								if (attack(FIELDSIZE) == TRUE) {
+								if (attack(FIELDSIZE,board) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 4) {
-								if (kick(FIELDSIZE) == TRUE) {
+								if (kick(FIELDSIZE,board) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
@@ -339,27 +339,27 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			WaitTimer(100);
-			if (walk(FIELDSIZE) == TRUE) {
+			if (walk(FIELDSIZE,board) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
-			if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull) == TRUE) {
+			if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_3) == TRUE) {
-			if (specialMovement2(FIELDSIZE) == TRUE) {
+			if (specialMovement2(FIELDSIZE, board) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_4) == TRUE) {
-			if (attack(FIELDSIZE) == TRUE) {
+			if (attack(FIELDSIZE, board) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_5) == TRUE) {
-			if (kick(FIELDSIZE) == TRUE) {
+			if (kick(FIELDSIZE, board) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
@@ -439,35 +439,35 @@ void Character::test() {
 }
 
 
-void Character::changeDirection() {//歩かずに向きを変える
-	WaitKey();
-	if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//なぜ上下左右が逆なの？謎。
-		//directionX = 1;
-		//directionY = 0;
-		SETdirection(1, 0);
-	}
-	else if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {
-		//directionX = -1;
-		//directionY = 0;
-		SETdirection(-1, 0);
-	}
-	else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {
-		//directionX = 0;
-		//directionY = 1;
-		SETdirection(0, 1);
-	}
-	else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {
-		//directionX = 0;
-		//directionY = -1;
-		SETdirection(0, -1);
-	}
-	//board[x][y].creature->directionX = this->directionX;
-	//board[x][y].creature->directionY = this->directionY;
-	int tmpx, tmpy;
-	this->GETdirectionXY(&tmpx, &tmpy);
-	board[x][y].creature->SETdirection(tmpx, tmpy);
-	exhibitScreen(x, y, TRUE);
-};
+//void Character::changeDirection() {//歩かずに向きを変える
+//	WaitKey();
+//	if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//なぜ上下左右が逆なの？謎。
+//		//directionX = 1;
+//		//directionY = 0;
+//		SETdirection(1, 0);
+//	}
+//	else if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {
+//		//directionX = -1;
+//		//directionY = 0;
+//		SETdirection(-1, 0);
+//	}
+//	else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {
+//		//directionX = 0;
+//		//directionY = 1;
+//		SETdirection(0, 1);
+//	}
+//	else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {
+//		//directionX = 0;
+//		//directionY = -1;
+//		SETdirection(0, -1);
+//	}
+//	//board[x][y].creature->directionX = this->directionX;
+//	//board[x][y].creature->directionY = this->directionY;
+//	int tmpx, tmpy;
+//	this->GETdirectionXY(&tmpx, &tmpy);
+//	board[x][y].creature->SETdirection(tmpx, tmpy);
+//	exhibitScreen(x, y, TRUE);
+//};
 
 
 
@@ -480,7 +480,7 @@ void Character::changeDirection() {//歩かずに向きを変える
 
 
 
-bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
+bool Character::walk(int size, Grid board[][FIELDSIZE]) {//歩く。盤面サイズ(size)を受け取る
 	int distance = 0;
 	int checkX = 0;
 	int checkY = 0;
@@ -768,7 +768,7 @@ bool Character::walk(int size) {//歩く。盤面サイズ(size)を受け取る
 
 
 
-bool Character::attack(int size) {
+bool Character::attack(int size, Grid board[][FIELDSIZE]) {
 
 	int checkX = 0;
 	int checkY;
@@ -781,7 +781,7 @@ bool Character::attack(int size) {
 		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
 			return FALSE;
 		}
-		damage(checkX, checkY);
+		damage(checkX, checkY, board);
 
 
 		string msg1 = "は攻撃した。";

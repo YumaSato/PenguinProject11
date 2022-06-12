@@ -10,7 +10,7 @@ using namespace std;
 Bull::Bull() {
 }
 
-void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed) {//実質的なコンストラクタ。
+void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE]) {//実質的なコンストラクタ。
 	//未初期化のBull配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -75,7 +75,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
 
 	
 	if (skip == TRUE) {//skipする状態なら、即終了。
@@ -88,7 +88,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 		HP = HP_Limit;
 	}
 
-	if (attack(FIELDSIZE) == TRUE) {
+	if (attack(FIELDSIZE, board) == TRUE) {
 		exhibitScreen(x, y, TRUE);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -96,7 +96,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 		}
 		return TRUE;
 	}
-	if (walk(FIELDSIZE) == TRUE) {
+	if (walk(FIELDSIZE, board) == TRUE) {
 		exhibitScreen(x, y, TRUE);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -112,7 +112,7 @@ void Bull::test() {
 }
 
 
-bool Bull::walk(int size) {
+bool Bull::walk(int size, Grid board[][FIELDSIZE]) {
 	int ix;
 	int iy;
 	int dx;
@@ -259,15 +259,15 @@ bool Bull::walk(int size) {
 
 
 
-bool Bull::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+bool Bull::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
 	return TRUE;
 }
 
-bool Bull::specialMovement2(int size) {
+bool Bull::specialMovement2(int size, Grid board[][FIELDSIZE]) {
 	return TRUE;
 }
 
-bool Bull::attack(int size) {
+bool Bull::attack(int size, Grid board[][FIELDSIZE]) {
 	int ix;
 	int iy;
 	int dx;
@@ -282,7 +282,7 @@ bool Bull::attack(int size) {
 				return FALSE;
 			}
 			if (board[ix][iy].creature->enemy == FALSE) {//NULLじゃなくてロボットどもだったら攻撃
-				damage(ix, iy);
+				damage(ix, iy, board);
 				return TRUE;
 			}
 		}
@@ -342,7 +342,7 @@ bool Bull::attack(int size) {
 						if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 							if (board[ix][iy].creature->enemy == FALSE && board[ix][iy].creature->status != EGG) {//それがペンギン共で、卵じゃなければ
 								SETdirection(dx, dy);//敵の方を向いて
-								damage(ix, iy);
+								damage(ix, iy, board);
 								return TRUE;
 							}
 						}

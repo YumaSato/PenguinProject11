@@ -59,7 +59,7 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 
 
 
-void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
+void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE]) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
 	int h;//ハンドル格納用
 	string turn = "";
 	bool HPexhibitOrNot;
@@ -165,7 +165,7 @@ void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステ
 
 
 
-void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP) {
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE]) {
 	
 	Creature* damaged = board[damageX][damageY].creature;//被ダメージ側を一時保存。
 	board[damageX][damageY].creature = NULL;//一旦その場にキャラがいないことにする。
@@ -212,7 +212,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
 	exhibitScreen(markX, markY, attention);
 	string Msg = "";
 	string Bulls = "";
@@ -258,7 +258,7 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 
 
 
-void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance) {
+void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE]) {
 	
 	Creature* kicked = board[kickX + dx][kickY + dy].creature;//蹴られた卵のポインタを仮置き場に代入し保持。
 	int handleEgg = handle[board[kickX + dx][kickY + dy].creature->team][EGG][NW];

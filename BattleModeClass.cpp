@@ -16,10 +16,10 @@ using namespace std;
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board);//ターンの最後にまとめて行われる操作。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);//ターンの最後にまとめて行われる操作。
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board);//敵が襲来する動作。
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board);
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);//敵が襲来する動作。
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
 bool ending();
 
 
@@ -57,8 +57,12 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 	Emperor Emperor1(red, 0);//インスタンス化
 	handledCharacters[0] = &Emperor1;
+	board[Emperor1.x][Emperor1.y].creature = &Emperor1;//マス目に自分のポインタを代入。
+
 	Emperor Emperor2(blue, 1);//インスタンス化
 	handledCharacters[1] = &Emperor2;
+	board[Emperor2.x][Emperor2.y].creature = &Emperor2;
+
 	int actionReturn = 1;
 
 	gameMode = 1;
@@ -68,7 +72,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 		
 
 		if (Emperor1.HP > 0) {
-			actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, &board[0][0]);
+			actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, board);
 			if (actionReturn ==0) {
 				return 0;
 			}
@@ -78,7 +82,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 		}
 		if (Emperor2.HP > 0) {
-			actionReturn = Emperor2.selectAction(mobs_PenguinKids, mobs_Bull, &board[0][0]);
+			actionReturn = Emperor2.selectAction(mobs_PenguinKids, mobs_Bull, board);
 			if (actionReturn == 0) {
 				return 0;//ゲーム直接終了
 			}
@@ -120,7 +124,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 		mainMsg = "";
-		if (turnFinal(mobs_PenguinKids, mobs_Bull, &board[0][0]) == FALSE) {
+		if (turnFinal(mobs_PenguinKids, mobs_Bull, board) == FALSE) {
 			return FALSE;
 		}
 
@@ -143,7 +147,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 		}
 		
 
-		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, &board[0][0]);
+		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board);
 		turnNum += 1;
 		exhibitScreen(0, 0, FALSE);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);
@@ -168,7 +172,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid *board) {//素早さ順にmobが行動していく関数。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {//素早さ順にmobが行動していく関数。
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -286,7 +290,7 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board) {//どのターンで敵が出現するかを決める。
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {//どのターンで敵が出現するかを決める。
 	int side = 0;
 	int place = 0;
 
@@ -432,7 +436,7 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 
 
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid *board) {
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
 
 	if (enemyType == BULL) {
 		
@@ -459,7 +463,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 		if (board[cx][cy].creature == NULL) {
 
 			Bull bull = Bull();
-			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000);
+			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000, board);
 			mobs_Bull[num_bull] = bull;
 			board[cx][cy].creature = &mobs_Bull[num_bull];
 			mobNumber += 1;

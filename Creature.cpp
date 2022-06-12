@@ -45,14 +45,14 @@ Creature::Creature() {//ƒRƒ“ƒXƒgƒ‰ƒNƒ^Bƒ`[ƒ€‚ÆˆÊ’u‚ğó‚¯æ‚éB
 }
 
 
-void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid* board) {
+void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE]) {
 }
 
-int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board) {
+int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
 	return TRUE;
 }
 
-bool Creature::walk(int size, Grid* board) {
+bool Creature::walk(int size, Grid board[][FIELDSIZE]) {
 	return FALSE;
 }
 
@@ -60,7 +60,7 @@ bool Creature::walk(int size, Grid* board) {
 
 
 
-bool Creature::kick(int size, Grid* board) {
+bool Creature::kick(int size, Grid board[][FIELDSIZE]) {
 	int cX = 0;
 	int cY = 0;
 	int drctnX, drctnY;
@@ -166,31 +166,31 @@ bool Creature::kick(int size, Grid* board) {
 
 
 
-void Creature::changeDirection(Grid* board) {
+void Creature::changeDirection(Grid board[][FIELDSIZE]) {
 }
 
-bool Creature::attack(int size, Grid* board) {
+bool Creature::attack(int size, Grid board[][FIELDSIZE]) {
 	return FALSE;
 }
 
-bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid* board) {
+bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
 	/*DrawString(800, 300, "Creature.specialMovement1ƒƒ\ƒbƒhÀs", WHITE);
 	WaitKey();*/
 	return FALSE;
 }
 
-bool Creature::specialMovement2(int size, Grid* board) {
+bool Creature::specialMovement2(int size, Grid board[][FIELDSIZE]) {
 	return FALSE;
 }
 
-int Creature::useItem(int size, Grid* board) {
+int Creature::useItem(int size, Grid board[][FIELDSIZE]) {
 	return 0;
 };
 
 void Creature::test() {
 };
 
-void Creature::killed(Grid* board) {
+void Creature::killed(Grid board[][FIELDSIZE]) {
 	this->HP = NULL;
 	this->x = NULL;
 	this->y = NULL;
@@ -262,7 +262,7 @@ void Creature::DeleteCreature() {
 
 
 
-void Creature::incubate(int checkX, int checkY) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñB›z‰»‚Ì“à—e‚ğÀsB
+void Creature::incubate(int checkX, int checkY ,Grid board[][FIELDSIZE]) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñB›z‰»‚Ì“à—e‚ğÀsB
 
 	board[checkX][checkY].creature->status = NORMAL;
 	board[checkX][checkY].creature->defensePower = 25 + GetRand(2);
@@ -271,7 +271,7 @@ void Creature::incubate(int checkX, int checkY) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñB›z‰
 
 
 
-void Creature::damage(int checkX, int checkY) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñBUŒ‚‚Ì“à—e‚ğÀsB
+void Creature::damage(int checkX, int checkY, Grid board[][FIELDSIZE]) {//w’è’n“_‚É¶•¨‚ª‚¢‚é‘O’ñBUŒ‚‚Ì“à—e‚ğÀsB
 
 	int damageHP = 0;
 	damageHP = (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ƒ_ƒŒv

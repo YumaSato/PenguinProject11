@@ -32,7 +32,7 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 
 		//setCreature(num, x, y);
 
-		board[x][y].creature = this;//マス目に自分のポインタを代入。
+		
 
 	}
 
@@ -56,12 +56,12 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 
 		//setCreature(num, x, y);
 
-		board[x][y].creature = this;
+		
 	}
 }
 
 
-bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {//特殊技：産卵
+bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {//特殊技：産卵
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -72,7 +72,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
 		if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//押したマスの方向が空いていたらインスタンス化を実行
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, speed);
+			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, speed, board);
 
 			//kids.push_back(penguinKids);
 			//board[checkX][checkY].creature = &kids.back();
@@ -99,7 +99,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 }
 
 
-bool Emperor::specialMovement2(int size) {//特殊技：孵化
+bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE]) {//特殊技：孵化
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -113,7 +113,7 @@ bool Emperor::specialMovement2(int size) {//特殊技：孵化
 		}
 		if (board[checkX][checkY].creature->status == EGG) {//押したマスの方向に卵があれば処理を実行
 
-			incubate(checkX, checkY);
+			incubate(checkX, checkY, board);
 			//board[checkX][checkY].creature->directionX = this->directionX;
 			//board[checkX][checkY].creature->directionY = this->directionY;
 			exhibitScreen(x, y, TRUE);
