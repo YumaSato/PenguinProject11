@@ -462,7 +462,7 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 	if (enemyType == BULL) {
-		Bull bull = Bull();
+		
 		
 		if (board[cx][cy].creature != NULL) {
 			int rand = GetRand(1);
@@ -484,6 +484,8 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 			}
 		}
 		if (board[cx][cy].creature == NULL) {
+
+			Bull bull = Bull();
 			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000);
 			mobs_Bull[num_bull] = bull;
 			board[cx][cy].creature = &mobs_Bull[num_bull];

@@ -24,6 +24,7 @@ bool Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 	int dy = 0;
 	bool colorUpOrDown = TRUE;
 	bool exhibitOrNot = FALSE;
+	bool exhibitMyStatusOrNot = FALSE;
 	int color = 10;
 
 	clicking = 0;
@@ -64,49 +65,6 @@ bool Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 
 
-		//GetMousePoint(&xClick, &yClick);
-		//xClick = xClick / 48;
-		//yClick = yClick / 48;
-		//if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-		//	dx = xClick - x;
-		//	dy = yClick - y;
-		//	if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスをクリックしている場合
-
-		//		//SETdirection(dx, dy);//その方向を向く。
-		//		//exhibitScreen(x, y, TRUE);
-
-		//		if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//さらにそのマスに生物がいない、かつVACANTだった場合
-
-		//			int StringColor = 0;
-		//			string Msg = "";
-		//			bool colorUpOrDown = TRUE;
-
-		//			exhibitScreen(x, y, TRUE);
-		//			DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(StringColor, 255, 50), TRUE);
-
-		//			if (colorUpOrDown == TRUE) {
-		//				StringColor += 9;
-		//			}
-		//			if (colorUpOrDown == FALSE) {
-		//				StringColor -= 9;
-		//			}
-		//			if (StringColor >= 240) {
-		//				colorUpOrDown = FALSE;
-		//			}
-		//			if (StringColor <= 10) {
-		//				colorUpOrDown = TRUE;
-		//			}
-		//		}
-		//	}
-		//	else{
-		//		exhibitScreen(x, y, TRUE);
-		//	}
-
-		//}
-
-		//もしクリックされたら、clicking=1になる。1の間は処理は行われない。
-
-
 
 
 		mouse = GetMouseInput();
@@ -145,9 +103,9 @@ bool Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 				GetMousePoint(&xClick, &yClick);//マウスポインタがどこにあるかを取得
 
-				if (exhibitOrNot == TRUE) {//キャラ詳細表示を表示するフラグが立っていた場合
+				if (exhibitMyStatusOrNot == TRUE) {//キャラ詳細表示を表示するフラグが立っていた場合
 					bool turnFinish = FALSE;
-					for (int iii = 0; iii < 6; iii++) {
+					for (int iii = 0; iii < 6; iii++) {//６つの選択肢がクリックを受け付ける。
 						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
 
 							if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
@@ -237,6 +195,13 @@ bool Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 						//if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
 						exhibitOrNot = TRUE;
 						//}
+
+						if (xClick == x && yClick == y) {
+							exhibitMyStatusOrNot = TRUE;
+						}
+						else {
+							exhibitMyStatusOrNot = FALSE;
+						}
 					}
 
 				}
