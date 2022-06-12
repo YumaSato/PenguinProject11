@@ -143,6 +143,11 @@ void exhibitScreen(int markX, int markY ,bool attention) {//ペンギンを描画（ステ
 	turn = "現在のターン:" + std::to_string(turnNum) + "   現在のスコア:" + std::to_string(score);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20 ,turn.c_str(), GetColor(255, 200, 255));
 	actionMsg = "";
+
+
+
+	
+
 }
 
 
@@ -207,9 +212,10 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention) {
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 	exhibitScreen(markX, markY, attention);
 	string Msg = "";
+	string Bulls = "";
 
 	if (statusX < FIELDSIZE && statusY < FIELDSIZE) {
 
@@ -219,6 +225,30 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 		Msg = board[statusX][statusY].creature->name + "のHP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) + "\n素早さ値:" + to_string(board[statusX][statusY].creature->speed);
 
 		DrawString(statusX * 48 + 42, statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
+
+
+
+
+
+
+
+		//以下、モブ配列がバグっているので調査
+
+		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 235, "mobs_PenguinKids", GetColor(255, 200, 255));
+		for (int i = 0; i < 12; i++) {
+			Bulls = std::to_string(mobs_PenguinKids[i].num) + " X:" + std::to_string(mobs_PenguinKids[i].x) + " Y:" + std::to_string(mobs_PenguinKids[i].y);
+			DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 220 + i*13, Bulls.c_str(), GetColor(255, 200, 255));
+			DrawString(FIELDSIZE * SQUARESIZE + 100, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_PenguinKids[i].name.c_str(), GetColor(255, 200, 255));
+		}
+
+		DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 235, "mobs_Bull", GetColor(255, 200, 255));
+		for (int i = 0; i < 10; i++) {
+			Bulls = std::to_string(mobs_Bull[i].num) + " X:" + std::to_string(mobs_Bull[i].x) + " Y:" + std::to_string(mobs_Bull[i].y);
+			DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 220 + i * 13, Bulls.c_str(), GetColor(255, 200, 255));
+			DrawString(FIELDSIZE * SQUARESIZE + 295, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_Bull[i].name.c_str(), GetColor(255, 200, 255));
+		}
+
+		
 	}
 }
 

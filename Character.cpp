@@ -258,7 +258,7 @@ bool Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull) {
 
 				}
 				else {//クリックしたのが操作しているキャラじゃない場合、普通にステータスを表示する。
-					exhibitStatus(x, y, XBuf, YBuf, TRUE);
+					exhibitStatus(x, y, XBuf, YBuf, TRUE, mobs_PenguinKids, mobs_Bull);
 	/*				WaitTimer(10);*/
 				}
 			}
