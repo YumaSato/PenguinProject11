@@ -61,7 +61,7 @@ Emperor::Emperor(Team team, int num) : Character() {//c’é‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
 }
 
 
-bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {//“ÁŽê‹ZFŽY—‘
+bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//“ÁŽê‹ZFŽY—‘
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -88,7 +88,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 
 
 			
-			exhibitScreen(x, y, TRUE, board, handledCharacters);
+			exhibitScreen(x, y, TRUE, board, *handledCharacters);
 			return TRUE;
 		}
 		else {
@@ -99,7 +99,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 }
 
 
-bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {//“ÁŽê‹ZF›z‰»
+bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//“ÁŽê‹ZF›z‰»
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -116,7 +116,7 @@ bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Character* han
 			incubate(checkX, checkY, board, handledCharacters);
 			//board[checkX][checkY].creature->directionX = this->directionX;
 			//board[checkX][checkY].creature->directionY = this->directionY;
-			exhibitScreen(x, y, TRUE, board, handledCharacters);
+			exhibitScreen(x, y, TRUE, board, *handledCharacters);
 			return TRUE;
 		}
 		else {

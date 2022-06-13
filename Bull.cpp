@@ -10,7 +10,7 @@ using namespace std;
 Bull::Bull() {
 }
 
-void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters) {//実質的なコンストラクタ。
+void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//実質的なコンストラクタ。
 	//未初期化のBull配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -64,7 +64,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-	exhibitScreen(x,y,TRUE, board, handledCharacters);
+	exhibitScreen(x,y,TRUE, board, *handledCharacters);
 	numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));
@@ -75,7 +75,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
+int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 
 	
 	if (skip == TRUE) {//skipする状態なら、即終了。
@@ -89,7 +89,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid boar
 	}
 
 	if (attack(FIELDSIZE, board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		exhibitScreen(x, y, TRUE, board, *handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -97,7 +97,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid boar
 		return TRUE;
 	}
 	if (walk(FIELDSIZE, board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		exhibitScreen(x, y, TRUE, board, *handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -112,7 +112,7 @@ void Bull::test() {
 }
 
 
-bool Bull::walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Bull::walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	int ix;
 	int iy;
 	int dx;
@@ -259,15 +259,15 @@ bool Bull::walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters)
 
 
 
-bool Bull::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Bull::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	return TRUE;
 }
 
-bool Bull::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Bull::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	return TRUE;
 }
 
-bool Bull::attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Bull::attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	int ix;
 	int iy;
 	int dx;

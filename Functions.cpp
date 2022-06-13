@@ -14,7 +14,7 @@ using std::to_string;
 
 
 
-void exhibitStatusMsg(Character *handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ^ƒXî•ñ‚ð•\Ž¦‚·‚éB
+void exhibitStatusMsg(Character *handledCharacters[CHARACTERNUM]) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ^ƒXî•ñ‚ð•\Ž¦‚·‚éB
 
 	string CharacterStatusMsg;
 
@@ -30,15 +30,15 @@ void exhibitStatusMsg(Character *handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe
 
 
 		string numHP;
-		numHP = (to_string(handledCharacters[i].HP));
+		numHP = (to_string(handledCharacters[i]->HP));
 		string numHP_Limit;
-		numHP_Limit = (to_string(handledCharacters[i].HP_Limit));
+		numHP_Limit = (to_string(handledCharacters[i]->HP_Limit));
 		string numLevel;
-		numLevel = (to_string(handledCharacters[i].levelUp));
+		numLevel = (to_string(handledCharacters[i]->levelUp));
 		string numExp;
-		numExp = (to_string(handledCharacters[i].expPoint));
+		numExp = (to_string(handledCharacters[i]->expPoint));
 
-		CharacterStatusMsg = handledCharacters[i].name + "‚Ìó‘Ô\n HP :" + numHP + " / " + numHP_Limit + "\nƒŒƒxƒ‹F" + numLevel + " / " + numExp;
+		CharacterStatusMsg = handledCharacters[i]->name + "‚Ìó‘Ô\n HP :" + numHP + " / " + numHP_Limit + "\nƒŒƒxƒ‹F" + numLevel + " / " + numExp;
 
 		//char HP_NumStr[BUFFER];
 		//sprintf_s(HP_NumStr, BUFFER, "%d / %d\n", handledCharacters[i].HP, handledCharacters[i].HP_Limit);
@@ -65,7 +65,7 @@ void exhibitStatusMsg(Character *handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe
 
 
 
-void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE], Character *handledCharacters) {//ƒyƒ“ƒMƒ“‚ð•`‰æiƒXƒe[ƒ^ƒX‚ÆŒü‚«‚©‚çƒyƒ“ƒMƒ“‚Ì“KØ‚È‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ð“üŽè‚µŠi”[‚µ‚Ä‚©‚ç•`‰æj
+void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE], Character *handledCharacters[CHARACTERNUM]) {//ƒyƒ“ƒMƒ“‚ð•`‰æiƒXƒe[ƒ^ƒX‚ÆŒü‚«‚©‚çƒyƒ“ƒMƒ“‚Ì“KØ‚È‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ð“üŽè‚µŠi”[‚µ‚Ä‚©‚ç•`‰æj
 	int h;//ƒnƒ“ƒhƒ‹Ši”[—p
 	string turn = "";
 	bool HPexhibitOrNot;
@@ -171,7 +171,7 @@ void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE]
 
 
 
-void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE], Character* handledCharacters) {
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	
 	Creature* damaged = board[damageX][damageY].creature;//”íƒ_ƒ[ƒW‘¤‚ðˆêŽž•Û‘¶B
 	board[damageX][damageY].creature = NULL;//ˆê’U‚»‚Ìê‚ÉƒLƒƒƒ‰‚ª‚¢‚È‚¢‚±‚Æ‚É‚·‚éB
@@ -218,7 +218,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	exhibitScreen(markX, markY, attention, board, handledCharacters);
 	string Msg = "";
 	string Bulls = "";
@@ -262,7 +262,7 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 
 
 
-void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE], Character* handledCharacters) {
+void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	
 	Creature* kicked = board[kickX + dx][kickY + dy].creature;//R‚ç‚ê‚½—‘‚Ìƒ|ƒCƒ“ƒ^‚ð‰¼’u‚«ê‚É‘ã“ü‚µ•ÛŽB
 	int handleEgg = handle[board[kickX + dx][kickY + dy].creature->team][EGG][NW];

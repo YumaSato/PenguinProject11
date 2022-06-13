@@ -45,14 +45,14 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 }
 
 
-void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters) {
+void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 }
 
-int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
+int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	return TRUE;
 }
 
-bool Creature::walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Creature::walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	return FALSE;
 }
 
@@ -60,7 +60,7 @@ bool Creature::walk(int size, Grid board[][FIELDSIZE], Character* handledCharact
 
 
 
-bool Creature::kick(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Creature::kick(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	int cX = 0;
 	int cY = 0;
 	int drctnX, drctnY;
@@ -103,7 +103,7 @@ bool Creature::kick(int size, Grid board[][FIELDSIZE], Character* handledCharact
 
 				if (cX < 0 || cX >= size || cY < 0 || cY >= size ||(cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
 
-					exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
+					exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters[CHARACTERNUM]);
 
 					board[x + drctnX][y + drctnY].creature->DeleteCreature();
 					board[x + drctnX][y + drctnY].creature = NULL;
@@ -114,7 +114,7 @@ bool Creature::kick(int size, Grid board[][FIELDSIZE], Character* handledCharact
 
 					if (board[cX][cY].creature->status == EMPEROR || board[cX][cY].creature->status == ELDER || board[cX][cY].creature->status == NORMAL) {//大人ペンギンが見つかったら
 
-						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
+						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters[CHARACTERNUM]);
 
 						board[x + drctnX][y + drctnY].creature->x = cX - drctnX;//元の居場所から動くペンギンを指定し、そのXYを変更。
 						board[x + drctnX][y + drctnY].creature->y = cY - drctnY;
@@ -131,7 +131,7 @@ bool Creature::kick(int size, Grid board[][FIELDSIZE], Character* handledCharact
 
 					else if (board[cX][cY].creature->status == EGG) {//卵が見つかったら
 
-						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
+						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters[CHARACTERNUM]);
 
 						board[cX][cY].creature->DeleteCreature();
 						board[cX][cY].creature = NULL;
@@ -143,7 +143,7 @@ bool Creature::kick(int size, Grid board[][FIELDSIZE], Character* handledCharact
 
 					else if (board[cX][cY].creature->status == BULL) {//この警告はどういうこと？？
 
-						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
+						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters[CHARACTERNUM]);
 						board[x + drctnX][y + drctnY].creature->DeleteCreature();
 						board[x + drctnX][y + drctnY].creature = NULL;
 					}
@@ -166,31 +166,31 @@ bool Creature::kick(int size, Grid board[][FIELDSIZE], Character* handledCharact
 
 
 
-void Creature::changeDirection(Grid board[][FIELDSIZE], Character* handledCharacters) {
+void Creature::changeDirection(Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 }
 
-bool Creature::attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Creature::attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	return FALSE;
 }
 
-bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	/*DrawString(800, 300, "Creature.specialMovement1メソッド実行", WHITE);
 	WaitKey();*/
 	return FALSE;
 }
 
-bool Creature::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Creature::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	return FALSE;
 }
 
-int Creature::useItem(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+int Creature::useItem(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	return 0;
 };
 
 void Creature::test() {
 };
 
-void Creature::killed(Grid board[][FIELDSIZE], Character* handledCharacters) {
+void Creature::killed(Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 	this->HP = NULL;
 	this->x = NULL;
 	this->y = NULL;
@@ -262,7 +262,7 @@ void Creature::DeleteCreature() {
 
 
 
-void Creature::incubate(int checkX, int checkY ,Grid board[][FIELDSIZE], Character* handledCharacters) {//指定地点に生物がいる前提。孵化の内容を実行。
+void Creature::incubate(int checkX, int checkY ,Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//指定地点に生物がいる前提。孵化の内容を実行。
 
 	board[checkX][checkY].creature->status = NORMAL;
 	board[checkX][checkY].creature->defensePower = 25 + GetRand(2);
@@ -271,7 +271,7 @@ void Creature::incubate(int checkX, int checkY ,Grid board[][FIELDSIZE], Charact
 
 
 
-void Creature::damage(int checkX, int checkY, Grid board[][FIELDSIZE], Character* handledCharacters) {//指定地点に生物がいる前提。攻撃の内容を実行。
+void Creature::damage(int checkX, int checkY, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//指定地点に生物がいる前提。攻撃の内容を実行。
 
 	int damageHP = 0;
 	damageHP = (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ダメ計
@@ -307,7 +307,7 @@ void Creature::damage(int checkX, int checkY, Grid board[][FIELDSIZE], Character
 	}
 	string msg1 = "は攻撃した。";
 	actionMsg = name + msg1;
-	exhibitDamage(x, y, checkX, checkY, TRUE, damageHP, board, handledCharacters);
+	exhibitDamage(x, y, checkX, checkY, TRUE, damageHP, board, handledCharacters[CHARACTERNUM]);
 
 
 	if (board[checkX][checkY].creature->HP <= 0) {//HPがマイナスになったら死ぬ

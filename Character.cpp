@@ -109,31 +109,31 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
 
 							if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
-								if (walk(FIELDSIZE, board, handledCharacters) == TRUE) {
+								if (walk(FIELDSIZE, board, &handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 1) {
-								if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull,board, handledCharacters) == TRUE) {
+								if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull,board, &handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 2) {
-								if (specialMovement2(FIELDSIZE, board, handledCharacters) == TRUE) {
+								if (specialMovement2(FIELDSIZE, board, &handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 3) {
-								if (attack(FIELDSIZE,board, handledCharacters) == TRUE) {
+								if (attack(FIELDSIZE,board, &handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 4) {
-								if (kick(FIELDSIZE,board, handledCharacters) == TRUE) {
+								if (kick(FIELDSIZE,board, &handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
@@ -339,27 +339,27 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			WaitTimer(100);
-			if (walk(FIELDSIZE,board, handledCharacters) == TRUE) {
+			if (walk(FIELDSIZE,board, &handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
-			if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
+			if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, &handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_3) == TRUE) {
-			if (specialMovement2(FIELDSIZE, board, handledCharacters) == TRUE) {
+			if (specialMovement2(FIELDSIZE, board, &handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_4) == TRUE) {
-			if (attack(FIELDSIZE, board, handledCharacters) == TRUE) {
+			if (attack(FIELDSIZE, board, &handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_5) == TRUE) {
-			if (kick(FIELDSIZE, board, handledCharacters) == TRUE) {
+			if (kick(FIELDSIZE, board, &handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
@@ -480,7 +480,7 @@ void Character::test() {
 
 
 
-bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {//歩く。盤面サイズ(size)を受け取る
+bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//歩く。盤面サイズ(size)を受け取る
 	int distance = 0;
 	int checkX = 0;
 	int checkY = 0;
@@ -504,7 +504,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharac
 
 
 	while (distance < 3) {//各歩行の入力待機
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		exhibitScreen(x, y, TRUE, board, *handledCharacters);
 		checkX = 0;
 		checkY = 0;
 		mouse = 0;
@@ -526,7 +526,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharac
 		//	}
 		//}
 
-		exhibitScreen(x, y, TRUE, board, handledCharacters);//歩けるマスは表示色変更。
+		exhibitScreen(x, y, TRUE, board, *handledCharacters);//歩けるマスは表示色変更。
 		for (int iix = -1; iix <= 1; iix++) {
 			for (int iiy = -1; iiy <= 1; iiy++) {
 				if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
@@ -598,7 +598,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharac
 					if (clicking == 0) {
 						clicking = 1;
 
-						exhibitScreen(x, y, TRUE, board, handledCharacters);//歩行可能マス表示を消す。
+						exhibitScreen(x, y, TRUE, board, *handledCharacters);//歩行可能マス表示を消す。
 						WaitTimer(130);
 						if (distance == 0) {
 							return FALSE;//0歩目なら行動はなかったことになる
@@ -614,7 +614,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharac
 			if (mouse & MOUSE_INPUT_RIGHT) {//右クリックされて、まだ歩いていなければ歩きをキャンセルするのに成功。
 				if (distance == 0) {
 					return FALSE;
-					exhibitScreen(x, y, TRUE, board, handledCharacters);
+					exhibitScreen(x, y, TRUE, board, *handledCharacters);
 				}
 			}
 
@@ -716,7 +716,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharac
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {//1を押したら歩行終了。
 			if (distance == 0) {
 				WaitTimer(100);
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
+				exhibitScreen(x, y, TRUE, board, *handledCharacters);
 				return FALSE;
 			}
 			else {
@@ -750,7 +750,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharac
 	return TRUE;
 	actionMsg = "walkの実行が終了";
 		
-	exhibitScreen(x, y, TRUE, board, handledCharacters);
+	exhibitScreen(x, y, TRUE, board, *handledCharacters);
 	
 
 }
@@ -762,7 +762,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE], Character* handledCharac
 
 
 
-bool Character::attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
+bool Character::attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
 
 	int checkX = 0;
 	int checkY;
@@ -786,7 +786,7 @@ bool Character::attack(int size, Grid board[][FIELDSIZE], Character* handledChar
 
 
 
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		exhibitScreen(x, y, TRUE, board, *handledCharacters);
 		DrawString(800, 180, actionMsg.c_str(), GetColor(255, 200, 255));
 		WaitKey();
 		return TRUE;

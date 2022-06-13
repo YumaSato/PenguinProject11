@@ -16,10 +16,10 @@ using namespace std;
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE] ,Character *handledCharacters);//ターンの最後にまとめて行われる操作。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE] ,Character *handledCharacters[CHARACTERNUM]);//ターンの最後にまとめて行われる操作。
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);//敵が襲来する動作。
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]);//敵が襲来する動作。
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]);
 bool ending();
 
 
@@ -39,14 +39,6 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 		handledCharacters[i] = NULL;
 	}*/
 
-	Emperor Emperor1(red, 0);//インスタンス化
-	handledCharacters[0] = Emperor1;
-	board[Emperor1.x][Emperor1.y].creature = &Emperor1;//マス目に自分のポインタを代入。
-
-	Emperor Emperor2(blue, 1);//インスタンス化
-	handledCharacters[1] = Emperor2;
-	board[Emperor2.x][Emperor2.y].creature = &Emperor2;
-	
 }
 
 
@@ -55,6 +47,17 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 int BattleMode_GameManager::BattleMode(int level) {
 
 	//string turnF = "";
+
+
+	Emperor Emperor1(red, 0);//インスタンス化
+	handledCharacters[0] = &Emperor1;
+	board[Emperor1.x][Emperor1.y].creature = &Emperor1;//マス目に自分のポインタを代入。
+
+	Emperor Emperor2(blue, 1);//インスタンス化
+	handledCharacters[1] = &Emperor2;
+	board[Emperor2.x][Emperor2.y].creature = &Emperor2;
+
+
 
 	for (int i = 0; i < FIELDSIZE; i++) {
 		board[i][0].state = ROCK;
@@ -76,7 +79,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 		for (int i = 0; i < CHARACTERNUM; i++) {
-			actionReturn = handledCharacters[i].selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			actionReturn = handledCharacters[i]->selectAction(mobs_PenguinKids, mobs_Bull, board,*handledCharacters);
 			if (actionReturn == 0) {
 				return 0;
 			}
@@ -109,10 +112,10 @@ int BattleMode_GameManager::BattleMode(int level) {
 		//	}
 		//}
 
-		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0 ) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
+		if ((handledCharacters[0]->HP <= 0 && handledCharacters[1]->HP <= 0 ) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board, handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -130,26 +133,26 @@ int BattleMode_GameManager::BattleMode(int level) {
 		if ((level == 0 && turnNum == 60)||(level == 1 && turnNum == 100)) {
 			mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
 			actionMsg = "戦わされた子ペンギンの数:"+ std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
-			exhibitScreen(0, 0, FALSE, board, handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 			WaitKey();
 			if (ending() == FALSE) {
 				return FALSE;
 			}
 			
-			exhibitScreen(0, 0, FALSE, board, handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 			WaitKey();
 		}
 
 
 		mainMsg = "";
-		if (turnFinal(mobs_PenguinKids, mobs_Bull, board ,handledCharacters) == FALSE) {
+		if (turnFinal(mobs_PenguinKids, mobs_Bull, board ,*handledCharacters) == FALSE) {
 			return FALSE;
 		}
 
-		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
+		if ((handledCharacters[0]->HP <= 0 && handledCharacters[1]->HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board, handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -165,9 +168,9 @@ int BattleMode_GameManager::BattleMode(int level) {
 		}
 		
 
-		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
 		turnNum += 1;
-		exhibitScreen(0, 0, FALSE, board, handledCharacters);
+		exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);
 		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turnF.c_str(), GetColor(255, 200, 255));
 		WaitKey();*/
@@ -242,7 +245,7 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIEL
 		//}
 
 		if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, &handledCharacters);
 
 
 			//渡すべき引数、下の二つのうちどっちが正しんだ！？！？
@@ -253,7 +256,7 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIEL
 
 
 		if (mobsSpeedOrder[i]->status == BULL) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull ,board, handledCharacters);
+			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull ,board, &handledCharacters);
 		}
 
 		if (quitGame == TRUE) {
@@ -481,7 +484,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 		if (board[cx][cy].creature == NULL) {
 
 			Bull bull = Bull();
-			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000, board, handledCharacters);
+			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000, board, &handledCharacters);
 			mobs_Bull[num_bull] = bull;
 			board[cx][cy].creature = &mobs_Bull[num_bull];
 			mobNumber += 1;
