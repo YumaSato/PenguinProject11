@@ -16,10 +16,10 @@ using namespace std;
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);//ターンの最後にまとめて行われる操作。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE] ,Character *handledCharacters);//ターンの最後にまとめて行われる操作。
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);//敵が襲来する動作。
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);//敵が襲来する動作。
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
 bool ending();
 
 
@@ -72,7 +72,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 		
 
 		if (Emperor1.HP > 0) {
-			actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, board);
+			actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
 			if (actionReturn ==0) {
 				return 0;
 			}
@@ -82,7 +82,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 		}
 		if (Emperor2.HP > 0) {
-			actionReturn = Emperor2.selectAction(mobs_PenguinKids, mobs_Bull, board);
+			actionReturn = Emperor2.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
 			if (actionReturn == 0) {
 				return 0;//ゲーム直接終了
 			}
@@ -94,7 +94,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 		if ((Emperor1.HP <= 0 && Emperor2.HP <= 0 ) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board);
+			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -112,26 +112,26 @@ int BattleMode_GameManager::BattleMode(int level) {
 		if ((level == 0 && turnNum == 60)||(level == 1 && turnNum == 100)) {
 			mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
 			actionMsg = "戦わされた子ペンギンの数:"+ std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
-			exhibitScreen(0, 0, FALSE, board);
+			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 			WaitKey();
 			if (ending() == FALSE) {
 				return FALSE;
 			}
 			
-			exhibitScreen(0, 0, FALSE, board);
+			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 			WaitKey();
 		}
 
 
 		mainMsg = "";
-		if (turnFinal(mobs_PenguinKids, mobs_Bull, board) == FALSE) {
+		if (turnFinal(mobs_PenguinKids, mobs_Bull, board ,*handledCharacters) == FALSE) {
 			return FALSE;
 		}
 
 		if ((Emperor1.HP <= 0 && Emperor2.HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board);
+			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -147,9 +147,9 @@ int BattleMode_GameManager::BattleMode(int level) {
 		}
 		
 
-		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board);
+		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
 		turnNum += 1;
-		exhibitScreen(0, 0, FALSE, board);
+		exhibitScreen(0, 0, FALSE, board, *handledCharacters);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);
 		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turnF.c_str(), GetColor(255, 200, 255));
 		WaitKey();*/
@@ -172,7 +172,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {//素早さ順にmobが行動していく関数。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {//素早さ順にmobが行動していく関数。
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -224,7 +224,7 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIEL
 		//}
 
 		if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board);
+			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 
 
 			//渡すべき引数、下の二つのうちどっちが正しんだ！？！？
@@ -235,7 +235,7 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIEL
 
 
 		if (mobsSpeedOrder[i]->status == BULL) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull ,board);
+			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull ,board, handledCharacters);
 		}
 
 		if (quitGame == TRUE) {
@@ -290,7 +290,7 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {//どのターンで敵が出現するかを決める。
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {//どのターンで敵が出現するかを決める。
 	int side = 0;
 	int place = 0;
 
@@ -316,16 +316,16 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 			place = GetRand(FIELDSIZE - 3);
 
 			if (side == 0) {
-				yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
+				yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 1) {
-				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
+				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 2) {
-				yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
+				yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 3) {
-				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
+				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 		}
 	}
@@ -335,16 +335,16 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 	}
 
@@ -356,16 +356,16 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 	}
 
@@ -388,16 +388,16 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 		place = GetRand(FIELDSIZE - 3);
 		if (randomSide == 0) {
-			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (randomSide == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (randomSide == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (randomSide == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 	}
 
@@ -408,20 +408,20 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
-			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board);
+			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 
 	}
@@ -436,7 +436,7 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 
 
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
 
 	if (enemyType == BULL) {
 		
@@ -463,7 +463,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 		if (board[cx][cy].creature == NULL) {
 
 			Bull bull = Bull();
-			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000, board);
+			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000, board, handledCharacters);
 			mobs_Bull[num_bull] = bull;
 			board[cx][cy].creature = &mobs_Bull[num_bull];
 			mobNumber += 1;

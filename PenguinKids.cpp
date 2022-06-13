@@ -16,7 +16,7 @@ PenguinKids::PenguinKids() {
 
 
 
-void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE]) {//実質的なコンストラクタ。
+void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters) {//実質的なコンストラクタ。
 	//未初期化のPenguinKids配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -34,8 +34,8 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	y = iy;
 	HP = 50;
 	HP_Limit = 50;
-	stamina = NULL;
-	staminaLimit = NULL;
+	levelUp = NULL;
+	expPoint = NULL;
 	attackPower = 30 + GetRand(3);
 	defensePower = 1;
 
@@ -65,7 +65,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 
 
-int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
+int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;//skip状態を解消。
@@ -94,7 +94,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 		if (iX >= 0 && iX < FIELDSIZE && iY >= 0 && iY < FIELDSIZE) {
 			if (board[iX][iY].creature != NULL) {//向いている方向のマスに何か居たら
 				if (board[iX][iY].creature->status == EGG && board[iX][iY].creature->team == team) {//同じチームの卵があれば
-					if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board) == TRUE) {//優先行動として産卵。
+					if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {//優先行動として産卵。
 						return TRUE;
 					}
 				}
@@ -105,24 +105,24 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 
 
 
-	if (attack(FIELDSIZE, board) == TRUE) {
-		exhibitScreen(x, y, TRUE, board);
+	if (attack(FIELDSIZE, board, handledCharacters) == TRUE) {
+		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
 		}
 		return TRUE;
 	}
-	if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board) == TRUE) {
-		exhibitScreen(x, y, TRUE, board);
+	if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
+		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
 		}
 		return TRUE;
 	}
-	if (specialMovement2(FIELDSIZE, board) == TRUE) {
-		exhibitScreen(x, y, TRUE, board);
+	if (specialMovement2(FIELDSIZE, board, handledCharacters) == TRUE) {
+		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -145,7 +145,7 @@ void PenguinKids::test() {
 
 
 
-bool PenguinKids::attack(int size, Grid board[][FIELDSIZE]) {
+bool PenguinKids::attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
 
 	int checkX = 0;
 	int checkY;
@@ -160,7 +160,7 @@ bool PenguinKids::attack(int size, Grid board[][FIELDSIZE]) {
 	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {//攻撃優先モードに当てはまるかを調べる。
 		if (board[checkX][checkY].creature != NULL) {//目の前に生物がいたら
 			if (board[checkX][checkY].creature->enemy == TRUE) {//そこにいるやつが敵ならば攻撃。
-				damage(checkX, checkY, board);
+				damage(checkX, checkY, board, handledCharacters);
 				return TRUE;
 			}
 			if (status == NORMAL && (board[checkX][checkY].creature->status != EGG || board[checkX][checkY].creature->team != team)) {//目の前に別チームもしくは卵以外がいて、かつ卵を産みたい状態のとき
@@ -226,7 +226,7 @@ bool PenguinKids::attack(int size, Grid board[][FIELDSIZE]) {
 					if (board[checkX][checkY].creature->enemy == TRUE) {//それが敵だと判定されたら
 
 						SETdirection(tmpx, tmpy);//敵の方を向いて
-						damage(checkX, checkY, board);//攻撃。
+						damage(checkX, checkY, board, handledCharacters);//攻撃。
 						return TRUE;
 					}
 				}
@@ -240,7 +240,7 @@ bool PenguinKids::attack(int size, Grid board[][FIELDSIZE]) {
 
 
 
-bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {//産卵
+bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {//産卵
 	if (status == NORMAL) {
 		//exhibitScreen();
 		//DrawString(800, 300, "PenguinKids.specialMovement1メソッド実行", WHITE);
@@ -259,7 +259,7 @@ bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull
 
 
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, speed, board);
+			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, speed, board, handledCharacters);
 
 
 			mobs_PenguinKids[num_penguinKids] = penguinKids;
@@ -283,7 +283,7 @@ bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull
 
 
 
-bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE]) {
+bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {
 
 	string s = "";
 	string allS = "";
@@ -303,7 +303,7 @@ bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE]) {
 			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 				if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {
 
-					incubate(ix, iy, board);
+					incubate(ix, iy, board, handledCharacters);
 					actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が孵化させた！";
 					return TRUE;
 				}
@@ -378,7 +378,7 @@ bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE]) {
 					if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {//それが卵であった場合
 
 						SETdirection(tmpx, tmpy);
-						incubate(ix, iy, board);
+						incubate(ix, iy, board, handledCharacters);
 						actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "が孵化させた！";
 						return TRUE;
 					}

@@ -14,7 +14,7 @@ using std::to_string;
 
 
 
-void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
+void exhibitStatusMsg(Character *handledCharacters) {//動かせるキャラクタのステータス情報を表示する。
 
 	string CharacterStatusMsg;
 
@@ -24,15 +24,15 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 	for (int i = 0; i < CHARACTERNUM; i++) {
 
 		string numHP;
-		numHP = (to_string(handledCharacters[i]->HP));
+		numHP = (to_string(handledCharacters[i].HP));
 		string numHP_Limit;
-		numHP_Limit = (to_string(handledCharacters[i]->HP_Limit));
-		string numStamina;
-		numStamina = (to_string(handledCharacters[i]->stamina));
-		string numStaminaLimit;
-		numStaminaLimit = (to_string(handledCharacters[i]->staminaLimit));
+		numHP_Limit = (to_string(handledCharacters[i].HP_Limit));
+		string numLevel;
+		numLevel = (to_string(handledCharacters[i].levelUp));
+		string numExp;
+		numExp = (to_string(handledCharacters[i].expPoint));
 
-		CharacterStatusMsg = handledCharacters[i]->name + "の状態\n HP :" + numHP + " / " + numHP_Limit + "\nスタミナ" + numStamina + " / " + numStaminaLimit;
+		CharacterStatusMsg = handledCharacters[i].name + "の状態\n HP :" + numHP + " / " + numHP_Limit + "\nレベル：" + numLevel + " / " + numExp;
 
 		//char HP_NumStr[BUFFER];
 		//sprintf_s(HP_NumStr, BUFFER, "%d / %d\n", handledCharacters[i].HP, handledCharacters[i].HP_Limit);
@@ -59,7 +59,7 @@ void exhibitStatusMsg() {//動かせるキャラクタのステータス情報を表示する。
 
 
 
-void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE]) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
+void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE], Character* handledCharacters) {//ペンギンを描画（ステータスと向きからペンギンの適切な画像のハンドルを入手し格納してから描画）
 	int h;//ハンドル格納用
 	string turn = "";
 	bool HPexhibitOrNot;
@@ -165,7 +165,7 @@ void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE]
 
 
 
-void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE]) {
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE], Character* handledCharacters) {
 	
 	Creature* damaged = board[damageX][damageY].creature;//被ダメージ側を一時保存。
 	board[damageX][damageY].creature = NULL;//一旦その場にキャラがいないことにする。
@@ -189,7 +189,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 		if (damaging < damageHP) {
 			damaging += 1;
 		}
-		exhibitScreen(markX, markY, TRUE ,board);
+		exhibitScreen(markX, markY, TRUE ,board, handledCharacters);
 		DrawGraph(damageX * SQUARESIZE + 5, damageY * SQUARESIZE + 29, hHP, TRUE);
 		DrawBox(damageX * SQUARESIZE + 16, damageY * SQUARESIZE + 31, damageX * SQUARESIZE + 16 + (substitute.HP - damaging) / 2, damageY * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
 		
@@ -212,8 +212,8 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {
-	exhibitScreen(markX, markY, attention, board);
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
+	exhibitScreen(markX, markY, attention, board, handledCharacters);
 	string Msg = "";
 	string Bulls = "";
 
@@ -232,21 +232,19 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 
 
 
-		//以下、モブ配列がバグっているので調査
-
-		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 235, "mobs_PenguinKids", GetColor(255, 200, 255));
-		for (int i = 0; i < 12; i++) {
-			Bulls = std::to_string(mobs_PenguinKids[i].num) + " X:" + std::to_string(mobs_PenguinKids[i].x) + " Y:" + std::to_string(mobs_PenguinKids[i].y);
-			DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 220 + i*13, Bulls.c_str(), GetColor(255, 200, 255));
-			DrawString(FIELDSIZE * SQUARESIZE + 100, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_PenguinKids[i].name.c_str(), GetColor(255, 200, 255));
-		}
-
-		DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 235, "mobs_Bull", GetColor(255, 200, 255));
-		for (int i = 0; i < 12; i++) {
-			Bulls = std::to_string(mobs_Bull[i].num) + " X:" + std::to_string(mobs_Bull[i].x) + " Y:" + std::to_string(mobs_Bull[i].y);
-			DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 220 + i * 13, Bulls.c_str(), GetColor(255, 200, 255));
-			DrawString(FIELDSIZE * SQUARESIZE + 295, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_Bull[i].name.c_str(), GetColor(255, 200, 255));
-		}
+		////以下、モブ配列がバグっているので調査
+		//DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 235, "mobs_PenguinKids", GetColor(255, 200, 255));
+		//for (int i = 0; i < 12; i++) {
+		//	Bulls = std::to_string(mobs_PenguinKids[i].num) + " X:" + std::to_string(mobs_PenguinKids[i].x) + " Y:" + std::to_string(mobs_PenguinKids[i].y);
+		//	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 220 + i*13, Bulls.c_str(), GetColor(255, 200, 255));
+		//	DrawString(FIELDSIZE * SQUARESIZE + 100, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_PenguinKids[i].name.c_str(), GetColor(255, 200, 255));
+		//}
+		//DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 235, "mobs_Bull", GetColor(255, 200, 255));
+		//for (int i = 0; i < 12; i++) {
+		//	Bulls = std::to_string(mobs_Bull[i].num) + " X:" + std::to_string(mobs_Bull[i].x) + " Y:" + std::to_string(mobs_Bull[i].y);
+		//	DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 220 + i * 13, Bulls.c_str(), GetColor(255, 200, 255));
+		//	DrawString(FIELDSIZE * SQUARESIZE + 295, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_Bull[i].name.c_str(), GetColor(255, 200, 255));
+		//}
 
 		
 	}
@@ -258,14 +256,14 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 
 
 
-void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE]) {
+void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE], Character* handledCharacters) {
 	
 	Creature* kicked = board[kickX + dx][kickY + dy].creature;//蹴られた卵のポインタを仮置き場に代入し保持。
 	int handleEgg = handle[board[kickX + dx][kickY + dy].creature->team][EGG][NW];
 	board[kickX + dx][kickY + dy].creature = NULL;
 	for (int i = 0; i < distance * SQUARESIZE/2; i=i++) {
 
-		exhibitScreen(kickX, kickY, TRUE, board);
+		exhibitScreen(kickX, kickY, TRUE, board, handledCharacters);
 		DrawGraph((kickX + dx) * SQUARESIZE + (i*2 * dx), (kickY + dy) * SQUARESIZE + (i*2 * dy), handleEgg, TRUE);
 		WaitTimer(10);
 	}

@@ -21,8 +21,8 @@ Emperor::Emperor(Team team, int num) : Character() {//c’é‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
 		this->status = EMPEROR;
 		this->HP = 50;
 		this->HP_Limit = 50;
-		this->stamina = 100;
-		this->staminaLimit = 100;
+		this->levelUp = 1;
+		this->expPoint = 0;
 		this->attackPower = 30;
 		this->defensePower = 60;
 		this->speed = 1001;
@@ -46,8 +46,8 @@ Emperor::Emperor(Team team, int num) : Character() {//c’é‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
 		this->status = EMPEROR;
 		this->HP = 50;
 		this->HP_Limit = 50;
-		this->stamina = 100;
-		this->staminaLimit = 100;
+		this->levelUp = 1;
+		this->expPoint = 0;
 		this->attackPower = 30;
 		this->defensePower = 60;
 		this->speed = 1000;
@@ -61,7 +61,7 @@ Emperor::Emperor(Team team, int num) : Character() {//c’é‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^
 }
 
 
-bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) {//“ÁŽê‹ZFŽY—‘
+bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {//“ÁŽê‹ZFŽY—‘
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -72,7 +72,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
 		if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//‰Ÿ‚µ‚½ƒ}ƒX‚Ì•ûŒü‚ª‹ó‚¢‚Ä‚¢‚½‚çƒCƒ“ƒXƒ^ƒ“ƒX‰»‚ðŽÀs
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, speed, board);
+			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, speed, board, handledCharacters);
 
 			//kids.push_back(penguinKids);
 			//board[checkX][checkY].creature = &kids.back();
@@ -88,7 +88,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 
 
 			
-			exhibitScreen(x, y, TRUE, board);
+			exhibitScreen(x, y, TRUE, board, handledCharacters);
 			return TRUE;
 		}
 		else {
@@ -99,7 +99,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 }
 
 
-bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE]) {//“ÁŽê‹ZF›z‰»
+bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters) {//“ÁŽê‹ZF›z‰»
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -113,10 +113,10 @@ bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE]) {//“ÁŽê‹ZF›z‰
 		}
 		if (board[checkX][checkY].creature->status == EGG) {//‰Ÿ‚µ‚½ƒ}ƒX‚Ì•ûŒü‚É—‘‚ª‚ ‚ê‚Îˆ—‚ðŽÀs
 
-			incubate(checkX, checkY, board);
+			incubate(checkX, checkY, board, handledCharacters);
 			//board[checkX][checkY].creature->directionX = this->directionX;
 			//board[checkX][checkY].creature->directionY = this->directionY;
-			exhibitScreen(x, y, TRUE, board);
+			exhibitScreen(x, y, TRUE, board, handledCharacters);
 			return TRUE;
 		}
 		else {

@@ -16,6 +16,7 @@ class Bull;
 class PenguinKids;
 class Creature;
 class Grid;
+class Character;
 
 
 class Creature {//升目にいる生物
@@ -32,8 +33,8 @@ public:
 	int y;
 	int HP;
 	int HP_Limit;
-	int stamina;//歩行距離の体力
-	int staminaLimit;
+	int levelUp;//レベル
+	int expPoint;//経験値量
 	int attackPower;
 	int defensePower;
 	int speed;
@@ -44,24 +45,24 @@ public:
 
 
 	Creature();
-	virtual void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE]);
-	virtual int selectAction(PenguinKids *mobs_PenguinKids, Bull *mobs_Bull, Grid board[][FIELDSIZE]);
-	virtual bool walk(int size, Grid board[][FIELDSIZE]);
-	virtual void changeDirection(Grid board[][FIELDSIZE]);
-	virtual bool attack(int size, Grid board[][FIELDSIZE]);
-	bool kick(int size, Grid board[][FIELDSIZE]);
-	virtual bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
-	virtual bool specialMovement2(int size, Grid board[][FIELDSIZE]);
-	virtual int useItem(int size, Grid board[][FIELDSIZE]);
+	virtual void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters);
+	virtual int selectAction(PenguinKids *mobs_PenguinKids, Bull *mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
+	virtual bool walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
+	virtual void changeDirection(Grid board[][FIELDSIZE], Character* handledCharacters);
+	virtual bool attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
+	bool kick(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
+	virtual bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
+	virtual bool specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
+	virtual int useItem(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
 	virtual void test();
-	void killed(Grid board[][FIELDSIZE]);
+	void killed(Grid board[][FIELDSIZE], Character* handledCharacters);
 	void SETdirection(int xward, int yward);
 	void SETdirection(Direction compass);
 	void GETdirectionXY(int* xward, int* yward);
 	Direction GETdirection();
 	void DeleteCreature();
-	void incubate(int checkX, int checkY, Grid board[][FIELDSIZE]);
-	void damage(int checkX, int checkY, Grid board[][FIELDSIZE]);
+	void incubate(int checkX, int checkY, Grid board[][FIELDSIZE], Character* handledCharacters);
+	void damage(int checkX, int checkY, Grid board[][FIELDSIZE], Character* handledCharacters);
 };
 
 
@@ -69,11 +70,11 @@ public:
 
 class Character : public Creature {//マス目にいるキャラクター
 public:
-	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
+	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
 	void test();
 	//void changeDirection();
-	bool walk(int size, Grid board[][FIELDSIZE]) override;
-	bool attack(int size, Grid board[][FIELDSIZE]);
+	bool walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters) override;
+	bool attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
 	Character();//キャラクタのコンストラクタ
 };
 
@@ -82,13 +83,13 @@ public:
 class Bull : public Character {
 public:
 	Bull();
-	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE])override;
+	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters)override;
 	void test();
-	bool walk(int size, Grid board[][FIELDSIZE]);
-	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
-	bool specialMovement2(int size, Grid board[][FIELDSIZE]);
-	bool attack(int size, Grid board[][FIELDSIZE]);
-	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
+	bool walk(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
+	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
+	bool specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
+	bool attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
+	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
 };
 
 
@@ -96,12 +97,12 @@ public:
 class PenguinKids : public Creature {
 public:
 	PenguinKids();
-	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE])override;
+	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters)override;
 	void test();
-	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]) override;
-	bool specialMovement2(int size, Grid board[][FIELDSIZE]) override;
-	bool attack(int size, Grid board[][FIELDSIZE]) override;
-	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
+	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) override;
+	bool specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters) override;
+	bool attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters) override;
+	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
 };
 
 
@@ -128,8 +129,8 @@ public:
 class Emperor : public Character {
 public:
 	Emperor(Team team, int num);
-	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE]);
-	bool specialMovement2(int size, Grid board[][FIELDSIZE]);
+	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters);
+	bool specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters);
 };
 
 
@@ -162,8 +163,10 @@ public:
 
 	PenguinKids mobs_PenguinKids[mobLimit];
 	Bull mobs_Bull[mobLimit];
+	Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレスを格納する変数。配列インデックスは、キャラ番号。
 
 
+	//Grid* board = new Grid[FIELDSIZE][FIELDSIZE];
 
 	Grid board[FIELDSIZE][FIELDSIZE];
 

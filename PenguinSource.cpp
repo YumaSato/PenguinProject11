@@ -82,15 +82,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			BattleMode_GameManager *battle0 = new BattleMode_GameManager();
-
 			game = battle0->BattleMode(0);//FALSEだとゲーム終了。
-
 			delete battle0;
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
-			BattleMode_GameManager battle;
-			game = battle.BattleMode(1);
-			
+			BattleMode_GameManager* battle1 = new BattleMode_GameManager();
+			game = battle1->BattleMode(1);//FALSEだとゲーム終了。
+			delete battle1;
 		}
 
 
