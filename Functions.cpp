@@ -14,7 +14,7 @@ using std::to_string;
 
 
 
-void exhibitStatusMsg(Character *handledCharacters[CHARACTERNUM]) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ^ƒXî•ñ‚ğ•\¦‚·‚éB
+void exhibitStatusMsg(Emperor* handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ^ƒXî•ñ‚ğ•\¦‚·‚éB
 
 	string CharacterStatusMsg;
 
@@ -23,22 +23,22 @@ void exhibitStatusMsg(Character *handledCharacters[CHARACTERNUM]) {//“®‚©‚¹‚éƒLƒ
 	int exhibitY = 600;
 	for (int i = 0; i < CHARACTERNUM; i++) {
 
-		DrawBox(830,300+i*100,1150,385 + i * 100,GetColor(240, 230, 140),TRUE);
+		DrawBox(830, 300 + i * 100, 1150, 385 + i * 100, GetColor(240, 230, 140), TRUE);
 
 
 
 
 
 		string numHP;
-		numHP = (to_string(handledCharacters[i]->HP));
+		numHP = (to_string(handledCharacters[i].HP));
 		string numHP_Limit;
-		numHP_Limit = (to_string(handledCharacters[i]->HP_Limit));
+		numHP_Limit = (to_string(handledCharacters[i].HP_Limit));
 		string numLevel;
-		numLevel = (to_string(handledCharacters[i]->levelUp));
+		numLevel = (to_string(handledCharacters[i].levelUp));
 		string numExp;
-		numExp = (to_string(handledCharacters[i]->expPoint));
+		numExp = (to_string(handledCharacters[i].expPoint));
 
-		CharacterStatusMsg = handledCharacters[i]->name + "‚Ìó‘Ô\n HP :" + numHP + " / " + numHP_Limit + "\nƒŒƒxƒ‹F" + numLevel + " / " + numExp;
+		CharacterStatusMsg = handledCharacters[i].name + "‚Ìó‘Ô\n HP :" + numHP + " / " + numHP_Limit + "\nƒŒƒxƒ‹F" + numLevel + " / " + numExp;
 
 		//char HP_NumStr[BUFFER];
 		//sprintf_s(HP_NumStr, BUFFER, "%d / %d\n", handledCharacters[i].HP, handledCharacters[i].HP_Limit);
@@ -65,7 +65,7 @@ void exhibitStatusMsg(Character *handledCharacters[CHARACTERNUM]) {//“®‚©‚¹‚éƒLƒ
 
 
 
-void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE], Character *handledCharacters[CHARACTERNUM]) {//ƒyƒ“ƒMƒ“‚ğ•`‰æiƒXƒe[ƒ^ƒX‚ÆŒü‚«‚©‚çƒyƒ“ƒMƒ“‚Ì“KØ‚È‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ğ“üè‚µŠi”[‚µ‚Ä‚©‚ç•`‰æj
+void exhibitScreen(int markX, int markY, bool attention, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//ƒyƒ“ƒMƒ“‚ğ•`‰æiƒXƒe[ƒ^ƒX‚ÆŒü‚«‚©‚çƒyƒ“ƒMƒ“‚Ì“KØ‚È‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ğ“üè‚µŠi”[‚µ‚Ä‚©‚ç•`‰æj
 	int h;//ƒnƒ“ƒhƒ‹Ši”[—p
 	string turn = "";
 	bool HPexhibitOrNot;
@@ -147,12 +147,12 @@ void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE]
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 270, actionMsg.c_str(), GetColor(255, 200, 255));
 
 	turn = "Œ»İ‚Ìƒ^[ƒ“:" + std::to_string(turnNum) + "   Œ»İ‚ÌƒXƒRƒA:" + std::to_string(score);
-	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20 ,turn.c_str(), GetColor(255, 200, 255));
+	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turn.c_str(), GetColor(255, 200, 255));
 	actionMsg = "";
 
 	exhibitStatusMsg(handledCharacters);
 
-	
+
 
 }
 
@@ -171,8 +171,8 @@ void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE]
 
 
 
-void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
-	
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+
 	Creature* damaged = board[damageX][damageY].creature;//”íƒ_ƒ[ƒW‘¤‚ğˆê•Û‘¶B
 	board[damageX][damageY].creature = NULL;//ˆê’U‚»‚Ìê‚ÉƒLƒƒƒ‰‚ª‚¢‚È‚¢‚±‚Æ‚É‚·‚éB
 
@@ -182,23 +182,23 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 	int damaging = 0;//ŒJ‚è•Ô‚µ‚É‚æ‚èŒ¸‚è‘±‚¯‚éƒ[ƒ^[‚ÌHP’lB
 
 	//int damagedHP = damaged->HP;//”íƒ_ƒ[ƒW‘¤‚ÌHP‚ğˆê•Û‘¶B
-	
-	for (int i = 0; i < damageHP+5; i++) {
+
+	for (int i = 0; i < damageHP + 5; i++) {
 		if (i % 5 == 0) {
 			board[damageX][damageY].creature = NULL;//4‚Ì”{”‚²‚Æ‚Éƒ`ƒJƒ`ƒJØ‚è‘Ö‚¦B
 		}
 		if (i % 5 == 3) {
 			board[damageX][damageY].creature = &substitute;
 		}
-		
+
 
 		if (damaging < damageHP) {
 			damaging += 1;
 		}
-		exhibitScreen(markX, markY, TRUE ,board, handledCharacters);
+		exhibitScreen(markX, markY, TRUE, board, handledCharacters);
 		DrawGraph(damageX * SQUARESIZE + 5, damageY * SQUARESIZE + 29, hHP, TRUE);
 		DrawBox(damageX * SQUARESIZE + 16, damageY * SQUARESIZE + 31, damageX * SQUARESIZE + 16 + (substitute.HP - damaging) / 2, damageY * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
-		
+
 		WaitTimer(30);
 
 		if (substitute.HP - damaging < 0) {
@@ -218,7 +218,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 	exhibitScreen(markX, markY, attention, board, handledCharacters);
 	string Msg = "";
 	string Bulls = "";
@@ -252,7 +252,7 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 		//	DrawString(FIELDSIZE * SQUARESIZE + 295, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_Bull[i].name.c_str(), GetColor(255, 200, 255));
 		//}
 
-		
+
 	}
 }
 
@@ -262,15 +262,15 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 
 
 
-void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
-	
+void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+
 	Creature* kicked = board[kickX + dx][kickY + dy].creature;//R‚ç‚ê‚½—‘‚Ìƒ|ƒCƒ“ƒ^‚ğ‰¼’u‚«ê‚É‘ã“ü‚µ•ÛB
 	int handleEgg = handle[board[kickX + dx][kickY + dy].creature->team][EGG][NW];
 	board[kickX + dx][kickY + dy].creature = NULL;
-	for (int i = 0; i < distance * SQUARESIZE/2; i=i++) {
+	for (int i = 0; i < distance * SQUARESIZE / 2; i = i++) {
 
 		exhibitScreen(kickX, kickY, TRUE, board, handledCharacters);
-		DrawGraph((kickX + dx) * SQUARESIZE + (i*2 * dx), (kickY + dy) * SQUARESIZE + (i*2 * dy), handleEgg, TRUE);
+		DrawGraph((kickX + dx) * SQUARESIZE + (i * 2 * dx), (kickY + dy) * SQUARESIZE + (i * 2 * dy), handleEgg, TRUE);
 		WaitTimer(10);
 	}
 
@@ -290,9 +290,9 @@ void exhibitRule() {
 	string rule5 = "ƒNƒ[ƒ“ƒyƒ“ƒMƒ“‚É‚Â‚¢‚Ä:\n  ƒNƒ[ƒ“‚Í•à‚¯‚È‚¢BY—‘‚ÆUŒ‚‚Æ›z‰»‚ğs‚¤B\n@ƒNƒ[ƒ“ƒyƒ“ƒMƒ“‚É‚ÍAu—‘EáÒE˜Vlv‚Ì3‚Â‚Ìó‘Ô‚ª‚ ‚éB\n@@áÒF—‘‚ğY‚Ş‘O‚Ìó‘ÔBŒü‚¢‚Ä‚¢‚é•ûŒü‚ÉY—‘‚µ‚æ‚¤‚Æ‚·‚éB\n@@˜VlF—‘‚ğY‚Ş‚Æ˜Vl‚É‚È‚éB\n@@@@@üˆÍ‚É“G‚ª‚¢‚ê‚ÎUŒ‚‚µA—‘‚ª‚ ‚ê‚Î›z‰»‚³‚¹‚éB\n\n\n\nEsc:ƒ‹[ƒ‹‚ğ•Â‚¶‚é";
 
 
-	DrawBox(550, 30, 1150, 1150,GetColor(173, 255, 47), TRUE);
-	DrawBox(550, 30, 1150, 1150, GetColor(130,0,0), FALSE);
-	DrawString(560,50, rule1.c_str(), GetColor(0, 40, 55));
+	DrawBox(550, 30, 1150, 1150, GetColor(173, 255, 47), TRUE);
+	DrawBox(550, 30, 1150, 1150, GetColor(130, 0, 0), FALSE);
+	DrawString(560, 50, rule1.c_str(), GetColor(0, 40, 55));
 	DrawString(560, 250, rule2.c_str(), GetColor(0, 40, 55));
 	DrawString(560, 340, rule3.c_str(), GetColor(0, 40, 55));
 	DrawString(560, 400, rule4.c_str(), GetColor(0, 40, 55));

@@ -7,14 +7,19 @@
 //プロトタイプ宣言
 //void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/);
 
-Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
-	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更
-	this->team = team;
+Emperor::Emperor() {//皇帝のコンストラクタ
 
-	if (this->team == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
+}
+
+
+void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更
+	this->team = ParentTeam;
+
+	if (ParentTeam == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
 		this->name = "赤皇帝";
-		this->x = CASTLE_X -1;
-		this->y = CASTLE_Y -1;
+		this->x = CASTLE_X - 1;
+		this->y = CASTLE_Y - 1;
 		//this->directionX = 0;
 		//this->directionY = -1;
 		SETdirection(0, -1);
@@ -27,16 +32,16 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 		this->defensePower = 60;
 		this->speed = 1001;
 		this->staminaRecoverAbility = 10;
-		this->num = num;
+		this->num = 0;
 
 
 		//setCreature(num, x, y);
 
-		
+
 
 	}
 
-	if (this->team == blue) {//青チーム(=2)の皇帝であれば青皇帝を盤面下部にスポーン
+	if (ParentTeam == blue) {//青チーム(=2)の皇帝であれば青皇帝を盤面下部にスポーン
 		this->name = "青皇帝";
 		this->x = CASTLE_X + 1;
 		this->y = CASTLE_Y + 1;
@@ -52,16 +57,20 @@ Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 		this->defensePower = 60;
 		this->speed = 1000;
 		this->staminaRecoverAbility = 5;
-		this->num = num;
+		this->num = 1;
 
 		//setCreature(num, x, y);
 
-		
+
 	}
+
 }
 
 
-bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//特殊技：産卵
+
+
+
+bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//特殊技：産卵
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -87,11 +96,12 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 
 
 
-			
-			exhibitScreen(x, y, TRUE, board, *handledCharacters);
+
+			exhibitScreen(x, y, TRUE, board, handledCharacters);
 			return TRUE;
 		}
 		else {
+
 			return FALSE;
 		}
 	}
@@ -99,7 +109,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 }
 
 
-bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//特殊技：孵化
+bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//特殊技：孵化
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -116,7 +126,7 @@ bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Character* han
 			incubate(checkX, checkY, board, handledCharacters);
 			//board[checkX][checkY].creature->directionX = this->directionX;
 			//board[checkX][checkY].creature->directionY = this->directionY;
-			exhibitScreen(x, y, TRUE, board, *handledCharacters);
+			exhibitScreen(x, y, TRUE, board, handledCharacters);
 			return TRUE;
 		}
 		else {

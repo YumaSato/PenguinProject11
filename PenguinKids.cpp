@@ -16,7 +16,7 @@ PenguinKids::PenguinKids() {
 
 
 
-void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//実質的なコンストラクタ。
+void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//実質的なコンストラクタ。
 	//未初期化のPenguinKids配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -40,7 +40,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	defensePower = 1;
 
 	int random = GetRand(100) + 30;
-	speed = ((parentSpeed -1)*(random - GetRand(20)) / random)-1;//素早さは世代を重ねるごとに低下する。減少量はランダム。
+	speed = ((parentSpeed - 1) * (random - GetRand(20)) / random) - 1;//素早さは世代を重ねるごとに低下する。減少量はランダム。
 	//
 	if (speed < 1) { speed = 1; }
 	staminaRecoverAbility = NULL;
@@ -65,7 +65,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 
 
-int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
+int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;//skip状態を解消。
@@ -106,7 +106,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 
 
 	if (attack(FIELDSIZE, board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, *handledCharacters);
+		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -114,7 +114,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 		return TRUE;
 	}
 	if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, *handledCharacters);
+		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -122,7 +122,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 		return TRUE;
 	}
 	if (specialMovement2(FIELDSIZE, board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, *handledCharacters);
+		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			quitGame = TRUE;
@@ -145,7 +145,7 @@ void PenguinKids::test() {
 
 
 
-bool PenguinKids::attack(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
+bool PenguinKids::attack(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 
 	int checkX = 0;
 	int checkY;
@@ -240,7 +240,7 @@ bool PenguinKids::attack(int size, Grid board[][FIELDSIZE], Character* handledCh
 
 
 
-bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {//産卵
+bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//産卵
 	if (status == NORMAL) {
 		//exhibitScreen();
 		//DrawString(800, 300, "PenguinKids.specialMovement1メソッド実行", WHITE);
@@ -283,7 +283,7 @@ bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull
 
 
 
-bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]) {
+bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 
 	string s = "";
 	string allS = "";

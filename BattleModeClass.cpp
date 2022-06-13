@@ -16,10 +16,10 @@ using namespace std;
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE] ,Character *handledCharacters[CHARACTERNUM]);//ターンの最後にまとめて行われる操作。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);//ターンの最後にまとめて行われる操作。
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]);//敵が襲来する動作。
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters[CHARACTERNUM]);
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);//敵が襲来する動作。
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);
 bool ending();
 
 
@@ -38,6 +38,19 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 	/*for (int i = 0; i < CHARACTERNUM; i++) {
 		handledCharacters[i] = NULL;
 	}*/
+	Emperor* Emperor1 = new Emperor();//インスタンス化
+	Emperor1->setMobs(red, 1, 0, 1, 0, 0, board, handledCharacters);
+	handledCharacters[0] = *Emperor1;
+	board[Emperor1->x][Emperor1->y].creature = &handledCharacters[0];//マス目に自分のポインタを代入。
+	delete Emperor1;
+
+	Emperor* Emperor2 = new Emperor();//インスタンス化
+	Emperor2->setMobs(blue, 2, 0, 0, 1, 0, board, handledCharacters);
+	handledCharacters[1] = *Emperor2;
+	board[Emperor2->x][Emperor2->y].creature = &handledCharacters[1];
+	delete Emperor2;
+
+
 
 }
 
@@ -49,13 +62,6 @@ int BattleMode_GameManager::BattleMode(int level) {
 	//string turnF = "";
 
 
-	Emperor Emperor1(red, 0);//インスタンス化
-	handledCharacters[0] = &Emperor1;
-	board[Emperor1.x][Emperor1.y].creature = &Emperor1;//マス目に自分のポインタを代入。
-
-	Emperor Emperor2(blue, 1);//インスタンス化
-	handledCharacters[1] = &Emperor2;
-	board[Emperor2.x][Emperor2.y].creature = &Emperor2;
 
 
 
@@ -69,7 +75,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 
-	
+	//handledCharacters[0].specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 
 	int actionReturn = 1;
 
@@ -79,18 +85,20 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 		for (int i = 0; i < CHARACTERNUM; i++) {
-			actionReturn = handledCharacters[i]->selectAction(mobs_PenguinKids, mobs_Bull, board,*handledCharacters);
-			if (actionReturn == 0) {
-				return 0;
-			}
-			if (actionReturn == 2) {
-				return 2;
+			if (handledCharacters[i].HP > 0) {
+				actionReturn = handledCharacters[i].selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				if (actionReturn == 0) {
+					return 0;
+				}
+				if (actionReturn == 2) {
+					return 2;
+				}
 			}
 		}
 
 
 
-		
+
 
 		//if (Emperor1.HP > 0) {
 		//	actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
@@ -112,10 +120,10 @@ int BattleMode_GameManager::BattleMode(int level) {
 		//	}
 		//}
 
-		if ((handledCharacters[0]->HP <= 0 && handledCharacters[1]->HP <= 0 ) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
+		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -130,29 +138,29 @@ int BattleMode_GameManager::BattleMode(int level) {
 			return FALSE;
 		}
 
-		if ((level == 0 && turnNum == 60)||(level == 1 && turnNum == 100)) {
+		if ((level == 0 && turnNum == 60) || (level == 1 && turnNum == 100)) {
 			mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
-			actionMsg = "戦わされた子ペンギンの数:"+ std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
-			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+			actionMsg = "戦わされた子ペンギンの数:" + std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
+			exhibitScreen(0, 0, FALSE, board, handledCharacters);
 			WaitKey();
 			if (ending() == FALSE) {
 				return FALSE;
 			}
-			
-			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+
+			exhibitScreen(0, 0, FALSE, board, handledCharacters);
 			WaitKey();
 		}
 
 
 		mainMsg = "";
-		if (turnFinal(mobs_PenguinKids, mobs_Bull, board ,*handledCharacters) == FALSE) {
+		if (turnFinal(mobs_PenguinKids, mobs_Bull, board, handledCharacters) == FALSE) {
 			return FALSE;
 		}
 
-		if ((handledCharacters[0]->HP <= 0 && handledCharacters[1]->HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
+		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -166,11 +174,11 @@ int BattleMode_GameManager::BattleMode(int level) {
 			}
 			return FALSE;
 		}
-		
 
-		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
+
+		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		turnNum += 1;
-		exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+		exhibitScreen(0, 0, FALSE, board, handledCharacters);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);
 		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turnF.c_str(), GetColor(255, 200, 255));
 		WaitKey();*/
@@ -193,7 +201,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {//素早さ順にmobが行動していく関数。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//素早さ順にmobが行動していく関数。
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -245,7 +253,7 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIEL
 		//}
 
 		if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, &handledCharacters);
+			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 
 
 			//渡すべき引数、下の二つのうちどっちが正しんだ！？！？
@@ -256,7 +264,7 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIEL
 
 
 		if (mobsSpeedOrder[i]->status == BULL) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull ,board, &handledCharacters);
+			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 
 		if (quitGame == TRUE) {
@@ -311,7 +319,7 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {//どのターンで敵が出現するかを決める。
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//どのターンで敵が出現するかを決める。
 	int side = 0;
 	int place = 0;
 
@@ -352,7 +360,7 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 	}
 
 	if ((turn % 2 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 30)) {
-		
+
 		side = GetRand(3);
 		place = GetRand(FIELDSIZE - 3);
 		if (side == 0) {
@@ -457,11 +465,11 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 
 
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character* handledCharacters) {
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 
 	if (enemyType == BULL) {
-		
-		
+
+
 		if (board[cx][cy].creature != NULL) {
 			int rand = GetRand(1);
 			if (cx == 0 || cx == FIELDSIZE - 1) {
@@ -484,7 +492,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 		if (board[cx][cy].creature == NULL) {
 
 			Bull bull = Bull();
-			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000, board, &handledCharacters);
+			bull.setMobs(enemyTeam, dx, dy, cx, cy, 400000, board, handledCharacters);
 			mobs_Bull[num_bull] = bull;
 			board[cx][cy].creature = &mobs_Bull[num_bull];
 			mobNumber += 1;
@@ -510,7 +518,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 
 
 bool ending() {
-	
+
 
 	int height = FIELDSIZE * SQUARESIZE + 40;
 	const int msgNum = 8;
@@ -524,7 +532,7 @@ bool ending() {
 	endingMsg[5] = "メインプログラム:iwashi";
 	endingMsg[6] = "デザイナー:はぺぺ";
 	endingMsg[7] = "スペシャルサンクス:dolpast";
-	
+
 	int DrawWidth[msgNum];
 	int StrLen[msgNum];
 
@@ -540,17 +548,17 @@ bool ending() {
 	while (1) {
 		ClearDrawScreen();
 		for (int i = 0; i < msgNum; i++) {
-			DrawString(msgCenter - DrawWidth[i] / 2, height + i*100, endingMsg[i].c_str(), GetColor(210, 255, 250));
+			DrawString(msgCenter - DrawWidth[i] / 2, height + i * 100, endingMsg[i].c_str(), GetColor(210, 255, 250));
 
-			if(DrawWidth[i] != 0){
-			DrawGraph(msgCenter - DrawWidth[i] / 2 - 78, height + i * 100-15, handle[blue][EGG][NW],TRUE);
-			DrawGraph(msgCenter + DrawWidth[i] / 2 + 30, height + i * 100-15, handle[red][EGG][NW], TRUE);
+			if (DrawWidth[i] != 0) {
+				DrawGraph(msgCenter - DrawWidth[i] / 2 - 78, height + i * 100 - 15, handle[blue][EGG][NW], TRUE);
+				DrawGraph(msgCenter + DrawWidth[i] / 2 + 30, height + i * 100 - 15, handle[red][EGG][NW], TRUE);
 			}
 		}
 		height--;
 		WaitTimer(20);
 
-		
+
 
 		if (height < -720) {
 			break;
@@ -559,9 +567,9 @@ bool ending() {
 			return FALSE;
 		}
 		if (CheckHitKey(KEY_INPUT_SPACE) == TRUE || CheckHitKey(KEY_INPUT_1) == TRUE) {
-			height = height-4;
+			height = height - 4;
 		}
-		
+
 
 		ScreenFlip(); //裏画面を表画面に反映
 	}
@@ -586,7 +594,7 @@ bool ending() {
 					break;
 				}
 				WaitTimer(10);
-			}	
+			}
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {//なぜ上下左右が逆なの？謎。
 			break;

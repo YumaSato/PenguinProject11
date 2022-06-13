@@ -12,6 +12,7 @@ class Grid;
 class Creature;
 class Character;
 class Bull;
+class Emperor;
 
 
 extern bool quitGame;
@@ -53,9 +54,9 @@ extern int handle[3][9][8];
 extern int randomSide;
 
 
-void exhibitScreen(int markX, int markY, bool attention, Grid board[][FIELDSIZE], Character *handledCharacters);
-void exhibitStatusMsg(Character *handledCharacters);
-void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE], Character *handledCharacters);
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Character *handledCharacters);
-void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE], Character *handledCharacters);
+void exhibitScreen(int markX, int markY, bool attention, Grid board[][FIELDSIZE], Emperor* handledCharacters);
+void exhibitStatusMsg(Emperor* handledCharacters);
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE], Emperor* handledCharacters);
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);
+void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE], Emperor* handledCharacters);
 void exhibitRule();
