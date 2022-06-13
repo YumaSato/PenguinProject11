@@ -35,6 +35,11 @@ bool speedOrder(Creature* a, Creature* b);
 BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 	turnNum = 0;
 
+	/*for (int i = 0; i < CHARACTERNUM; i++) {
+		handledCharacters[i] = NULL;
+	}*/
+
+
 	
 }
 
@@ -69,27 +74,40 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 	while (gameMode == 1) {
 
-		
 
-		if (Emperor1.HP > 0) {
-			actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
-			if (actionReturn ==0) {
+		for (int i = 0; i < CHARACTERNUM; i++) {
+			actionReturn = handledCharacters[i]->selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
+			if (actionReturn == 0) {
 				return 0;
 			}
 			if (actionReturn == 2) {
 				return 2;
 			}
+		}
 
-		}
-		if (Emperor2.HP > 0) {
-			actionReturn = Emperor2.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
-			if (actionReturn == 0) {
-				return 0;//ゲーム直接終了
-			}
-			if (actionReturn == 2) {
-				return 2;//タイトル画面に戻る
-			}
-		}
+
+
+		
+
+		//if (Emperor1.HP > 0) {
+		//	actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
+		//	if (actionReturn ==0) {
+		//		return 0;
+		//	}
+		//	if (actionReturn == 2) {
+		//		return 2;
+		//	}
+
+		//}
+		//if (Emperor2.HP > 0) {
+		//	actionReturn = Emperor2.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
+		//	if (actionReturn == 0) {
+		//		return 0;//ゲーム直接終了
+		//	}
+		//	if (actionReturn == 2) {
+		//		return 2;//タイトル画面に戻る
+		//	}
+		//}
 
 		if ((Emperor1.HP <= 0 && Emperor2.HP <= 0 ) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";

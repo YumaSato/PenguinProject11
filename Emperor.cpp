@@ -5,7 +5,7 @@
 #include "string"
 
 //プロトタイプ宣言
-void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/);
+//void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/);
 
 Emperor::Emperor(Team team, int num) : Character() {//皇帝のコンストラクタ
 	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更

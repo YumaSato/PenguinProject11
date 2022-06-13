@@ -163,7 +163,8 @@ public:
 
 	PenguinKids mobs_PenguinKids[mobLimit];
 	Bull mobs_Bull[mobLimit];
-	Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレスを格納する変数。配列インデックスは、キャラ番号。
+
+	Character handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレスを格納する変数。配列インデックスは、キャラ番号。
 
 
 	//Grid* board = new Grid[FIELDSIZE][FIELDSIZE];

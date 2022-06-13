@@ -23,6 +23,12 @@ void exhibitStatusMsg(Character *handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe
 	int exhibitY = 600;
 	for (int i = 0; i < CHARACTERNUM; i++) {
 
+		DrawBox(830,300+i*100,1150,385 + i * 100,GetColor(240, 230, 140),TRUE);
+
+
+
+
+
 		string numHP;
 		numHP = (to_string(handledCharacters[i].HP));
 		string numHP_Limit;
@@ -59,7 +65,7 @@ void exhibitStatusMsg(Character *handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe
 
 
 
-void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE], Character* handledCharacters) {//ƒyƒ“ƒMƒ“‚ğ•`‰æiƒXƒe[ƒ^ƒX‚ÆŒü‚«‚©‚çƒyƒ“ƒMƒ“‚Ì“KØ‚È‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ğ“üè‚µŠi”[‚µ‚Ä‚©‚ç•`‰æj
+void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE], Character *handledCharacters) {//ƒyƒ“ƒMƒ“‚ğ•`‰æiƒXƒe[ƒ^ƒX‚ÆŒü‚«‚©‚çƒyƒ“ƒMƒ“‚Ì“KØ‚È‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ğ“üè‚µŠi”[‚µ‚Ä‚©‚ç•`‰æj
 	int h;//ƒnƒ“ƒhƒ‹Ši”[—p
 	string turn = "";
 	bool HPexhibitOrNot;
@@ -138,13 +144,13 @@ void exhibitScreen(int markX, int markY ,bool attention ,Grid board[][FIELDSIZE]
 		}
 	}
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
-	DrawString(FIELDSIZE * SQUARESIZE + 5, 380, actionMsg.c_str(), GetColor(255, 200, 255));
+	DrawString(FIELDSIZE * SQUARESIZE + 5, 270, actionMsg.c_str(), GetColor(255, 200, 255));
 
 	turn = "Œ»İ‚Ìƒ^[ƒ“:" + std::to_string(turnNum) + "   Œ»İ‚ÌƒXƒRƒA:" + std::to_string(score);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20 ,turn.c_str(), GetColor(255, 200, 255));
 	actionMsg = "";
 
-
+	exhibitStatusMsg(handledCharacters);
 
 	
 
