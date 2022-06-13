@@ -39,7 +39,13 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 		handledCharacters[i] = NULL;
 	}*/
 
+	Emperor Emperor1(red, 0);//インスタンス化
+	handledCharacters[0] = Emperor1;
+	board[Emperor1.x][Emperor1.y].creature = &Emperor1;//マス目に自分のポインタを代入。
 
+	Emperor Emperor2(blue, 1);//インスタンス化
+	handledCharacters[1] = Emperor2;
+	board[Emperor2.x][Emperor2.y].creature = &Emperor2;
 	
 }
 
@@ -60,13 +66,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 
-	Emperor Emperor1(red, 0);//インスタンス化
-	handledCharacters[0] = &Emperor1;
-	board[Emperor1.x][Emperor1.y].creature = &Emperor1;//マス目に自分のポインタを代入。
-
-	Emperor Emperor2(blue, 1);//インスタンス化
-	handledCharacters[1] = &Emperor2;
-	board[Emperor2.x][Emperor2.y].creature = &Emperor2;
+	
 
 	int actionReturn = 1;
 
@@ -76,7 +76,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 
 
 		for (int i = 0; i < CHARACTERNUM; i++) {
-			actionReturn = handledCharacters[i]->selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
+			actionReturn = handledCharacters[i].selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			if (actionReturn == 0) {
 				return 0;
 			}
@@ -109,10 +109,10 @@ int BattleMode_GameManager::BattleMode(int level) {
 		//	}
 		//}
 
-		if ((Emperor1.HP <= 0 && Emperor2.HP <= 0 ) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
+		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0 ) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -130,26 +130,26 @@ int BattleMode_GameManager::BattleMode(int level) {
 		if ((level == 0 && turnNum == 60)||(level == 1 && turnNum == 100)) {
 			mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
 			actionMsg = "戦わされた子ペンギンの数:"+ std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
-			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, handledCharacters);
 			WaitKey();
 			if (ending() == FALSE) {
 				return FALSE;
 			}
 			
-			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, handledCharacters);
 			WaitKey();
 		}
 
 
 		mainMsg = "";
-		if (turnFinal(mobs_PenguinKids, mobs_Bull, board ,*handledCharacters) == FALSE) {
+		if (turnFinal(mobs_PenguinKids, mobs_Bull, board ,handledCharacters) == FALSE) {
 			return FALSE;
 		}
 
-		if ((Emperor1.HP <= 0 && Emperor2.HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
+		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+			exhibitScreen(0, 0, FALSE, board, handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -165,9 +165,9 @@ int BattleMode_GameManager::BattleMode(int level) {
 		}
 		
 
-		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
+		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		turnNum += 1;
-		exhibitScreen(0, 0, FALSE, board, *handledCharacters);
+		exhibitScreen(0, 0, FALSE, board, handledCharacters);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);
 		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turnF.c_str(), GetColor(255, 200, 255));
 		WaitKey();*/
