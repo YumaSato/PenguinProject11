@@ -36,6 +36,7 @@ public:
 	int HP_Limit;
 	int levelUp;//レベル
 	int expPoint;//経験値量
+	int giveExpPoint;//倒されたときに与える経験値
 	int attackPower;
 	int defensePower;
 	int speed;
@@ -46,7 +47,7 @@ public:
 
 
 	Creature();
-	virtual void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters);
+	virtual void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters);
 	virtual int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);
 	virtual bool walk(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters);
 	virtual void changeDirection(Grid board[][FIELDSIZE], Emperor* handledCharacters);
@@ -84,7 +85,7 @@ public:
 class Bull : public Character {
 public:
 	Bull();
-	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters)override;
+	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters)override;
 	void test();
 	bool walk(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters);
 	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);
@@ -98,7 +99,7 @@ public:
 class PenguinKids : public Creature {
 public:
 	PenguinKids();
-	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters)override;
+	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters)override;
 	void test();
 	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) override;
 	bool specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) override;
@@ -130,9 +131,10 @@ public:
 class Emperor : public Character {
 public:
 	Emperor();
-	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters)override;
+	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters)override;
 	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);
 	bool specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters);
+	int GetExpPoint(int expP);
 };
 
 

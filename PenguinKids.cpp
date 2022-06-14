@@ -16,7 +16,7 @@ PenguinKids::PenguinKids() {
 
 
 
-void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//実質的なコンストラクタ。
+void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//実質的なコンストラクタ。
 	//未初期化のPenguinKids配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -34,7 +34,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	y = iy;
 	HP = 50;
 	HP_Limit = 50;
-	levelUp = NULL;
+	levelUp = initLevel;
 	expPoint = NULL;
 	attackPower = 30 + GetRand(3);
 	defensePower = 1;
@@ -259,7 +259,7 @@ bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull
 
 
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, speed, board, handledCharacters);
+			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, 0, speed, board, handledCharacters);
 
 
 			mobs_PenguinKids[num_penguinKids] = penguinKids;

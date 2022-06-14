@@ -10,7 +10,7 @@ using namespace std;
 Bull::Bull() {
 }
 
-void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//実質的なコンストラクタ。
+void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//実質的なコンストラクタ。
 	//未初期化のBull配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -29,10 +29,11 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 		y = iy;
 		HP = 50;
 		HP_Limit = 50;
-		levelUp = NULL;
+		levelUp = initLevel;
 		expPoint = NULL;
-		attackPower = 38;
-		defensePower = 100;
+		attackPower = 30 + levelUp * 2;
+		defensePower = 2 +levelUp * 2;//(92)
+		giveExpPoint = 60 + levelUp * 15;
 		speed = 999 - GetRand(760);//素早さはランダム。
 		staminaRecoverAbility = NULL;
 		num = mobNumber;
@@ -51,10 +52,10 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 		y = iy;
 		HP = 50;
 		HP_Limit = 50;
-		levelUp = NULL;
+		levelUp = initLevel;
 		expPoint = NULL;
-		attackPower = 58;
-		defensePower = 160;
+		attackPower = 50 + levelUp * 2;
+		defensePower = 150 + levelUp * 2;
 		speed = 999 - GetRand(960);//素早さはランダム。
 		staminaRecoverAbility = NULL;
 		num = mobNumber;

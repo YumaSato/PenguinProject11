@@ -24,6 +24,7 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 	memset(&this->staminaRecoverAbility, NULL, sizeof(this->staminaRecoverAbility));
 	memset(&this->num, NULL, sizeof(this->num));
 	name = "Somebody";
+	giveExpPoint = 0;
 	skip = FALSE;
 	enemy = FALSE;
 
@@ -45,7 +46,7 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 }
 
 
-void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 }
 
 int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
@@ -310,19 +311,30 @@ void Creature::damage(int checkX, int checkY, Grid board[][FIELDSIZE], Emperor* 
 	exhibitDamage(x, y, checkX, checkY, TRUE, damageHP, board, handledCharacters);
 
 
+	
 	if (board[checkX][checkY].creature->HP <= 0) {//HPがマイナスになったら死ぬ
-		if (board[checkX][checkY].creature->status == BULL) {
-			score = score + 1000;
-			if (board[checkX][checkY].creature->team == blue) {
-				score = score + 3000;
-			}
+		int expUp;
+		int lv = 0;
+		expUp = board[checkX][checkY].creature->giveExpPoint;
+		if (team == red) {
+			lv = handledCharacters[0].GetExpPoint(expUp);
+		}else if (team == blue) {
+			lv = handledCharacters[1].GetExpPoint(expUp);
 		}
+		string msg2 = "\n相手をやっつけた。"+ std::to_string(lv);
+		string msg3;
+		if (lv < 0) {
+			string msg3 = "\n"+ handledCharacters[1].name + "のレベルが"+ std::to_string(lv) + "に上がった！";
+
+		}
+		actionMsg = name + msg1 + msg2 + msg3;
+		exhibitScreen(x, y, TRUE, board, handledCharacters);
 
 		board[checkX][checkY].creature->DeleteCreature();
 		board[checkX][checkY].creature = NULL;
 
-		string msg2 = "\n相手をやっつけた。";
-		actionMsg = name + msg1 + msg2;
+		
 
+		score += expUp;
 	}
 }

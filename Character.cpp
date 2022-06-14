@@ -397,6 +397,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 		WaitTimer(10);
+		ScreenFlip(); //裏画面を表画面に反映
 	}
 
 	//stamina += staminaRecoverAbility;//スタミナ回復

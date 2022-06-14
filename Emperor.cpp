@@ -12,9 +12,11 @@ Emperor::Emperor() {//皇帝のコンストラクタ
 }
 
 
-void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更
 	this->team = ParentTeam;
+
+	giveExpPoint = 10000;
 
 	if (ParentTeam == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
 		this->name = "赤皇帝";
@@ -29,7 +31,7 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 		this->levelUp = 1;
 		this->expPoint = 0;
 		this->attackPower = 30;
-		this->defensePower = 60;
+		this->defensePower = 10;
 		this->speed = 1001;
 		this->staminaRecoverAbility = 10;
 		this->num = 0;
@@ -81,7 +83,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
 		if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//押したマスの方向が空いていたらインスタンス化を実行
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, speed, board, handledCharacters);
+			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, levelUp, speed, board, handledCharacters);
 
 			//kids.push_back(penguinKids);
 			//board[checkX][checkY].creature = &kids.back();
@@ -135,6 +137,19 @@ bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handl
 	}
 }
 
+
+
+int Emperor::GetExpPoint(int expP) {
+	expPoint += expP;
+
+	if (expPoint >= levelUp * 100 / 6 + 100) {//レベルアップ必要分の経験値を得たら、レベルアップ
+		expPoint = expPoint - (levelUp * 100 / 6 + 100);//レベルアップ達成時に余った経験値は次のレベル用に貯められる。
+		levelUp += 1;
+
+		return levelUp;//上がったレベルを返す。
+	}
+	return 0;
+}
 
 
 

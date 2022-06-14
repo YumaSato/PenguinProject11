@@ -40,9 +40,11 @@ void exhibitStatusMsg(Emperor* handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ
 		atta = (to_string(handledCharacters[i].attackPower));
 		string defe;
 		defe = (to_string(handledCharacters[i].defensePower));
+		string neededExp;
+		neededExp = (to_string(handledCharacters[i].levelUp * 100 / 6 + 100));
 
+		CharacterStatusMsg = handledCharacters[i].name + "      Lv."+ numLevel+"\n ó‘Ô HP : " + numHP + " / " + numHP_Limit + "\n UŒ‚—ÍF" + atta + "   –hŒä—ÍF"+ defe + "\n ŒoŒ±’lF"+ numExp +" / " + neededExp;
 
-		CharacterStatusMsg = handledCharacters[i].name + "      Lv."+ numLevel+"\n ó‘Ô HP : " + numHP + " / " + numHP_Limit + "\n UŒ‚—ÍF" + atta + "\n –hŒä—ÍF"+ defe;
 
 		
 
@@ -138,7 +140,7 @@ void exhibitScreen(int markX, int markY, bool attention, Grid board[][FIELDSIZE]
 		}
 	}
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
-	DrawString(FIELDSIZE * SQUARESIZE + 5, 270, actionMsg.c_str(), GetColor(255, 200, 255));
+	DrawString(FIELDSIZE * SQUARESIZE + 5, 200, actionMsg.c_str(), GetColor(255, 200, 255));
 
 	turn = "Œ»İ‚Ìƒ^[ƒ“:" + std::to_string(turnNum) + "   Œ»İ‚ÌƒXƒRƒA:" + std::to_string(score);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turn.c_str(), GetColor(255, 200, 255));
@@ -264,8 +266,9 @@ void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid boa
 	for (int i = 0; i < distance * SQUARESIZE / 2; i = i++) {
 
 		exhibitScreen(kickX, kickY, TRUE, board, handledCharacters);
-		DrawGraph((kickX + dx) * SQUARESIZE + (i * 2 * dx), (kickY + dy) * SQUARESIZE + (i * 2 * dy), handleEgg, TRUE);
-		WaitTimer(10);
+		DrawGraph((kickX + dx) * SQUARESIZE + (i * 4 * dx), (kickY + dy) * SQUARESIZE + (i * 2 * dy), handleEgg, TRUE);
+		//WaitTimer(2);
+		ScreenFlip(); //— ‰æ–Ê‚ğ•\‰æ–Ê‚É”½‰f
 	}
 
 	board[kickX + dx][kickY + dy].creature = kicked;//Œ³‚ÌˆÊ’u‚Éƒ|ƒCƒ“ƒ^‚ğ–ß‚·B
