@@ -25,8 +25,7 @@ void exhibitStatusMsg(Emperor* handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ
 
 		DrawBox(830, 300 + i * 100, 1150, 385 + i * 100, GetColor(240, 230, 140), TRUE);
 
-
-
+		DrawGraph(832, 305 + i * 100, handle[handledCharacters[i].team][handledCharacters[i].status][5], TRUE);
 
 
 		string numHP;
@@ -37,22 +36,17 @@ void exhibitStatusMsg(Emperor* handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ
 		numLevel = (to_string(handledCharacters[i].levelUp));
 		string numExp;
 		numExp = (to_string(handledCharacters[i].expPoint));
-
-		CharacterStatusMsg = handledCharacters[i].name + "‚Ìó‘Ô\n HP :" + numHP + " / " + numHP_Limit + "\nƒŒƒxƒ‹F" + numLevel + " / " + numExp;
-
-		//char HP_NumStr[BUFFER];
-		//sprintf_s(HP_NumStr, BUFFER, "%d / %d\n", handledCharacters[i].HP, handledCharacters[i].HP_Limit);
-
-		//char stamina_NumStr[BUFFER];
-		//sprintf_s(stamina_NumStr, BUFFER, "%d / %d", handledCharacters[i].stamina, handledCharacters[i].staminaLimit);
-
-	   // CharacterStatusMsg = handledCharacters[i].name +"‚Ìó‘Ô\n HP :"+ (string)HP_NumStr +"ƒXƒ^ƒ~ƒi:"+ (string)stamina_NumStr;
-
-		//staminaMsg = "ƒXƒ^ƒ~ƒi : % d / % d ", handledCharacters[i].stamina, handledCharacters[i].staminaLimit;
-		//DrawString(800, exhibitY + 20 , HP_Msg.c_str(), GetColor(255, 200, 255));
+		string atta;
+		atta = (to_string(handledCharacters[i].attackPower));
+		string defe;
+		defe = (to_string(handledCharacters[i].defensePower));
 
 
-		DrawString(FIELDSIZE * SQUARESIZE + 5, exhibitY, CharacterStatusMsg.c_str(), GetColor(255, 200, 255));
+		CharacterStatusMsg = handledCharacters[i].name + "      Lv."+ numLevel+"\n ó‘Ô HP : " + numHP + " / " + numHP_Limit + "\n UŒ‚—ÍF" + atta + "\n –hŒä—ÍF"+ defe;
+
+		
+
+		DrawString(880, 305 + i * 100, CharacterStatusMsg.c_str(), GetColor(20, 0, 0));
 
 
 

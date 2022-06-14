@@ -47,7 +47,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetGraphMode(FIELDSIZE * 48 + 384, FIELDSIZE * 48, 32); // 画面サイズは最大の1024, 900 にしておく
 	SetWindowSize(FIELDSIZE * 48 + 384, FIELDSIZE * 48);// 最初は 1024, 900 にしておく
 
-
+	
 
 
 	if (DxLib_Init() == -1) {
@@ -66,16 +66,35 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	bool colorUpOrDown = TRUE;
 	handleTitle = LoadGraph("Imgs/title.jpg");
 
+
+	int music;
+
+	//int pm;
+	//pm = LoadSoundMem("Imsg/SampleBGM.ogg");
+	//int counter = 0;
+	/*handleMusic = LoadSoundMem("Imgs/SampleYukkuri.wav");*/
+	
+	PlayMusic("Imgs/ochaBGM.mp3", DX_PLAYTYPE_LOOP);
+	SetVolumeMusic(40);
+
+	//PlaySoundMem(handleMusic, DX_PLAYTYPE_LOOP, 1);
+	//PlaySoundMem(pm, DX_PLAYTYPE_BACK, 1);
+
 	while (game == TRUE) {
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			break;
 		}
 
-
+		//if (counter % 8760 == 0) {//BGM流したい
+		//	PlaySoundMem(pm, DX_PLAYTYPE_BACK,1);
+		//}
+		//counter++;
 		
 
 
-		
+
+
+
 
 		DrawGraph(0, 0, handleTitle, TRUE);
 		DrawString(960, 320, "モードを選択してください。\n\n\n1:通常モード(Normal)\n60ターン生き残れ！\n\n\n2:難関モード(Lunatic)\n100ターン生き残れ！\n\n\nEsc:やめる\n\n\n\n\n\n\n\n\n\n\n\n            VERSION:2", GetColor(titleStringColor, 245,255));
