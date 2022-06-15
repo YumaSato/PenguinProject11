@@ -36,7 +36,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	HP_Limit = 50;
 	levelUp = initLevel;
 	expPoint = NULL;
-	attackPower = 30 + GetRand(3);
+	attackPower = 30 + GetRand(3) + (levelUp*4)/3;
 	defensePower = 1;
 
 	int random = GetRand(100) + 30;
@@ -259,7 +259,7 @@ bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull
 
 
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, 0, speed, board, handledCharacters);
+			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, levelUp, speed, board, handledCharacters);
 
 
 			mobs_PenguinKids[num_penguinKids] = penguinKids;

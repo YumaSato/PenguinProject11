@@ -16,7 +16,7 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更
 	this->team = ParentTeam;
 
-	giveExpPoint = 10000;
+	giveExpPoint = 600;
 
 	if (ParentTeam == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
 		this->name = "赤皇帝";
@@ -30,8 +30,8 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 		this->HP_Limit = 50;
 		this->levelUp = 1;
 		this->expPoint = 0;
-		this->attackPower = 30;
-		this->defensePower = 10;
+		this->attackPower = 20;
+		this->defensePower = 35;
 		this->speed = 1001;
 		this->staminaRecoverAbility = 10;
 		this->num = 0;
@@ -55,8 +55,8 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 		this->HP_Limit = 50;
 		this->levelUp = 1;
 		this->expPoint = 0;
-		this->attackPower = 30;
-		this->defensePower = 60;
+		this->attackPower = 20;
+		this->defensePower = 35;
 		this->speed = 1000;
 		this->staminaRecoverAbility = 5;
 		this->num = 1;
@@ -141,10 +141,19 @@ bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handl
 
 int Emperor::GetExpPoint(int expP) {
 	expPoint += expP;
+	int surplus_expP;
 
-	if (expPoint >= levelUp * 100 / 6 + 100) {//レベルアップ必要分の経験値を得たら、レベルアップ
-		expPoint = expPoint - (levelUp * 100 / 6 + 100);//レベルアップ達成時に余った経験値は次のレベル用に貯められる。
+	if (expPoint >= levelUp * 100 / 3 + 150) {//レベルアップ必要分の経験値を得たら、レベルアップ
+
+		//expPoint = expPoint - (levelUp * 100 / 6 + 100);//レベルアップ達成時に余った経験値は次のレベル用に貯められる。
+
+
+		surplus_expP = expPoint - (levelUp * 100 / 3 + 150);//今回のレベルアップで余った経験値
 		levelUp += 1;
+		attackPower += 1 + GetRand(1);
+		defensePower += 2 + GetRand(2);
+		expPoint = 0;
+		GetExpPoint(surplus_expP);
 
 		return levelUp;//上がったレベルを返す。
 	}

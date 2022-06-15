@@ -103,7 +103,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 				GetMousePoint(&xClick, &yClick);//マウスポインタがどこにあるかを取得
 
-				if (exhibitMyStatusOrNot == TRUE) {//キャラ詳細表示を表示するフラグが立っていた場合
+				if (exhibitMyStatusOrNot == TRUE) {//操作可能キャラの詳細を表示するフラグが立っていた場合
 					bool turnFinish = FALSE;
 					for (int iii = 0; iii < 6; iii++) {//６つの選択肢がクリックを受け付ける。
 						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
@@ -749,7 +749,7 @@ bool Character::walk(int size, Grid board[][FIELDSIZE], Emperor* handledCharacte
 		WaitTimer(20);
 	}
 	return TRUE;
-	actionMsg = "walkの実行が終了";
+	actionMsg = "歩き終わった！";
 
 	exhibitScreen(x, y, TRUE, board, handledCharacters);
 
@@ -779,16 +779,16 @@ bool Character::attack(int size, Grid board[][FIELDSIZE], Emperor* handledCharac
 		damage(checkX, checkY, board, handledCharacters);
 
 
-		string msg1 = "は攻撃した。";
-		//string msg2 = board[checkX][checkY].creature->name;//なぜか実行時エラーが出る。
-		string msg3 = "はダメージを受けた。";
-		actionMsg = name + msg1;
+		//string msg1 = "は攻撃した。";
+		////string msg2 = board[checkX][checkY].creature->name;//なぜか実行時エラーが出る。
+		//string msg3 = "はダメージを受けた。";
+		//actionMsg = name + msg1;
 
 
 
 
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		DrawString(800, 180, actionMsg.c_str(), GetColor(255, 200, 255));
+		//exhibitScreen(x, y, TRUE, board, handledCharacters);
+		//DrawString(800, 180, actionMsg.c_str(), GetColor(255, 200, 255));
 		WaitKey();
 		return TRUE;
 	}

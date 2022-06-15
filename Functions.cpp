@@ -41,12 +41,12 @@ void exhibitStatusMsg(Emperor* handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ
 		string defe;
 		defe = (to_string(handledCharacters[i].defensePower));
 		string neededExp;
-		neededExp = (to_string(handledCharacters[i].levelUp * 100 / 6 + 100));
+		neededExp = (to_string(handledCharacters[i].levelUp * 100 / 3 + 150));
 
-		CharacterStatusMsg = handledCharacters[i].name + "      Lv."+ numLevel+"\n ó‘Ô HP : " + numHP + " / " + numHP_Limit + "\n UŒ‚—ÍF" + atta + "   –hŒä—ÍF"+ defe + "\n ŒoŒ±’lF"+ numExp +" / " + neededExp;
+		CharacterStatusMsg = handledCharacters[i].name + "      Lv." + numLevel + "\n ó‘Ô HP : " + numHP + " / " + numHP_Limit + "\n UŒ‚—ÍF" + atta + "   –hŒä—ÍF" + defe + "\n ŒoŒ±’lF" + numExp + " / " + neededExp;
 
 
-		
+
 
 		DrawString(880, 305 + i * 100, CharacterStatusMsg.c_str(), GetColor(20, 0, 0));
 
@@ -140,7 +140,7 @@ void exhibitScreen(int markX, int markY, bool attention, Grid board[][FIELDSIZE]
 		}
 	}
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
-	DrawString(FIELDSIZE * SQUARESIZE + 5, 200, actionMsg.c_str(), GetColor(255, 200, 255));
+	DrawString(FIELDSIZE * SQUARESIZE + 5, 170, actionMsg.c_str(), GetColor(255, 200, 255));
 
 	turn = "Œ»İ‚Ìƒ^[ƒ“:" + std::to_string(turnNum) + "   Œ»İ‚ÌƒXƒRƒA:" + std::to_string(score);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turn.c_str(), GetColor(255, 200, 255));
@@ -221,10 +221,10 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 
 	if (statusX < FIELDSIZE && statusY < FIELDSIZE) {
 
-		DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 200, statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
-		DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 200, statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
+		DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 300, statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
+		DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 300, statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
 
-		Msg = board[statusX][statusY].creature->name + "‚ÌHP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) + "\n‘f‘‚³’l:" + to_string(board[statusX][statusY].creature->speed);
+		Msg = board[statusX][statusY].creature->name + "  HP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) +"@ Lv."+ to_string(board[statusX][statusY].creature->levelUp) + "\n‘f‘‚³:" + to_string(board[statusX][statusY].creature->speed) + "  UŒ‚:"+ (to_string(board[statusX][statusY].creature->attackPower)) +"  –hŒä:"+ to_string(board[statusX][statusY].creature->defensePower);
 
 		DrawString(statusX * 48 + 42, statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
 

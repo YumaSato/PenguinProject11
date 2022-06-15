@@ -266,7 +266,7 @@ void Creature::DeleteCreature() {
 void Creature::incubate(int checkX, int checkY, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//指定地点に生物がいる前提。孵化の内容を実行。
 
 	board[checkX][checkY].creature->status = NORMAL;
-	board[checkX][checkY].creature->defensePower = 25 + GetRand(2);
+	board[checkX][checkY].creature->defensePower = 22 + GetRand(2) + levelUp * 2;
 	board[checkX][checkY].creature->SETdirection(GETdirection());
 }
 
@@ -309,22 +309,24 @@ void Creature::damage(int checkX, int checkY, Grid board[][FIELDSIZE], Emperor* 
 	string msg1 = "は攻撃した。";
 	actionMsg = name + msg1;
 	exhibitDamage(x, y, checkX, checkY, TRUE, damageHP, board, handledCharacters);
+	string msg2 = "";
+	string msg3 = "";
 
-
-	
 	if (board[checkX][checkY].creature->HP <= 0) {//HPがマイナスになったら死ぬ
+		board[checkX][checkY].creature->HP = 0;
 		int expUp;
 		int lv = 0;
 		expUp = board[checkX][checkY].creature->giveExpPoint;
 		if (team == red) {
 			lv = handledCharacters[0].GetExpPoint(expUp);
-		}else if (team == blue) {
+		}
+		else if (team == blue) {
 			lv = handledCharacters[1].GetExpPoint(expUp);
 		}
-		string msg2 = "\n相手をやっつけた。"+ std::to_string(lv);
-		string msg3;
-		if (lv < 0) {
-			string msg3 = "\n"+ handledCharacters[1].name + "のレベルが"+ std::to_string(lv) + "に上がった！";
+		msg2 = "\n相手をやっつけた。";
+
+		if (lv > 0) {
+			msg3 = "\n" + handledCharacters[1].name + "のレベルが" + std::to_string(lv) + "に上がった！";
 
 		}
 		actionMsg = name + msg1 + msg2 + msg3;
@@ -333,7 +335,7 @@ void Creature::damage(int checkX, int checkY, Grid board[][FIELDSIZE], Emperor* 
 		board[checkX][checkY].creature->DeleteCreature();
 		board[checkX][checkY].creature = NULL;
 
-		
+
 
 		score += expUp;
 	}

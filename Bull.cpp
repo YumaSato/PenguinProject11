@@ -32,7 +32,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 		levelUp = initLevel;
 		expPoint = NULL;
 		attackPower = 30 + levelUp * 2;
-		defensePower = 2 +levelUp * 2;//(92)
+		defensePower = 92 +levelUp * 2;//(92)
 		giveExpPoint = 60 + levelUp * 15;
 		speed = 999 - GetRand(760);//‘f‘‚³‚Íƒ‰ƒ“ƒ_ƒ€B
 		staminaRecoverAbility = NULL;
