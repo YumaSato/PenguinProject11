@@ -214,22 +214,50 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 	exhibitScreen(markX, markY, attention, board, handledCharacters);
 	string Msg = "";
 	string Bulls = "";
 
 	if (statusX < FIELDSIZE && statusY < FIELDSIZE) {
 
-		DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 300, statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
-		DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 300, statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
-
-		Msg = board[statusX][statusY].creature->name + "  HP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) +"　 Lv."+ to_string(board[statusX][statusY].creature->levelUp) + "\n素早さ:" + to_string(board[statusX][statusY].creature->speed) + "  攻撃:"+ (to_string(board[statusX][statusY].creature->attackPower)) +"  防御:"+ to_string(board[statusX][statusY].creature->defensePower);
-
-		DrawString(statusX * 48 + 42, statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
 
 
+		if (markX == statusX && markY == statusY) {//ステータス表示キャラと操作可能キャラが同じだった場合、行動選択の表示を行う。
 
+
+			string Msg1 = "";
+			string Msg2 = "";
+
+			DrawBox(markX * 48 + 40, markY * 48 + 2, markX * 48 + 360, markY * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
+			DrawBox(markX * 48 + 39, markY * 48 + 1, markX * 48 + 361, markY * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
+
+			for (int iii = 0; iii < 6; iii++) {
+				DrawBox(markX * 48 + 50 + iii * 51, markY * 48 + 24, markX * 48 + 85 + iii * 51, markY * 48 + 43, GetColor(50 + ((color + iii * 3) / 10), 220 + iii * 5 - (color / 3), 100), TRUE);//選択ボックス
+
+
+			}
+
+			Msg1 = board[markX][markY].creature->name + "のHP:" + std::to_string(board[markX][markY].creature->HP) + "/" + std::to_string(board[markX][markY].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[markX][markY].creature->speed);
+			Msg2 = " 歩く　産卵　孵化　攻撃　蹴る　パス";
+
+			DrawString(markX * 48 + 42, markY * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
+			DrawString(markX * 48 + 42, markY * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
+
+			WaitTimer(10);
+
+		}
+		else {
+
+			DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 300, statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
+			DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 300, statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
+
+			Msg = board[statusX][statusY].creature->name + "  HP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) + "　 Lv." + to_string(board[statusX][statusY].creature->levelUp) + "\n素早さ:" + to_string(board[statusX][statusY].creature->speed) + "  攻撃:" + (to_string(board[statusX][statusY].creature->attackPower)) + "  防御:" + to_string(board[statusX][statusY].creature->defensePower);
+
+			DrawString(statusX * 48 + 42, statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
+
+
+		}
 
 
 
@@ -263,10 +291,10 @@ void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid boa
 	Creature* kicked = board[kickX + dx][kickY + dy].creature;//蹴られた卵のポインタを仮置き場に代入し保持。
 	int handleEgg = handle[board[kickX + dx][kickY + dy].creature->team][EGG][NW];
 	board[kickX + dx][kickY + dy].creature = NULL;
-	for (int i = 0; i < distance * SQUARESIZE / 2; i = i++) {
+	for (int i = 0; i < distance * SQUARESIZE / 4; i = i++) {
 
 		exhibitScreen(kickX, kickY, TRUE, board, handledCharacters);
-		DrawGraph((kickX + dx) * SQUARESIZE + (i * 4 * dx), (kickY + dy) * SQUARESIZE + (i * 2 * dy), handleEgg, TRUE);
+		DrawGraph((kickX + dx) * SQUARESIZE + (i * 4 * dx), (kickY + dy) * SQUARESIZE + (i * 4 * dy), handleEgg, TRUE);
 		//WaitTimer(2);
 		ScreenFlip(); //裏画面を表画面に反映
 	}

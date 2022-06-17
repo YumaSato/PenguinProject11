@@ -219,46 +219,30 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
-					exhibitScreen(x, y, TRUE, board, handledCharacters);
-					string Msg1 = "";
-					string Msg2 = "";
+					//exhibitScreen(x, y, TRUE, board, handledCharacters);
+					//string Msg1 = "";
+					//string Msg2 = "";
 
-					DrawBox(x * 48 + 40, y * 48 + 2, x * 48 + 360, y * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
-					DrawBox(x * 48 + 39, y * 48 + 1, x * 48 + 361, y * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
+					//DrawBox(x * 48 + 40, y * 48 + 2, x * 48 + 360, y * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
+					//DrawBox(x * 48 + 39, y * 48 + 1, x * 48 + 361, y * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
 
-					for (int iii = 0; iii < 6; iii++) {
-						DrawBox(x * 48 + 50 + iii * 51, y * 48 + 24, x * 48 + 85 + iii * 51, y * 48 + 43, GetColor(50 + ((color + iii * 3) / 10), 220 + iii * 5 - (color / 3), 100), TRUE);//選択ボックス
+					//for (int iii = 0; iii < 6; iii++) {
+					//	DrawBox(x * 48 + 50 + iii * 51, y * 48 + 24, x * 48 + 85 + iii * 51, y * 48 + 43, GetColor(50 + ((color + iii * 3) / 10), 220 + iii * 5 - (color / 3), 100), TRUE);//選択ボックス
 
-						/*if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
-							if (iii == 0) {
-								if (specialMovement1(FIELDSIZE) == TRUE) { return TRUE; }
-							}
-							if (iii == 1) {
-								if (specialMovement2(FIELDSIZE) == TRUE) { return TRUE; }
-							}
-							if (iii == 2) {
-								if (attack(FIELDSIZE) == TRUE) { return TRUE; }
-							}
-							if (iii == 3) {
-								if (kick(FIELDSIZE) == TRUE) { return TRUE; }
-							}
-							if (iii == 0) {
-								return TRUE;
-							}
-						}*/
-					}
 
-					Msg1 = board[x][y].creature->name + "のHP:" + std::to_string(board[x][y].creature->HP) + "/" + std::to_string(board[x][y].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[x][y].creature->speed);
-					Msg2 = " 歩く　産卵　孵化　攻撃　蹴る　パス";
+					//}
 
-					DrawString(x * 48 + 42, y * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
-					DrawString(x * 48 + 42, y * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
+					//Msg1 = board[x][y].creature->name + "のHP:" + std::to_string(board[x][y].creature->HP) + "/" + std::to_string(board[x][y].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[x][y].creature->speed);
+					//Msg2 = " 歩く　産卵　孵化　攻撃　蹴る　パス";
 
-					WaitTimer(10);
+					//DrawString(x * 48 + 42, y * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
+					//DrawString(x * 48 + 42, y * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
+
+					//WaitTimer(10);
 
 				}
 				else {//クリックしたのが操作しているキャラじゃない場合、普通にステータスを表示する。
-					exhibitStatus(x, y, XBuf, YBuf, TRUE, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+					exhibitStatus(x, y, XBuf, YBuf, TRUE,color, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 					/*				WaitTimer(10);*/
 				}
 			}
@@ -397,7 +381,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 		WaitTimer(10);
-		ScreenFlip(); //裏画面を表画面に反映
+		//ScreenFlip(); //裏画面を表画面に反映
 	}
 
 	//stamina += staminaRecoverAbility;//スタミナ回復
