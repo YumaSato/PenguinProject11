@@ -15,7 +15,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 	string msg = "は何する?\n\n自分を左クリック:行動を選択\n隣のマスを右クリック(十字キー):向き変更\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\nスペースキー:ルールを表示";
 	int xClick = 0;
 	int yClick = 0;
-	int XBuf = -49;
+	int XBuf = -49;//ステータス表示を行う際に、今クリックしたわけじゃないけどステータス表示状態として持続しているマスの座標を表す。
 	int YBuf = -49;
 	int mouse = NULL;
 	bool clickStop = FALSE;
@@ -151,50 +151,37 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 					}
 
 				}
+				//これより上は、操作を受け付ける内容。この下は、
 
 
 
-
-				xClick = xClick / 48;
+				xClick = xClick / 48;//この先は、XClickとYClickが、押したマスを表す。
 				yClick = yClick / 48;
 				if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-					//if (board[xClick][yClick].creature == NULL) {//クリックした場所が空白マスならば、歩行メソッドを実行
-					//	dx = xClick - x;
-					//	dy = yClick - y;
-					//	if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {
-					//		WaitTimer(120);
-					//		if (walk(FIELDSIZE) == TRUE) {
-					//			break;//1が返ってくる、つまり成功すればループ抜けでターン終了
-					//		}
-					//	}
 
-					//	
-					//}
-					//if (board[xClick][yClick].creature != NULL) {
-					//	if (xClick == XBuf && yClick == YBuf) {//もともとの表示座標と同じところをクリックしたら
-					//		exhibitScreen(x, y, TRUE);//ステータス詳細を消す。
-					//		exhibitOrNot = FALSE;
-					//		WaitTimer(70);
-					//		XBuf = -1;
-					//		YBuf = -1;
-					//	}
-					if (board[xClick][yClick].creature == NULL) {
+
+					if (board[xClick][yClick].creature == NULL) {//押したマスがNULLなら、ステータス表示状態を解除。
 						exhibitOrNot = FALSE;
+						XBuf = -1;
+						YBuf = -1;
 						exhibitScreen(x, y, TRUE, board, handledCharacters);
 					}
-					if (XBuf >= 0 && XBuf < FIELDSIZE && YBuf >= 0 && YBuf < FIELDSIZE) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
-						if (board[xClick][yClick].creature == board[XBuf][YBuf].creature) {//表示中のマスを触ったらステータス表示消える。
-							exhibitOrNot = FALSE;
-							exhibitScreen(x, y, TRUE, board, handledCharacters);
+					
+					if (board[xClick][yClick].creature != NULL) {//キャラがいる場所をクリックした際
+
+						if (XBuf >= 0 && XBuf < FIELDSIZE && YBuf >= 0 && YBuf < FIELDSIZE) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
+							if (board[xClick][yClick].creature == board[XBuf][YBuf].creature) {//表示中のマスを触ったらステータス表示消える。
+								exhibitOrNot = FALSE;
+								XBuf = -1;
+								YBuf = -1;
+								exhibitScreen(x, y, TRUE, board, handledCharacters);
+							}
 						}
-					}
-
-
-					if (board[xClick][yClick].creature != NULL) {
-
-						//if (xClick < FIELDSIZE && yClick < FIELDSIZE) {//もともとの座標と違うが、座標内をクリックしたら
-						exhibitOrNot = TRUE;
-						//}
+						else{
+							exhibitOrNot = TRUE;
+						}
+						
+					
 
 						if (xClick == x && yClick == y) {
 							exhibitMyStatusOrNot = TRUE;
@@ -214,37 +201,9 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		if (exhibitOrNot == TRUE) {//誰かキャラクタがいるマスを左クリックしたときの詳細表示。
 			XBuf = xClick;
 			YBuf = yClick;
-			if (board[XBuf][YBuf].creature != NULL) {//ステータス詳細を表示。
-				if (board[XBuf][YBuf].creature == this) {//それが自分であれば、選択肢を表示してクリックを受け付ける。
+			if (board[XBuf][YBuf].creature != NULL) {
 
-
-
-					//exhibitScreen(x, y, TRUE, board, handledCharacters);
-					//string Msg1 = "";
-					//string Msg2 = "";
-
-					//DrawBox(x * 48 + 40, y * 48 + 2, x * 48 + 360, y * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
-					//DrawBox(x * 48 + 39, y * 48 + 1, x * 48 + 361, y * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
-
-					//for (int iii = 0; iii < 6; iii++) {
-					//	DrawBox(x * 48 + 50 + iii * 51, y * 48 + 24, x * 48 + 85 + iii * 51, y * 48 + 43, GetColor(50 + ((color + iii * 3) / 10), 220 + iii * 5 - (color / 3), 100), TRUE);//選択ボックス
-
-
-					//}
-
-					//Msg1 = board[x][y].creature->name + "のHP:" + std::to_string(board[x][y].creature->HP) + "/" + std::to_string(board[x][y].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[x][y].creature->speed);
-					//Msg2 = " 歩く　産卵　孵化　攻撃　蹴る　パス";
-
-					//DrawString(x * 48 + 42, y * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
-					//DrawString(x * 48 + 42, y * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
-
-					//WaitTimer(10);
-
-				}
-				else {//クリックしたのが操作しているキャラじゃない場合、普通にステータスを表示する。
-					exhibitStatus(x, y, XBuf, YBuf, TRUE,color, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-					/*				WaitTimer(10);*/
-				}
+				exhibitStatus(x, y, XBuf, YBuf, TRUE, color, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (board[XBuf][YBuf].creature == NULL) {
 				exhibitScreen(x, y, TRUE, board, handledCharacters);
