@@ -239,7 +239,7 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 			}
 
 			Msg1 = board[markX][markY].creature->name + "のHP:" + std::to_string(board[markX][markY].creature->HP) + "/" + std::to_string(board[markX][markY].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[markX][markY].creature->speed);
-			Msg2 = " 歩く　産卵　孵化　攻撃　蹴る　パス";
+			Msg2 = " 歩く　産卵　孵化　攻撃　押す　パス";
 
 			DrawString(markX * 48 + 42, markY * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
 			DrawString(markX * 48 + 42, markY * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));

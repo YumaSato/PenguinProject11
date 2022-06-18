@@ -35,6 +35,9 @@ bool speedOrder(Creature* a, Creature* b);
 BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 	turnNum = 0;
 
+	//const int FIELDSIZE = 17;
+	Grid board[FIELDSIZE][FIELDSIZE];
+
 	/*for (int i = 0; i < CHARACTERNUM; i++) {
 		handledCharacters[i] = NULL;
 	}*/
