@@ -36,7 +36,7 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 	turnNum = 0;
 
 	//const int FIELDSIZE = 17;
-	Grid board[FIELDSIZE][FIELDSIZE];
+	
 
 	/*for (int i = 0; i < CHARACTERNUM; i++) {
 		handledCharacters[i] = NULL;
@@ -60,7 +60,7 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 
 
 
-int BattleMode_GameManager::BattleMode(int level) {
+int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 	//string turnF = "";
 
@@ -141,7 +141,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 			return FALSE;
 		}
 
-		if ((level == 0 && turnNum == 60) || (level == 1 && turnNum == 100)) {
+		if ((stageLevel == 0 && turnNum == 60) || (stageLevel == 1 && turnNum == 100)) {
 			mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
 			actionMsg = "戦わされた子ペンギンの数:" + std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
 			exhibitScreen(0, 0, FALSE, board, handledCharacters);
@@ -179,7 +179,7 @@ int BattleMode_GameManager::BattleMode(int level) {
 		}
 
 
-		enemyEnter(turnNum, level, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+		enemyEnter(turnNum, stageLevel, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		turnNum += 1;
 		exhibitScreen(0, 0, FALSE, board, handledCharacters);
 		/*turnF = "現在のターン:" + std::to_string(turnNum);

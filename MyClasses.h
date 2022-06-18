@@ -164,7 +164,8 @@ class BattleMode_GameManager {
 public:
 	BattleMode_GameManager();
 
-	int BattleMode(int level);
+	int BattleMode(int stageLevel);
+	//const int FIELDSIZE;
 
 	PenguinKids mobs_PenguinKids[mobLimit];
 	Bull mobs_Bull[mobLimit];
@@ -173,7 +174,25 @@ public:
 
 
 
+	
+	Grid board[FIELDSIZE][FIELDSIZE];
 
-	//Grid board[FIELDSIZE][FIELDSIZE];
+};
+
+
+
+
+class RoadMode_GameManager {
+public:
+	RoadMode_GameManager(int stageLevel);
+
+	int RoadMode(int stageLevel);
+
+	PenguinKids mobs_PenguinKids[mobLimit];
+	Bull mobs_Bull[mobLimit];
+
+	Emperor handledCharacters[CHARACTERNUM];
+
+	Grid board[]
 
 };
