@@ -10,7 +10,7 @@ using namespace std;
 Bull::Bull() {
 }
 
-void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//実質的なコンストラクタ。
+void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid**board, Emperor* handledCharacters) {//実質的なコンストラクタ。
 	//未初期化のBull配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -76,7 +76,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {
 
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
@@ -89,7 +89,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid boar
 		HP = HP_Limit;
 	}
 
-	if (attack(FIELDSIZE, board, handledCharacters) == TRUE) {
+	if (attack( board, handledCharacters) == TRUE) {
 		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -97,7 +97,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid boar
 		}
 		return TRUE;
 	}
-	if (walk(FIELDSIZE, board, handledCharacters) == TRUE) {
+	if (walk( board, handledCharacters) == TRUE) {
 		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -113,7 +113,7 @@ void Bull::test() {
 }
 
 
-bool Bull::walk(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+bool Bull::walk(Grid**board, Emperor* handledCharacters) {
 	int ix;
 	int iy;
 	int dx;
@@ -123,7 +123,7 @@ bool Bull::walk(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 	iy = y + dy;
 	bool walkOrNot = FALSE;
 
-	if (ix >= 0 && ix < size && iy >= 0 && iy < size) {//歩くか否かを判定し、walkOrNotに判定結果を格納。
+	if (ix >= 0 && ix < GameBuf->xSize && iy >= 0 && iy < GameBuf->ySize) {//歩くか否かを判定し、walkOrNotに判定結果を格納。
 		if (board[ix][iy].creature != NULL) {
 			if (board[ix][iy].creature->status == EGG) {//マスに卵があれば
 				board[ix][iy].creature->DeleteCreature();//卵が死ぬ。
@@ -260,15 +260,15 @@ bool Bull::walk(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
 
 
 
-bool Bull::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+bool Bull::specialMovement1(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {
 	return TRUE;
 }
 
-bool Bull::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+bool Bull::specialMovement2(Grid**board, Emperor* handledCharacters) {
 	return TRUE;
 }
 
-bool Bull::attack(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+bool Bull::attack(Grid**board, Emperor* handledCharacters) {
 	int ix;
 	int iy;
 	int dx;
@@ -277,7 +277,7 @@ bool Bull::attack(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters)
 	GETdirectionXY(&dx, &dy);
 	ix = x + dx;
 	iy = y + dy;
-	if (ix >= 0 && ix < size && iy >= 0 && iy < size) {//マスが盤面以内なら
+	if (ix >= 0 && ix < GameBuf->xSize && iy >= 0 && iy < GameBuf->ySize) {//マスが盤面以内なら
 		if (board[ix][iy].creature != NULL) {//マスが空白でない、つまり何か居る場合
 			if (board[ix][iy].creature->enemy == TRUE || board[ix][iy].creature->status == EGG) {//でも敵側同士か卵だったら
 				return FALSE;
@@ -338,7 +338,7 @@ bool Bull::attack(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters)
 					ix = x + dx;
 					iy = y + dy;//索敵マスを設定。
 
-					if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
+					if (ix >= 0 && ix < GameBuf->xSize && iy >= 0 && iy < GameBuf->ySize) {
 
 						if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 							if (board[ix][iy].creature->enemy == FALSE && board[ix][iy].creature->status != EGG) {//それがペンギン共で、卵じゃなければ

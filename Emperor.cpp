@@ -12,7 +12,7 @@ Emperor::Emperor() {//皇帝のコンストラクタ
 }
 
 
-void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid**board, Emperor* handledCharacters) {
 	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更
 	this->team = ParentTeam;
 
@@ -72,7 +72,7 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 
 
 
-bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//特殊技：産卵
+bool Emperor::specialMovement1(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {//特殊技：産卵
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -80,7 +80,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 	checkX = x + drctnX;
 	checkY = y + drctnY;
 
-	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+	if (checkX >= 0 && checkX < GameBuf->xSize && checkY >= 0 && checkY < GameBuf->ySize) {
 		if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//押したマスの方向が空いていたらインスタンス化を実行
 			PenguinKids penguinKids = PenguinKids();
 			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, levelUp, speed, board, handledCharacters);
@@ -111,7 +111,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 }
 
 
-bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//特殊技：孵化
+bool Emperor::specialMovement2( Grid**board, Emperor* handledCharacters) {//特殊技：孵化
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -119,7 +119,7 @@ bool Emperor::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handl
 	checkX = x + drctnX;
 	checkY = y + drctnY;
 
-	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+	if (checkX >= 0 && checkX < GameBuf->xSize && checkY >= 0 && checkY < GameBuf->ySize) {
 		if (board[checkX][checkY].creature == NULL) {
 			return FALSE;
 		}

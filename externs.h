@@ -50,14 +50,14 @@ extern int handleMusic;
 //extern Character* handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレスを格納する変数。配列インデックスは、キャラ番号。
 //extern vector<Character*> handledCharacters(CHARACTERNUM);
 
-
+extern BattleMode_GameManager* GameBuf;
 
 extern int randomSide;
 
 
-void exhibitScreen(int markX, int markY, bool attention, Grid board[][FIELDSIZE], Emperor* handledCharacters);
+void exhibitScreen(int markX, int markY, bool attention, Grid**board, Emperor* handledCharacters);
 void exhibitStatusMsg(Emperor* handledCharacters);
-void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid board[][FIELDSIZE], Emperor* handledCharacters);
-void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);
-void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid board[][FIELDSIZE], Emperor* handledCharacters);
+void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid**board, Emperor* handledCharacters);
+void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters);
+void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid**board, Emperor* handledCharacters);
 void exhibitRule();

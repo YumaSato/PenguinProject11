@@ -44,8 +44,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 	// ウインドウのサイズを手動ではできず、且つウインドウのサイズに合わせて拡大もしないようにする
 	SetWindowSizeChangeEnableFlag(FALSE, FALSE);
-	SetGraphMode(FIELDSIZE * 48 + 384, FIELDSIZE * 48, 32); // 画面サイズは最大の1024, 900 にしておく
-	SetWindowSize(FIELDSIZE * 48 + 384, FIELDSIZE * 48);// 最初は 1024, 900 にしておく
+	SetGraphMode(SCREENSIZE * 48 + 384, SCREENSIZE * 48, 32); // 画面サイズは最大の1024, 900 にしておく
+	SetWindowSize(SCREENSIZE * 48 + 384, SCREENSIZE * 48);// 最初は 1024, 900 にしておく
 
 	
 
@@ -100,12 +100,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		DrawString(960, 320, "モードを選択してください。\n\n\n1:通常モード(Normal)\n60ターン生き残れ！\n\n\n2:難関モード(Lunatic)\n100ターン生き残れ！\n\n\nEsc:やめる\n\n\n\n\n\n\n\n\n\n\n\n            VERSION:2", GetColor(titleStringColor, 245,255));
 		
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
-			BattleMode_GameManager *battle0 = new BattleMode_GameManager();
+			BattleMode_GameManager *battle0 = new BattleMode_GameManager(11,15);
 			game = battle0->BattleMode(0);//FALSEだとゲーム終了。
 			delete battle0;
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
-			BattleMode_GameManager* battle1 = new BattleMode_GameManager();
+			BattleMode_GameManager* battle1 = new BattleMode_GameManager(17, 17);
 			game = battle1->BattleMode(1);//FALSEだとゲーム終了。
 			delete battle1;
 		}

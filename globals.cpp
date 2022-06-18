@@ -50,3 +50,5 @@ Character* handledCharacters[CHARACTERNUM];//‘€ì‰Â”\‚ÈƒLƒƒƒ‰ƒNƒ^‚Ìƒ|ƒCƒ“ƒ^‚ğŠi”
 
 
 int randomSide = 0;
+
+BattleMode_GameManager* GameBuf;

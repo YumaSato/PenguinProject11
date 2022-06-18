@@ -16,10 +16,10 @@ using namespace std;
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);//ターンの最後にまとめて行われる操作。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters);//ターンの最後にまとめて行われる操作。
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);//敵が襲来する動作。
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters);
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters);//敵が襲来する動作。
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters);
 bool ending();
 
 
@@ -32,8 +32,18 @@ bool speedOrder(Creature* a, Creature* b);
 
 
 
-BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
+BattleMode_GameManager::BattleMode_GameManager(int xSize, int ySize) {//コンストラクタ。
 	turnNum = 0;
+
+	board = new Grid * [xSize];
+
+	for (int yi = 0; yi < ySize; yi++) {
+		Grid* yGrid = new Grid[ySize];
+		board[yi] = yGrid;//Gridがたの初期化
+	}
+
+
+
 
 	//const int FIELDSIZE = 17;
 	
@@ -54,8 +64,22 @@ BattleMode_GameManager::BattleMode_GameManager() {//コンストラクタ。
 	delete Emperor2;
 
 
-
+	*GameBuf = this;
 }
+
+
+BattleMode_GameManager::~BattleMode_GameManager() {
+	//delete[][] board;
+
+
+	for (int xi = 0; xi < xSize; xi++) {//マス目を消す
+		delete[] board[xi];
+	}
+	delete[] board;
+
+	GameBuf = NULL;
+};
+
 
 
 
@@ -68,14 +92,16 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 
 
-	for (int i = 0; i < FIELDSIZE; i++) {
-		board[i][0].state = ROCK;
-		board[i][FIELDSIZE - 1].state = ROCK;
-		board[0][i].state = ROCK;
-		board[FIELDSIZE - 1][i].state = ROCK;
-		board[CASTLE_X][CASTLE_Y].state = CASTLE;
-	}
+	for (int ix = 0; ix < GameBuf->xSize; ix++) {
 
+		for (int iy = 0; iy < GameBuf->ySize; iy++) {
+			board[ix][0].state = ROCK;
+			board[ix][GameBuf->ySize - 1].state = ROCK;
+			board[0][iy].state = ROCK;
+			board[GameBuf->xSize - 1][iy].state = ROCK;
+			board[CASTLE_X][CASTLE_Y].state = CASTLE;
+		}
+	}
 
 
 	//handledCharacters[0].specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
@@ -204,7 +230,7 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//素早さ順にmobが行動していく関数。
+bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {//素早さ順にmobが行動していく関数。
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -322,7 +348,7 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 
-void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//どのターンで敵が出現するかを決める。
+void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {//どのターンで敵が出現するかを決める。
 	int side = 0;
 	int place = 0;
 
@@ -345,19 +371,19 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 				side += 1;
 			}
 
-			place = GetRand(FIELDSIZE - 3);
+			place = GetRand(GameBuf->ySize - 3);
 
 			if (side == 0) {
 				yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 1) {
-				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				yieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->ySize - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 2) {
 				yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 3) {
-				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				yieldEnemy(BULL, red, -1, 0, GameBuf->ySize - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 		}
 	}
@@ -365,18 +391,18 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 	if ((turn % 2 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 30)) {
 
 		side = GetRand(3);
-		place = GetRand(FIELDSIZE - 3);
+		place = GetRand(GameBuf->ySize - 3);
 		if (side == 0) {
 			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			yieldEnemy(BULL, blue, 0, -1, place + 1, GameBuf->ySize - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 2) {
 			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			yieldEnemy(BULL, blue, -1, 0, GameBuf->ySize - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 	}
 
@@ -386,18 +412,18 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 	if (turn % 8 == 6 && level == 1) {
 
 		side = GetRand(3);
-		place = GetRand(FIELDSIZE - 3);
+		place = GetRand(GameBuf->ySize - 3);
 		if (side == 0) {
 			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			yieldEnemy(BULL, blue, 0, -1, place + 1, GameBuf->ySize - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 2) {
 			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			yieldEnemy(BULL, blue, -1, 0, GameBuf->ySize - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 	}
 
@@ -418,18 +444,18 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 	}
 	if ((28 < turn && turn < 34) || turn == 9) {
 
-		place = GetRand(FIELDSIZE - 3);
+		place = GetRand(GameBuf->ySize - 3);
 		if (randomSide == 0) {
 			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (randomSide == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			yieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->ySize - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (randomSide == 2) {
 			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (randomSide == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			yieldEnemy(BULL, red, -1, 0, GameBuf->ySize - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 	}
 
@@ -438,22 +464,22 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 	if ((turn % 5 == 0 && turn > 12) || turn == 16) {//普通に赤が来る。半分の確率で反対側からも来る。
 		side = GetRand(3);
-		place = GetRand(FIELDSIZE - 3);
+		place = GetRand(GameBuf->ySize - 3);
 		if (side == 0) {
 			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			place = GetRand(GameBuf->ySize - 3);
+			yieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->ySize - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			yieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->ySize - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 2) {
 			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			place = GetRand(GameBuf->ySize - 3);
+			yieldEnemy(BULL, red, -1, 0, GameBuf->ySize - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 		if (side == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			yieldEnemy(BULL, red, -1, 0, GameBuf->ySize - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		}
 
 	}
@@ -468,14 +494,14 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 
 
-void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {
 
 	if (enemyType == BULL) {
 
 
 		if (board[cx][cy].creature != NULL) {
 			int rand = GetRand(1);
-			if (cx == 0 || cx == FIELDSIZE - 1) {
+			if (cx == 0 || cx == GameBuf->xSize - 1) {
 				if (rand == 0) {
 					cy += 1;
 				}
@@ -483,7 +509,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 					cy -= 1;
 				}
 			}
-			if (cy == 0 || cy == FIELDSIZE - 1) {
+			if (cy == 0 || cy == GameBuf->ySize - 1) {
 				if (rand == 0) {
 					cx += 1;
 				}
@@ -523,9 +549,9 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 bool ending() {
 
 
-	int height = FIELDSIZE * SQUARESIZE + 40;
+	int height = SCREENSIZE * SQUARESIZE + 40;
 	const int msgNum = 8;
-	int msgCenter = (FIELDSIZE * 48 + 384) / 2;
+	int msgCenter = (SCREENSIZE * 48 + 384) / 2;
 	string endingMsg[8];
 	endingMsg[0] = "PENGUIN ROBOT BATTLE!";
 	endingMsg[1] = "2022";
@@ -581,13 +607,13 @@ bool ending() {
 
 
 	quitMsg = "ゲームを終了しますか？ 1:Yes 2:No";
-	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, quitMsg.c_str(), WHITE);
+	DrawString(SCREENSIZE * SQUARESIZE + 5, 20, quitMsg.c_str(), WHITE);
 	WaitKey();
 	while (1) {
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。
 			quitMsg = "本当にゲームを終了してよろしいですか？ \n1:Yes 2:No";
 			ClearDrawScreen();
-			DrawString(FIELDSIZE * SQUARESIZE + 5, 20, quitMsg.c_str(), WHITE);
+			DrawString(SCREENSIZE * SQUARESIZE + 5, 20, quitMsg.c_str(), WHITE);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_1) == TRUE) {//なぜ上下左右が逆なの？謎。

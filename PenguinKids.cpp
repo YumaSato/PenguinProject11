@@ -16,7 +16,7 @@ PenguinKids::PenguinKids() {
 
 
 
-void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//実質的なコンストラクタ。
+void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid**board, Emperor* handledCharacters) {//実質的なコンストラクタ。
 	//未初期化のPenguinKids配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -65,7 +65,7 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 
 
 
-int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;//skip状態を解消。
@@ -91,10 +91,10 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 	iX = iX + tmpx;
 	iY = iY + tmpy;
 	if (status == ELDER || status == NORMAL) {
-		if (iX >= 0 && iX < FIELDSIZE && iY >= 0 && iY < FIELDSIZE) {
+		if (iX >= 0 && iX < GameBuf->xSize && iY >= 0 && iY < GameBuf->ySize) {
 			if (board[iX][iY].creature != NULL) {//向いている方向のマスに何か居たら
 				if (board[iX][iY].creature->status == EGG && board[iX][iY].creature->team == team) {//同じチームの卵があれば
-					if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {//優先行動として産卵。
+					if (specialMovement1( mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {//優先行動として産卵。
 						return TRUE;
 					}
 				}
@@ -105,7 +105,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 
 
 
-	if (attack(FIELDSIZE, board, handledCharacters) == TRUE) {
+	if (attack( board, handledCharacters) == TRUE) {
 		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -113,7 +113,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 		}
 		return TRUE;
 	}
-	if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
+	if (specialMovement1( mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
 		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -121,7 +121,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 		}
 		return TRUE;
 	}
-	if (specialMovement2(FIELDSIZE, board, handledCharacters) == TRUE) {
+	if (specialMovement2( board, handledCharacters) == TRUE) {
 		exhibitScreen(x, y, TRUE, board, handledCharacters);
 		WaitKey();
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -145,7 +145,7 @@ void PenguinKids::test() {
 
 
 
-bool PenguinKids::attack(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+bool PenguinKids::attack(Grid**board, Emperor* handledCharacters) {
 
 	int checkX = 0;
 	int checkY;
@@ -157,7 +157,7 @@ bool PenguinKids::attack(int size, Grid board[][FIELDSIZE], Emperor* handledChar
 	int tmpy;
 	bool attackPriority = FALSE;
 
-	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {//攻撃優先モードに当てはまるかを調べる。
+	if (checkX >= 0 && checkX < GameBuf->xSize && checkY >= 0 && checkY < GameBuf->ySize) {//攻撃優先モードに当てはまるかを調べる。
 		if (board[checkX][checkY].creature != NULL) {//目の前に生物がいたら
 			if (board[checkX][checkY].creature->enemy == TRUE) {//そこにいるやつが敵ならば攻撃。
 				damage(checkX, checkY, board, handledCharacters);
@@ -220,7 +220,7 @@ bool PenguinKids::attack(int size, Grid board[][FIELDSIZE], Emperor* handledChar
 			checkX = x + tmpx;
 			checkY = y + tmpy;
 
-			if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+			if (checkX >= 0 && checkX < GameBuf->xSize && checkY >= 0 && checkY < GameBuf->ySize) {
 
 				if (board[checkX][checkY].creature != NULL) {//向いている方向のマスに何か居たら
 					if (board[checkX][checkY].creature->enemy == TRUE) {//それが敵だと判定されたら
@@ -240,7 +240,7 @@ bool PenguinKids::attack(int size, Grid board[][FIELDSIZE], Emperor* handledChar
 
 
 
-bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid board[][FIELDSIZE], Emperor* handledCharacters) {//産卵
+bool PenguinKids::specialMovement1(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {//産卵
 	if (status == NORMAL) {
 		//exhibitScreen();
 		//DrawString(800, 300, "PenguinKids.specialMovement1メソッド実行", WHITE);
@@ -254,7 +254,7 @@ bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull
 		ix = ix + tmpx;
 		iy = iy + tmpy;
 
-		if (ix >= 0 && ix < size && iy >= 0 && iy < size && board[ix][iy].creature == NULL && board[ix][iy].state == VACANT) {//向いている方向のマスが空いていたら
+		if (ix >= 0 && ix < GameBuf->xSize && iy >= 0 && iy < GameBuf->ySize && board[ix][iy].creature == NULL && board[ix][iy].state == VACANT) {//向いている方向のマスが空いていたら
 
 
 
@@ -283,7 +283,7 @@ bool PenguinKids::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull
 
 
 
-bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* handledCharacters) {
+bool PenguinKids::specialMovement2(Grid**board, Emperor* handledCharacters) {
 
 	string s = "";
 	string allS = "";
@@ -298,7 +298,7 @@ bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* h
 
 
 	if (status == NORMAL or status == ELDER) {
-		if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
+		if (ix >= 0 && ix < GameBuf->xSize && iy >= 0 && iy < GameBuf->ySize) {
 
 			if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 				if (board[ix][iy].creature->status == EGG && board[ix][iy].creature->team == team) {
@@ -369,7 +369,7 @@ bool PenguinKids::specialMovement2(int size, Grid board[][FIELDSIZE], Emperor* h
 			WaitKey();*/
 
 
-			if (ix >= 0 && ix < size && iy >= 0 && iy < size) {
+			if (ix >= 0 && ix < GameBuf->xSize && iy >= 0 && iy < GameBuf->ySize) {
 
 
 

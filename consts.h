@@ -56,4 +56,8 @@ const int WHITE = GetColor(255, 255, 255);
 
 const int mobLimit = 1024;
 
-const int FIELDSIZE = 17;
+extern int SCREENSIZE = 17 ;
+
+
+
+//const ;
