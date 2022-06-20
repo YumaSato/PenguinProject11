@@ -50,8 +50,6 @@ BattleMode_GameManager::BattleMode_GameManager(int xSize, int ySize) {//コンスト
 
 
 
-	//const int FIELDSIZE = 17;
-
 
 	/*for (int i = 0; i < CHARACTERNUM; i++) {
 		handledCharacters[i] = NULL;
@@ -94,17 +92,18 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 
 
-	for (int i = 0; i < FIELDSIZE; i++) {
-		board[i][0].state = ROCK;
-		board[i][FIELDSIZE - 1].state = ROCK;
-		board[0][i].state = ROCK;
-		board[FIELDSIZE - 1][i].state = ROCK;
-		board[CASTLE_X][CASTLE_Y].state = CASTLE;
+	for (int ix = 0; ix < sizeX; ix++) {
+		for (int iy = 0; iy < sizeY; iy++) {
+			board[ix][0].state = ROCK;
+			board[ix][sizeY - 1].state = ROCK;
+			board[0][iy].state = ROCK;
+			board[sizeX - 1][iy].state = ROCK;
+			board[CASTLE_X][CASTLE_Y].state = CASTLE;
+		}
 	}
 
 
 
-	//handledCharacters[0].specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 
 	int actionReturn = 1;
 
@@ -208,10 +207,7 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 		enemyEnter(turnNum, stageLevel, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 		turnNum += 1;
 		exhibitScreen(0, 0, FALSE, board, handledCharacters);
-		/*turnF = "現在のターン:" + std::to_string(turnNum);
-		DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turnF.c_str(), GetColor(255, 200, 255));
-		WaitKey();*/
-
+		
 
 	}
 }
@@ -361,6 +357,8 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 	if (turn == 40) {//敵が出現しない側を決定する。
 		randomSide = GetRand(3);
 	}
+
+
 
 
 	if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
