@@ -49,13 +49,13 @@ public:
 	Creature();
 	virtual void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters);
 	virtual int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
-	virtual bool walk(int size, Grid** board, Emperor* handledCharacters);
+	virtual bool walk( Grid** board, Emperor* handledCharacters);
 	virtual void changeDirection(Grid** board, Emperor* handledCharacters);
-	virtual bool attack(int size, Grid** board, Emperor* handledCharacters);
-	bool kick(int size, Grid** board, Emperor* handledCharacters);
-	virtual bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
-	virtual bool specialMovement2(int size, Grid** board, Emperor* handledCharacters);
-	virtual int useItem(int size, Grid** board, Emperor* handledCharacters);
+	virtual bool attack( Grid** board, Emperor* handledCharacters);
+	bool kick( Grid** board, Emperor* handledCharacters);
+	virtual bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
+	virtual bool specialMovement2( Grid** board, Emperor* handledCharacters);
+	virtual int useItem( Grid** board, Emperor* handledCharacters);
 	virtual void test();
 	void killed(Grid** board, Emperor* handledCharacters);
 	void SETdirection(int xward, int yward);
@@ -75,8 +75,8 @@ public:
 	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 	void test();
 	//void changeDirection();
-	bool walk(int size, Grid** board, Emperor* handledCharacters) override;
-	bool attack(int size, Grid** board, Emperor* handledCharacters);
+	bool walk( Grid** board, Emperor* handledCharacters) override;
+	bool attack( Grid** board, Emperor* handledCharacters);
 	Character();//キャラクタのコンストラクタ
 };
 
@@ -87,10 +87,10 @@ public:
 	Bull();
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters)override;
 	void test();
-	bool walk(int size, Grid** board, Emperor* handledCharacters);
-	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
-	bool specialMovement2(int size, Grid** board, Emperor* handledCharacters);
-	bool attack(int size, Grid** board, Emperor* handledCharacters);
+	bool walk( Grid** board, Emperor* handledCharacters);
+	bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
+	bool specialMovement2( Grid** board, Emperor* handledCharacters);
+	bool attack( Grid** board, Emperor* handledCharacters);
 	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 };
 
@@ -101,9 +101,9 @@ public:
 	PenguinKids();
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters)override;
 	void test();
-	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) override;
-	bool specialMovement2(int size, Grid** board, Emperor* handledCharacters) override;
-	bool attack(int size, Grid** board, Emperor* handledCharacters) override;
+	bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) override;
+	bool specialMovement2( Grid** board, Emperor* handledCharacters) override;
+	bool attack( Grid** board, Emperor* handledCharacters) override;
 	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 };
 
@@ -132,8 +132,8 @@ class Emperor : public Character {
 public:
 	Emperor();
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters)override;
-	bool specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
-	bool specialMovement2(int size, Grid** board, Emperor* handledCharacters);
+	bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
+	bool specialMovement2( Grid** board, Emperor* handledCharacters);
 	int GetExpPoint(int expP);
 };
 
@@ -172,8 +172,8 @@ public:
 
 	Emperor handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレスを格納する変数。配列インデックスは、キャラ番号。
 
-	int xSize;
-	int ySize;
+	int sizeX;
+	int sizeY;
 
 	Grid** board;
 	~BattleMode_GameManager();

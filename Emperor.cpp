@@ -72,7 +72,7 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 
 
 
-bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {//“ÁŽê‹ZFŽY—‘
+bool Emperor::specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {//“ÁŽê‹ZFŽY—‘
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -80,7 +80,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 	checkX = x + drctnX;
 	checkY = y + drctnY;
 
-	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+	if (checkX >= 0 && checkX < GameBuf->sizeX && checkY >= 0 && checkY < GameBuf->sizeY) {
 		if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//‰Ÿ‚µ‚½ƒ}ƒX‚Ì•ûŒü‚ª‹ó‚¢‚Ä‚¢‚½‚çƒCƒ“ƒXƒ^ƒ“ƒX‰»‚ðŽÀs
 			PenguinKids penguinKids = PenguinKids();
 			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, levelUp, speed, board, handledCharacters);
@@ -111,7 +111,7 @@ bool Emperor::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mo
 }
 
 
-bool Emperor::specialMovement2(int size, Grid** board, Emperor* handledCharacters) {//“ÁŽê‹ZF›z‰»
+bool Emperor::specialMovement2( Grid** board, Emperor* handledCharacters) {//“ÁŽê‹ZF›z‰»
 	int checkX = 0;
 	int checkY;
 	int drctnX, drctnY;
@@ -119,7 +119,7 @@ bool Emperor::specialMovement2(int size, Grid** board, Emperor* handledCharacter
 	checkX = x + drctnX;
 	checkY = y + drctnY;
 
-	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
+	if (checkX >= 0 && checkX < GameBuf->sizeX && checkY >= 0 && checkY < GameBuf->sizeY) {
 		if (board[checkX][checkY].creature == NULL) {
 			return FALSE;
 		}

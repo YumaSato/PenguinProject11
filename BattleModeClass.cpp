@@ -41,6 +41,11 @@ BattleMode_GameManager::BattleMode_GameManager(int xSize, int ySize) {//コンスト
 		Grid* yGrid = new Grid[ySize];
 		board[yi] = yGrid;//Gridがたの初期化
 	}
+	this->sizeX = xSize;
+	this->sizeY = ySize;
+	GameBuf = this;
+	
+
 
 
 
@@ -70,7 +75,7 @@ BattleMode_GameManager::~BattleMode_GameManager() {
 	//delete[][] board;
 
 
-	for (int xi = 0; xi < xSize; xi++) {//マス目を消す
+	for (int xi = 0; xi < sizeX; xi++) {//マス目を消す
 		delete[] board[xi];
 	}
 	delete[] board;

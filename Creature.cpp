@@ -53,7 +53,7 @@ int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid*
 	return TRUE;
 }
 
-bool Creature::walk(int size, Grid** board, Emperor* handledCharacters) {
+bool Creature::walk( Grid** board, Emperor* handledCharacters) {
 	return FALSE;
 }
 
@@ -61,7 +61,7 @@ bool Creature::walk(int size, Grid** board, Emperor* handledCharacters) {
 
 
 
-bool Creature::kick(int size, Grid** board, Emperor* handledCharacters) {
+bool Creature::kick( Grid** board, Emperor* handledCharacters) {
 	int cX = 0;
 	int cY = 0;
 	int drctnX, drctnY;
@@ -71,7 +71,7 @@ bool Creature::kick(int size, Grid** board, Emperor* handledCharacters) {
 	cX = x + drctnX;
 	cY = y + drctnY;
 
-	if (cX > 0 && cX < size && cY > 0 && cY < size) {
+	if (cX > 0 && cX < GameBuf->sizeX && cY > 0 && cY < GameBuf->sizeY) {
 		if (board[cX][cY].creature == NULL) {//押したマスの方向に何もいなかったら処理を終了。
 			return FALSE;
 		}
@@ -100,7 +100,7 @@ bool Creature::kick(int size, Grid** board, Emperor* handledCharacters) {
 					DrawString(800, 570, s.c_str(), WHITE);
 					WaitKey();*/
 
-					if (cX < 0 || cX >= size || cY < 0 || cY >= size || (cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
+					if (cX < 0 || cX >= GameBuf->sizeX || cY < 0 || cY >= GameBuf->sizeY || (cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
 
 						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
 
@@ -169,21 +169,21 @@ bool Creature::kick(int size, Grid** board, Emperor* handledCharacters) {
 void Creature::changeDirection(Grid** board, Emperor* handledCharacters) {
 }
 
-bool Creature::attack(int size, Grid** board, Emperor* handledCharacters) {
+bool Creature::attack( Grid** board, Emperor* handledCharacters) {
 	return FALSE;
 }
 
-bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
+bool Creature::specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
 	/*DrawString(800, 300, "Creature.specialMovement1メソッド実行", WHITE);
 	WaitKey();*/
 	return FALSE;
 }
 
-bool Creature::specialMovement2(int size, Grid** board, Emperor* handledCharacters) {
+bool Creature::specialMovement2( Grid** board, Emperor* handledCharacters) {
 	return FALSE;
 }
 
-int Creature::useItem(int size, Grid** board, Emperor* handledCharacters) {
+int Creature::useItem( Grid** board, Emperor* handledCharacters) {
 	return 0;
 };
 
