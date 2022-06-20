@@ -49,11 +49,11 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters) {
 }
 
-int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {
+int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
 	return TRUE;
 }
 
-bool Creature::walk( Grid**board, Emperor* handledCharacters) {
+bool Creature::walk(int size, Grid** board, Emperor* handledCharacters) {
 	return FALSE;
 }
 
@@ -61,7 +61,7 @@ bool Creature::walk( Grid**board, Emperor* handledCharacters) {
 
 
 
-bool Creature::kick( Grid**board, Emperor* handledCharacters) {
+bool Creature::kick(int size, Grid** board, Emperor* handledCharacters) {
 	int cX = 0;
 	int cY = 0;
 	int drctnX, drctnY;
@@ -71,7 +71,7 @@ bool Creature::kick( Grid**board, Emperor* handledCharacters) {
 	cX = x + drctnX;
 	cY = y + drctnY;
 
-	if (cX > 0 && cX < GameBuf->xSize && cY > 0 && cY < GameBuf->ySize) {
+	if (cX > 0 && cX < size && cY > 0 && cY < size) {
 		if (board[cX][cY].creature == NULL) {//押したマスの方向に何もいなかったら処理を終了。
 			return FALSE;
 		}
@@ -89,11 +89,8 @@ bool Creature::kick( Grid**board, Emperor* handledCharacters) {
 				//exhibitScreen(x, y, TRUE);
 				//DrawString(800, 180, "kick開始", WHITE);
 				//WaitKey();
-				
-				//for (int i = 0; i < FIELDSIZE; i++) {
-				while(1){
-					int i = 0;
 
+				for (int i = 0; i < FIELDSIZE; i++) {
 					cX = cX + drctnX;//転がる方向のマスをひとつづつ調べる。
 					cY = cY + drctnY;
 
@@ -103,7 +100,7 @@ bool Creature::kick( Grid**board, Emperor* handledCharacters) {
 					DrawString(800, 570, s.c_str(), WHITE);
 					WaitKey();*/
 
-					if (cX < 0 || cX >= GameBuf->xSize || cY < 0 || cY >= GameBuf->ySize || (cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
+					if (cX < 0 || cX >= size || cY < 0 || cY >= size || (cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
 
 						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
 
@@ -156,7 +153,6 @@ bool Creature::kick( Grid**board, Emperor* handledCharacters) {
 
 						break;
 					}
-					i++;
 				}
 				return TRUE;
 			}
@@ -170,31 +166,31 @@ bool Creature::kick( Grid**board, Emperor* handledCharacters) {
 
 
 
-void Creature::changeDirection(Grid**board, Emperor* handledCharacters) {
+void Creature::changeDirection(Grid** board, Emperor* handledCharacters) {
 }
 
-bool Creature::attack( Grid**board, Emperor* handledCharacters) {
+bool Creature::attack(int size, Grid** board, Emperor* handledCharacters) {
 	return FALSE;
 }
 
-bool Creature::specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {
+bool Creature::specialMovement1(int size, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
 	/*DrawString(800, 300, "Creature.specialMovement1メソッド実行", WHITE);
 	WaitKey();*/
 	return FALSE;
 }
 
-bool Creature::specialMovement2( Grid**board, Emperor* handledCharacters) {
+bool Creature::specialMovement2(int size, Grid** board, Emperor* handledCharacters) {
 	return FALSE;
 }
 
-int Creature::useItem( Grid**board, Emperor* handledCharacters) {
+int Creature::useItem(int size, Grid** board, Emperor* handledCharacters) {
 	return 0;
 };
 
 void Creature::test() {
 };
 
-void Creature::killed(Grid**board, Emperor* handledCharacters) {
+void Creature::killed(Grid** board, Emperor* handledCharacters) {
 	this->HP = NULL;
 	this->x = NULL;
 	this->y = NULL;
@@ -266,7 +262,7 @@ void Creature::DeleteCreature() {
 
 
 
-void Creature::incubate(int checkX, int checkY, Grid**board, Emperor* handledCharacters) {//指定地点に生物がいる前提。孵化の内容を実行。
+void Creature::incubate(int checkX, int checkY, Grid** board, Emperor* handledCharacters) {//指定地点に生物がいる前提。孵化の内容を実行。
 
 	board[checkX][checkY].creature->status = NORMAL;
 	board[checkX][checkY].creature->defensePower = 22 + GetRand(2) + levelUp * 2;
@@ -275,7 +271,7 @@ void Creature::incubate(int checkX, int checkY, Grid**board, Emperor* handledCha
 
 
 
-void Creature::damage(int checkX, int checkY, Grid**board, Emperor* handledCharacters) {//指定地点に生物がいる前提。攻撃の内容を実行。
+void Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledCharacters) {//指定地点に生物がいる前提。攻撃の内容を実行。
 
 	int damageHP = 0;
 	damageHP = (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ダメ計

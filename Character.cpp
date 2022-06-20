@@ -11,7 +11,7 @@ using std::string;
 
 Character::Character() : Creature() {}
 
-int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid**board, Emperor* handledCharacters) {
+int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
 	string msg = "は何する?\n\n自分を左クリック:行動を選択\n隣のマスを右クリック(十字キー):向き変更\n\n1:歩く 2:産卵 3:孵化 4:攻撃 5:蹴る 6:パス\n\nキャラクタを左クリック:状態を表示\n\n\n\n\nスペースキー:ルールを表示";
 	int xClick = 0;
 	int yClick = 0;
@@ -109,31 +109,31 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
 
 							if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
-								if (walk( board, handledCharacters) == TRUE) {
+								if (walk(FIELDSIZE, board, handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 1) {
-								if (specialMovement1( mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
+								if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 2) {
-								if (specialMovement2( board, handledCharacters) == TRUE) {
+								if (specialMovement2(FIELDSIZE, board, handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 3) {
-								if (attack( board, handledCharacters) == TRUE) {
+								if (attack(FIELDSIZE, board, handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
 							}
 							if (iii == 4) {
-								if (kick( board, handledCharacters) == TRUE) {
+								if (kick(FIELDSIZE, board, handledCharacters) == TRUE) {
 									turnFinish = TRUE;
 									break;
 								}
@@ -157,7 +157,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 				xClick = xClick / 48;//この先は、XClickとYClickが、押したマスを表す。
 				yClick = yClick / 48;
-				if (xClick < GameBuf->xSize && yClick < GameBuf->ySize) {
+				if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
 
 
 					if (board[xClick][yClick].creature == NULL) {//押したマスがNULLなら、ステータス表示状態を解除。
@@ -166,10 +166,10 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 						YBuf = -1;
 						exhibitScreen(x, y, TRUE, board, handledCharacters);
 					}
-					
+
 					if (board[xClick][yClick].creature != NULL) {//キャラがいる場所をクリックした際
 
-						if (XBuf >= 0 && XBuf < GameBuf->xSize && YBuf >= 0 && YBuf < GameBuf->ySize) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
+						if (XBuf >= 0 && XBuf < FIELDSIZE && YBuf >= 0 && YBuf < FIELDSIZE) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
 							if (board[xClick][yClick].creature == board[XBuf][YBuf].creature) {//表示中のマスを触ったらステータス表示消える。
 								exhibitOrNot = FALSE;
 								XBuf = -1;
@@ -177,11 +177,11 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 								exhibitScreen(x, y, TRUE, board, handledCharacters);
 							}
 						}
-						else{
+						else {
 							exhibitOrNot = TRUE;
 						}
-						
-					
+
+
 
 						if (xClick == x && yClick == y) {
 							exhibitMyStatusOrNot = TRUE;
@@ -282,27 +282,27 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			WaitTimer(100);
-			if (walk( board, handledCharacters) == TRUE) {
+			if (walk(FIELDSIZE, board, handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
-			if (specialMovement1( mobs_PenguinKids, mobs_Bull, board, &handledCharacters[0]) == TRUE) {
+			if (specialMovement1(FIELDSIZE, mobs_PenguinKids, mobs_Bull, board, &handledCharacters[0]) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_3) == TRUE) {
-			if (specialMovement2( board, handledCharacters) == TRUE) {
+			if (specialMovement2(FIELDSIZE, board, handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_4) == TRUE) {
-			if (attack( board, handledCharacters) == TRUE) {
+			if (attack(FIELDSIZE, board, handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_5) == TRUE) {
-			if (kick( board, handledCharacters) == TRUE) {
+			if (kick(FIELDSIZE, board, handledCharacters) == TRUE) {
 				break;//1が返ってくる、つまり成功すればループ抜けでターン終了
 			}
 		}
@@ -424,7 +424,7 @@ void Character::test() {
 
 
 
-bool Character::walk( Grid**board, Emperor* handledCharacters) {//歩く。盤面サイズ(size)を受け取る
+bool Character::walk(int size, Grid** board, Emperor* handledCharacters) {//歩く。盤面サイズ(size)を受け取る
 	int distance = 0;
 	int checkX = 0;
 	int checkY = 0;
@@ -486,7 +486,7 @@ bool Character::walk( Grid**board, Emperor* handledCharacters) {//歩く。盤面サイ
 		yClick = yClick / 48;
 
 
-		if (xClick < GameBuf->xSize && yClick < GameBuf->ySize) {
+		if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
 
 
 
@@ -669,7 +669,7 @@ bool Character::walk( Grid**board, Emperor* handledCharacters) {//歩く。盤面サイ
 			}
 		}
 
-		if (x + checkX >= 0 && x + checkX < GameBuf->xSize && y + checkY >= 0 && y + checkY < GameBuf->ySize) {
+		if (x + checkX >= 0 && x + checkX < size && y + checkY >= 0 && y + checkY < size) {
 			if (board[x + checkX][y + checkY].creature == NULL && board[x + checkX][y + checkY].state == VACANT) {//押したマスの方向が空いていたらループ抜け
 
 				SETdirection(checkX, checkY);
@@ -706,7 +706,7 @@ bool Character::walk( Grid**board, Emperor* handledCharacters) {//歩く。盤面サイ
 
 
 
-bool Character::attack( Grid**board, Emperor* handledCharacters) {
+bool Character::attack(int size, Grid** board, Emperor* handledCharacters) {
 
 	int checkX = 0;
 	int checkY;
@@ -715,7 +715,7 @@ bool Character::attack( Grid**board, Emperor* handledCharacters) {
 	checkX = x + drctnX;
 	checkY = y + drctnY;
 
-	if (checkX >= 0 && checkX < GameBuf->xSize && checkY >= 0 && checkY < GameBuf->ySize) {
+	if (checkX >= 0 && checkX < size && checkY >= 0 && checkY < size) {
 		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
 			return FALSE;
 		}

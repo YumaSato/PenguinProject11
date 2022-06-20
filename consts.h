@@ -38,7 +38,7 @@ enum State {
 	WATER,   //êÖ
 	POISON,   //ì≈è¿
 	CASTLE, //èÈ
-	
+
 };
 
 constexpr int BUFFER = 256;
@@ -56,8 +56,4 @@ const int WHITE = GetColor(255, 255, 255);
 
 const int mobLimit = 1024;
 
-extern int SCREENSIZE = 17 ;
-
-
-
-//const ;
+const int FIELDSIZE = 17;
