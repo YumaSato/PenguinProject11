@@ -175,7 +175,14 @@ public:
 	int sizeX;
 	int sizeY;
 
+	int exhibitX;
+	int exhibitY;
+
 	Grid** board;
+	Emperor* Emperor1;
+	Emperor* Emperor2;
+
+
 	~BattleMode_GameManager();
 
 };

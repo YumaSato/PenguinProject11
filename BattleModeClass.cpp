@@ -54,18 +54,35 @@ BattleMode_GameManager::BattleMode_GameManager(int xSize, int ySize) {//コンスト
 	/*for (int i = 0; i < CHARACTERNUM; i++) {
 		handledCharacters[i] = NULL;
 	}*/
-	Emperor* Emperor1 = new Emperor();//インスタンス化
+	Emperor1 = new Emperor();//インスタンス化
 	Emperor1->setMobs(red, 1, 0, 1, 0, 0, 0, board, handledCharacters);
 	handledCharacters[0] = *Emperor1;
 	board[Emperor1->x][Emperor1->y].creature = &handledCharacters[0];//マス目に自分のポインタを代入。
-	delete Emperor1;
+	
 
-	Emperor* Emperor2 = new Emperor();//インスタンス化
+	Emperor2 = new Emperor();//インスタンス化
 	Emperor2->setMobs(blue, 2, 0, 0, 1, 0, 0, board, handledCharacters);
 	handledCharacters[1] = *Emperor2;
 	board[Emperor2->x][Emperor2->y].creature = &handledCharacters[1];
-	delete Emperor2;
+	
 
+
+
+
+	exhibitX = handledCharacters[0].x - FIELDSIZE - (FIELDSIZE /2);//キャラ0から表示マスサイズの半分の距離だけ左上から表示。つまりキャラ0を中心に画面を描画。
+	exhibitY = handledCharacters[0].y - FIELDSIZE - (FIELDSIZE /2);
+	if (exhibitX < 0) {
+		exhibitX = 0;
+	}
+	if (exhibitX + FIELDSIZE > sizeX) {
+		exhibitX = sizeX - FIELDSIZE;
+	}
+	if (exhibitY < 0) {
+		exhibitY = 0;
+	}
+	if (exhibitY + FIELDSIZE > sizeY) {
+		exhibitY = sizeY - FIELDSIZE;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
+	}
 }
 
 
@@ -77,6 +94,8 @@ BattleMode_GameManager::~BattleMode_GameManager() {
 		delete[] board[xi];
 	}
 	delete[] board;
+	delete Emperor1;
+	delete Emperor2;
 
 	GameBuf = NULL;
 };
