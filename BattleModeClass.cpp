@@ -360,128 +360,128 @@ void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_B
 
 
 
+	if (GameBuf->sizeX == GameBuf->sizeY) {
+		if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
+			if ((turn % 3 == 2 || turn % 3 == 0) || turn == 8) {
 
-	if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
-		if ((turn % 3 == 2 || turn % 3 == 0) || turn == 8) {
+				side = GetRand(2);
+				if (side >= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
+					side += 1;
+				}
 
-			side = GetRand(2);
-			if (side >= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
-				side += 1;
+				place = GetRand(GameBuf->sizeX - 3);
+
+				if (side == 0) {
+					yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				}
+				if (side == 1) {
+					yieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->sizeX - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				}
+				if (side == 2) {
+					yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				}
+				if (side == 3) {
+					yieldEnemy(BULL, red, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				}
 			}
+		}
 
-			place = GetRand(FIELDSIZE - 3);
+		if ((turn % 2 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 30)) {
 
+			side = GetRand(3);
+			place = GetRand(GameBuf->sizeX - 3);
 			if (side == 0) {
-				yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 1) {
-				yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				yieldEnemy(BULL, blue, 0, -1, place + 1, GameBuf->sizeX - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (side == 2) {
+				yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (side == 3) {
+				yieldEnemy(BULL, blue, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+		}
+
+
+
+
+		if (turn % 8 == 6 && level == 1) {
+
+			side = GetRand(3);
+			place = GetRand(GameBuf->sizeX - 3);
+			if (side == 0) {
+				yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (side == 1) {
+				yieldEnemy(BULL, blue, 0, -1, place + 1, GameBuf->sizeX - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (side == 2) {
+				yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (side == 3) {
+				yieldEnemy(BULL, blue, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+		}
+
+
+
+
+		//yieldEnemy(BULL, blue, 1, 0, 0, 5);
+		//yieldEnemy(BULL, red, 1, 0, 0, 5);
+
+		//yieldEnemy(BULL, blue, 0, -1, 5, GameBuf->sizeX -1);
+		//yieldEnemy(BULL, red, 0, -1, 5, GameBuf->sizeX - 1);
+
+
+
+
+		if (turn == 28) {//敵が出現する側を決定する。1つの方向から集中攻撃がくるぞ！
+			randomSide = GetRand(3);
+		}
+		if ((28 < turn && turn < 34) || turn == 9) {
+
+			place = GetRand(GameBuf->sizeX - 3);
+			if (randomSide == 0) {
+				yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (randomSide == 1) {
+				yieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->sizeX - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (randomSide == 2) {
+				yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (randomSide == 3) {
+				yieldEnemy(BULL, red, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+		}
+
+
+
+
+		if ((turn % 5 == 0 && turn > 12) || turn == 16) {//普通に赤が来る。半分の確率で反対側からも来る。
+			side = GetRand(3);
+			place = GetRand(GameBuf->sizeX - 3);
+			if (side == 0) {
+				yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				place = GetRand(GameBuf->sizeX - 3);
+				yieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->sizeX - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (side == 1) {
+				yieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->sizeX - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 2) {
 				yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				place = GetRand(GameBuf->sizeX - 3);
+				yieldEnemy(BULL, red, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (side == 3) {
-				yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				yieldEnemy(BULL, red, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
+
 		}
 	}
-
-	if ((turn % 2 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 30)) {
-
-		side = GetRand(3);
-		place = GetRand(FIELDSIZE - 3);
-		if (side == 0) {
-			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 2) {
-			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-	}
-
-
-
-
-	if (turn % 8 == 6 && level == 1) {
-
-		side = GetRand(3);
-		place = GetRand(FIELDSIZE - 3);
-		if (side == 0) {
-			yieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 1) {
-			yieldEnemy(BULL, blue, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 2) {
-			yieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 3) {
-			yieldEnemy(BULL, blue, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-	}
-
-
-
-
-	//yieldEnemy(BULL, blue, 1, 0, 0, 5);
-	//yieldEnemy(BULL, red, 1, 0, 0, 5);
-
-	//yieldEnemy(BULL, blue, 0, -1, 5, FIELDSIZE -1);
-	//yieldEnemy(BULL, red, 0, -1, 5, FIELDSIZE - 1);
-
-
-
-
-	if (turn == 28) {//敵が出現する側を決定する。1つの方向から集中攻撃がくるぞ！
-		randomSide = GetRand(3);
-	}
-	if ((28 < turn && turn < 34) || turn == 9) {
-
-		place = GetRand(FIELDSIZE - 3);
-		if (randomSide == 0) {
-			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (randomSide == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (randomSide == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (randomSide == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-	}
-
-
-
-
-	if ((turn % 5 == 0 && turn > 12) || turn == 16) {//普通に赤が来る。半分の確率で反対側からも来る。
-		side = GetRand(3);
-		place = GetRand(FIELDSIZE - 3);
-		if (side == 0) {
-			yieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 1) {
-			yieldEnemy(BULL, red, 0, -1, place + 1, FIELDSIZE - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 2) {
-			yieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-			place = GetRand(FIELDSIZE - 3);
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-		if (side == 3) {
-			yieldEnemy(BULL, red, -1, 0, FIELDSIZE - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-
-	}
-
 
 
 }
@@ -499,7 +499,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 
 		if (board[cx][cy].creature != NULL) {
 			int rand = GetRand(1);
-			if (cx == 0 || cx == FIELDSIZE - 1) {
+			if (cx == 0 || cx == GameBuf->sizeX - 1) {
 				if (rand == 0) {
 					cy += 1;
 				}
@@ -507,7 +507,7 @@ void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy
 					cy -= 1;
 				}
 			}
-			if (cy == 0 || cy == FIELDSIZE - 1) {
+			if (cy == 0 || cy == GameBuf->sizeY - 1) {
 				if (rand == 0) {
 					cx += 1;
 				}

@@ -91,7 +91,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 	iX = iX + tmpx;
 	iY = iY + tmpy;
 	if (status == ELDER || status == NORMAL) {
-		if (iX >= 0 && iX < FIELDSIZE && iY >= 0 && iY < FIELDSIZE) {
+		if (iX >= 0 && iX < GameBuf->sizeX && iY >= 0 && iY < GameBuf->sizeY) {
 			if (board[iX][iY].creature != NULL) {//向いている方向のマスに何か居たら
 				if (board[iX][iY].creature->status == EGG && board[iX][iY].creature->team == team) {//同じチームの卵があれば
 					if (specialMovement1( mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {//優先行動として産卵。

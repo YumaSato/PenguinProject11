@@ -6,8 +6,7 @@
 
 using std::string;
 
-//プロトタイプ宣言
-//void exhibitScreen(/*Grid board[FIELDSIZE][FIELDSIZE]*/);
+
 
 Character::Character() : Creature() {}
 

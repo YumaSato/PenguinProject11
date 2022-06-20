@@ -90,7 +90,9 @@ bool Creature::kick( Grid** board, Emperor* handledCharacters) {
 				//DrawString(800, 180, "kick開始", WHITE);
 				//WaitKey();
 
-				for (int i = 0; i < FIELDSIZE; i++) {
+				while(1) {
+					int i = 0;
+
 					cX = cX + drctnX;//転がる方向のマスをひとつづつ調べる。
 					cY = cY + drctnY;
 
@@ -152,7 +154,10 @@ bool Creature::kick( Grid** board, Emperor* handledCharacters) {
 						WaitKey();*/
 
 						break;
+
+						
 					}
+					i++;
 				}
 				return TRUE;
 			}
