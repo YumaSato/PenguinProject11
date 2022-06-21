@@ -282,7 +282,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 		if (CheckHitKey(KEY_INPUT_W) == TRUE) {//WASDÇ≈éãì_à⁄ìÆ
 			if (GameBuf->exhibitY >0) {
-				GameBuf->exhibitY -= 2;
+				GameBuf->exhibitY -= 4;
 				if (GameBuf->exhibitY < 0) {
 					GameBuf->exhibitY = 0;
 				}
@@ -293,7 +293,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		}
 		if (CheckHitKey(KEY_INPUT_S) == TRUE) {
 			if (GameBuf->exhibitY< (GameBuf->sizeY - FIELDSIZE)*SQUARESIZE) {
-				GameBuf->exhibitY += 2;
+				GameBuf->exhibitY += 4;
 				if (GameBuf->exhibitY / 48 + FIELDSIZE >= GameBuf->sizeY) {//ï`âÊíÜêSÇ™îÌÇ¡ÇƒÇ¢ÇÈÉ}ÉXÅ{ï`âÊÉ}ÉXêîÅ{ÇP(ï`âÊâ∫í[É}ÉX)Ç™ÅAìÒéüå≥îzóÒÉTÉCÉYÇí¥Ç¶ÇƒÇ¢ÇΩÇÁ
 					GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE ) * 48;//ï`âÊÉ}ÉXÇÃç∂è„Çé¶Ç∑exhibitXYÇ™î’ñ è„Ç…Ç®ÇØÇÈÉ}ÉCÉiÉXÇ‚ÅAï`âÊÉ}ÉXÇÃâEâ∫Ç™î’ñ ÉTÉCÉYÇÇÕÇ›èoÇÈèÍçáÅAÇÕÇ›èoÇ»Ç¢èÍèäÇ…çƒê›íËÅB
 				}
@@ -304,7 +304,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		}
 		if (CheckHitKey(KEY_INPUT_A) == TRUE) {//WASDÇ≈éãì_à⁄ìÆ
 			if (GameBuf->exhibitX > 0) {
-				GameBuf->exhibitX -= 2;
+				GameBuf->exhibitX -= 4;
 				if (GameBuf->exhibitX < 0) {
 					GameBuf->exhibitX = 0;
 				}
@@ -315,7 +315,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		}
 		if (CheckHitKey(KEY_INPUT_D) == TRUE) {
 			if (GameBuf->exhibitX< (GameBuf->sizeX - FIELDSIZE)*SQUARESIZE) {
-				GameBuf->exhibitX += 2;
+				GameBuf->exhibitX += 4;
 				if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
 					GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE ) * 48;
 				}
@@ -531,7 +531,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//ï‡Ç≠ÅBî’ñ ÉTÉ
 		for (int iix = -1; iix <= 1; iix++) {
 			for (int iiy = -1; iiy <= 1; iiy++) {
 				if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
-					DrawBox((x + iix) * 48 + 1, (y + iiy) * 48 + 1, (x + iix) * 48 + 47, (y + iiy) * 48 + 47, GetColor(StringColor + (iix + 1) * 5 + iiy * 5, 255, 120), TRUE);
+					DrawBox(-GameBuf->exhibitX + (x + iix) * 48 + 1, -GameBuf->exhibitY + (y + iiy) * 48 + 1, -GameBuf->exhibitX + (x + iix) * 48 + 47, -GameBuf->exhibitY + (y + iiy) * 48 + 47, GetColor(StringColor + (iix + 1) * 5 + iiy * 5, 255, 120), TRUE);
 				}
 			}
 		}
@@ -551,7 +551,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//ï‡Ç≠ÅBî’ñ ÉTÉ
 			dy = yClick - y;
 			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1)) {//é©ï™ÇÃó◊ÇÃÉ}ÉXÇÃè„Ç…É}ÉEÉXÉ|ÉCÉìÉ^Ç™Ç†ÇÈèÍçá
 				if (board[xClick][yClick].creature == NULL && board[xClick][yClick].state == VACANT) {//ãÛîíÉ}ÉXÇ…ÉJÅ[É\ÉãÇ™Ç†ÇÈèÍçáÅAÉLÉâÉLÉâï\é¶
-					DrawBox(xClick * 48, yClick * 48, xClick * 48 + 48, yClick * 48 + 48, GetColor(10 + (StringColor / 5), 145 + (StringColor / 3), 0), TRUE);
+					DrawBox(-GameBuf->exhibitX + xClick * 48, -GameBuf->exhibitY + yClick * 48, -GameBuf->exhibitX + xClick * 48 + 48, -GameBuf->exhibitY + yClick * 48 + 48, GetColor(10 + (StringColor / 5), 145 + (StringColor / 3), 0), TRUE);
 
 					mouse = GetMouseInput();
 

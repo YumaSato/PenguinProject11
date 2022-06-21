@@ -69,7 +69,7 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 	//DrawGraph(0, 0, HandleBoard, TRUE);
 
 	if (attention == TRUE) {//注目対象キャラのマスに注目用の円を表示するか否か
-		DrawBox(markX * 48 + 2, markY * 48 + 2, markX * 48 + 46, markY * 48 + 46, GetColor(255, 200, 0), TRUE);
+		DrawBox(-GameBuf->exhibitX + markX * 48 + 2, -GameBuf->exhibitY + markY * 48 + 2, -GameBuf->exhibitX + markX * 48 + 46, -GameBuf->exhibitY + markY * 48 + 46, GetColor(255, 200, 0), TRUE);
 	}
 
 	int exhibitXsize = GameBuf->exhibitX / 48 + FIELDSIZE +1;
