@@ -90,11 +90,18 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 				DrawGraph(GameBuf->exhibitX / 48 + ix * SQUARESIZE, GameBuf->exhibitY / 48 + iy * SQUARESIZE, HandleCastle, TRUE);
 			}*/
 
-			if (board[ix][ iy].state == ROCK) {
+			if (board[GameBuf->exhibitX / 48+ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
 				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY+ iy * SQUARESIZE, -GameBuf->exhibitX+ ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
 			}
 			if (board[ix][iy].state == CASTLE) {
 				DrawGraph(-GameBuf->exhibitX  + ix * SQUARESIZE, -GameBuf->exhibitY  + iy * SQUARESIZE, HandleCastle, TRUE);
+			}
+
+			if (board[GameBuf->exhibitX / 48 + ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
+				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, -GameBuf->exhibitX + ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
+			}
+			if (board[ix][iy].state == CASTLE) {
+				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, HandleCastle, TRUE);
 			}
 
 
@@ -148,12 +155,12 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 				}
 			}
 			//LoadGraphScreen(0, 0, "back.png", TRUE);
-			DrawGraph(ix * SQUARESIZE, iy * SQUARESIZE, h, TRUE);//ˆê“xƒNƒ‰ƒX‚Ì•Ï”‚ÉŠi”[‚µ‚½Handle‚Å•`‰æ
+			DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, h, TRUE);//ˆê“xƒNƒ‰ƒX‚Ì•Ï”‚ÉŠi”[‚µ‚½Handle‚Å•`‰æ
 			//DrawString(450, 20, msg.c_str(), WHITE);
 
 			if (HPexhibitOrNot == TRUE) {
-				DrawGraph(ix * SQUARESIZE + 5, iy * SQUARESIZE + 29, hHP, TRUE);
-				DrawBox(ix * SQUARESIZE + 16, iy * SQUARESIZE + 31, ix * SQUARESIZE + 16 + board[ix][iy].creature->HP / 2, iy * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
+				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE + 5, -GameBuf->exhibitY + iy * SQUARESIZE + 29, hHP, TRUE);
+				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE + 16, -GameBuf->exhibitY + iy * SQUARESIZE + 31, -GameBuf->exhibitX + ix * SQUARESIZE + 16 + board[ix][iy].creature->HP / 2, -GameBuf->exhibitY + iy * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
 			}
 
 		}

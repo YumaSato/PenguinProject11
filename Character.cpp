@@ -275,17 +275,28 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
+
+
+
+
+
 		if (CheckHitKey(KEY_INPUT_W) == TRUE) {//WASDで視点移動
 			if (GameBuf->exhibitY >0) {
 				GameBuf->exhibitY -= 2;
+				if (GameBuf->exhibitY < 0) {
+					GameBuf->exhibitY = 0;
+				}
 				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				//WaitTimer(10);
 				
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_S) == TRUE) {
-			if (GameBuf->exhibitY/SQUARESIZE < GameBuf->sizeY - FIELDSIZE) {
+			if (GameBuf->exhibitY< (GameBuf->sizeY - FIELDSIZE)*SQUARESIZE) {
 				GameBuf->exhibitY += 2;
+				if (GameBuf->exhibitY / 48 + FIELDSIZE > GameBuf->sizeY) {
+					GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE) * 48;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
+				}
 				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				//WaitTimer(10);
 			}
@@ -293,18 +304,28 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		if (CheckHitKey(KEY_INPUT_A) == TRUE) {//WASDで視点移動
 			if (GameBuf->exhibitX > 0) {
 				GameBuf->exhibitX -= 2;
+				if (GameBuf->exhibitX < 0) {
+					GameBuf->exhibitX = 0;
+				}
 				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				//WaitTimer(10);
 
 			}
 		}
 		if (CheckHitKey(KEY_INPUT_D) == TRUE) {
-			if (GameBuf->exhibitX / SQUARESIZE < GameBuf->sizeX - FIELDSIZE) {
+			if (GameBuf->exhibitX< (GameBuf->sizeX - FIELDSIZE)*SQUARESIZE) {
 				GameBuf->exhibitX += 2;
+				if (GameBuf->exhibitX / 48 + FIELDSIZE > GameBuf->sizeX) {
+					GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE) * 48;
+				}
 				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				//WaitTimer(10);
 			}
 		}
+		
+		
+		
+		
 
 
 
