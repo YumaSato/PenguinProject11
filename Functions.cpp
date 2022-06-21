@@ -229,8 +229,8 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 			damaging += 1;
 		}
 		exhibitScreen(markX, markY, TRUE, board, handledCharacters);
-		DrawGraph(damageX * SQUARESIZE + 5, damageY * SQUARESIZE + 29, hHP, TRUE);
-		DrawBox(damageX * SQUARESIZE + 16, damageY * SQUARESIZE + 31, damageX * SQUARESIZE + 16 + (substitute.HP - damaging) / 2, damageY * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
+		DrawGraph(-GameBuf->exhibitX + damageX * SQUARESIZE + 5, -GameBuf->exhibitY + damageY * SQUARESIZE + 29, hHP, TRUE);
+		DrawBox(-GameBuf->exhibitX + damageX * SQUARESIZE + 16, -GameBuf->exhibitY + damageY * SQUARESIZE + 31, -GameBuf->exhibitX + damageX * SQUARESIZE + 16 + (substitute.HP - damaging) / 2, -GameBuf->exhibitY + damageY * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
 
 		WaitTimer(30);
 
@@ -318,6 +318,12 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 }
 
 
+void exhibitWalking(int markX, int markY, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
+
+
+}
+
+
 
 
 
@@ -325,14 +331,19 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 
 void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid** board, Emperor* handledCharacters) {
 
+
+	//actionMsg = std::to_string(distance).c_str();
+	//exhibitScreen(kickX, kickY, TRUE, board, handledCharacters);
+	//WaitKey();
+
 	Creature* kicked = board[kickX + dx][kickY + dy].creature;//蹴られた卵のポインタを仮置き場に代入し保持。
 	int handleEgg = handle[board[kickX + dx][kickY + dy].creature->team][EGG][NW];
 	board[kickX + dx][kickY + dy].creature = NULL;
 	for (int i = 0; i < distance * SQUARESIZE / 4; i = i++) {
 
 		exhibitScreen(kickX, kickY, TRUE, board, handledCharacters);
-		DrawGraph((kickX + dx) * SQUARESIZE + (i * 4 * dx), (kickY + dy) * SQUARESIZE + (i * 4 * dy), handleEgg, TRUE);
-		//WaitTimer(2);
+		DrawGraph(-GameBuf->exhibitX + (kickX + dx) * SQUARESIZE + (i * 4 * dx), -GameBuf->exhibitY + (kickY + dy) * SQUARESIZE + (i * 4 * dy), handleEgg, TRUE);
+		WaitTimer(2);
 		ScreenFlip(); //裏画面を表画面に反映
 	}
 

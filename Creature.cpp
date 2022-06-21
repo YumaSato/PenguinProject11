@@ -89,9 +89,9 @@ bool Creature::kick( Grid** board, Emperor* handledCharacters) {
 				//exhibitScreen(x, y, TRUE);
 				//DrawString(800, 180, "kick開始", WHITE);
 				//WaitKey();
-
+				int i = 0;
 				while(1) {
-					int i = 0;
+					
 
 					cX = cX + drctnX;//転がる方向のマスをひとつづつ調べる。
 					cY = cY + drctnY;
