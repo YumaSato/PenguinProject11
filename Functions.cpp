@@ -76,19 +76,26 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 
 	for (int ix = 0; ix < FIELDSIZE + 1; ix++) {
 		for (int iy = 0; iy < FIELDSIZE + 1; iy++) {
-			if (board[ix][ iy].state == ROCK) {
-				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE,  ix * SQUARESIZE + 47,  iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
+			/*if (board[ix][ iy].state == ROCK) {
+				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE, ix * SQUARESIZE + 47, iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
 			}
 			if (board[ix][iy].state == CASTLE) {
 				DrawGraph( ix * SQUARESIZE,  iy * SQUARESIZE, HandleCastle, TRUE);
-			}
+			}*/
 
-		/*	if (board[GameBuf->exhibitX / 48 + ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
+			/*if (board[GameBuf->exhibitX / 48 + ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
 				DrawBox(GameBuf->exhibitX / 48 + ix * SQUARESIZE, GameBuf->exhibitY / 48 + iy * SQUARESIZE, GameBuf->exhibitX / 48 + ix * SQUARESIZE + 47, GameBuf->exhibitY / 48 + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
 			}
 			if (board[ix][iy].state == CASTLE) {
 				DrawGraph(GameBuf->exhibitX / 48 + ix * SQUARESIZE, GameBuf->exhibitY / 48 + iy * SQUARESIZE, HandleCastle, TRUE);
 			}*/
+
+			if (board[ix][ iy].state == ROCK) {
+				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY+ iy * SQUARESIZE, -GameBuf->exhibitX+ ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
+			}
+			if (board[ix][iy].state == CASTLE) {
+				DrawGraph(-GameBuf->exhibitX  + ix * SQUARESIZE, -GameBuf->exhibitY  + iy * SQUARESIZE, HandleCastle, TRUE);
+			}
 
 
 
@@ -160,8 +167,8 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 
 	exhibitStatusMsg(handledCharacters);
 
-
-
+	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 80, std::to_string(GameBuf->exhibitX).c_str(), GetColor(255, 200, 255));
+	DrawString(FIELDSIZE * SQUARESIZE + 100, FIELDSIZE * SQUARESIZE - 80, std::to_string(GameBuf->exhibitY).c_str(), GetColor(255, 200, 255));
 }
 
 

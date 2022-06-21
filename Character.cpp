@@ -273,6 +273,42 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
+
+
+		if (CheckHitKey(KEY_INPUT_W) == TRUE) {//WASDで視点移動
+			if (GameBuf->exhibitY >0) {
+				GameBuf->exhibitY -= 2;
+				exhibitScreen(x, y, TRUE, board, handledCharacters);
+				//WaitTimer(10);
+				
+			}
+		}
+		if (CheckHitKey(KEY_INPUT_S) == TRUE) {
+			if (GameBuf->exhibitY/SQUARESIZE < GameBuf->sizeY - FIELDSIZE) {
+				GameBuf->exhibitY += 2;
+				exhibitScreen(x, y, TRUE, board, handledCharacters);
+				//WaitTimer(10);
+			}
+		}
+		if (CheckHitKey(KEY_INPUT_A) == TRUE) {//WASDで視点移動
+			if (GameBuf->exhibitX > 0) {
+				GameBuf->exhibitX -= 2;
+				exhibitScreen(x, y, TRUE, board, handledCharacters);
+				//WaitTimer(10);
+
+			}
+		}
+		if (CheckHitKey(KEY_INPUT_D) == TRUE) {
+			if (GameBuf->exhibitX / SQUARESIZE < GameBuf->sizeX - FIELDSIZE) {
+				GameBuf->exhibitX += 2;
+				exhibitScreen(x, y, TRUE, board, handledCharacters);
+				//WaitTimer(10);
+			}
+		}
+
+
+
+
 		//board[x][y].creature->directionX = this->directionX;
 		//board[x][y].creature->directionY = this->directionY;
 
@@ -339,7 +375,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 		WaitTimer(10);
-		//ScreenFlip(); //裏画面を表画面に反映
+		ScreenFlip(); //裏画面を表画面に反映
 	}
 
 	//stamina += staminaRecoverAbility;//スタミナ回復
