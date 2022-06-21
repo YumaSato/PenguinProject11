@@ -294,9 +294,10 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		if (CheckHitKey(KEY_INPUT_S) == TRUE) {
 			if (GameBuf->exhibitY< (GameBuf->sizeY - FIELDSIZE)*SQUARESIZE) {
 				GameBuf->exhibitY += 2;
-				if (GameBuf->exhibitY / 48 + FIELDSIZE > GameBuf->sizeY) {
-					GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE) * 48;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
+				if (GameBuf->exhibitY / 48 + FIELDSIZE >= GameBuf->sizeY) {//描画中心が被っているマス＋描画マス数＋１(描画下端マス)が、二次元配列サイズを超えていたら
+					GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE ) * 48;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
 				}
+				
 				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				//WaitTimer(10);
 			}
@@ -315,8 +316,8 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		if (CheckHitKey(KEY_INPUT_D) == TRUE) {
 			if (GameBuf->exhibitX< (GameBuf->sizeX - FIELDSIZE)*SQUARESIZE) {
 				GameBuf->exhibitX += 2;
-				if (GameBuf->exhibitX / 48 + FIELDSIZE > GameBuf->sizeX) {
-					GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE) * 48;
+				if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
+					GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE ) * 48;
 				}
 				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				//WaitTimer(10);

@@ -72,37 +72,48 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 		DrawBox(markX * 48 + 2, markY * 48 + 2, markX * 48 + 46, markY * 48 + 46, GetColor(255, 200, 0), TRUE);
 	}
 
+	int exhibitXsize = GameBuf->exhibitX / 48 + FIELDSIZE +1;
+	int exhibitYsize = GameBuf->exhibitY / 48 + FIELDSIZE +1;
+	if (GameBuf->exhibitX % 48 == 0) {
+		exhibitXsize = GameBuf->exhibitX / 48 + FIELDSIZE;
+	}
+	if (GameBuf->exhibitY % 48 == 0) {
+		exhibitYsize = GameBuf->exhibitY / 48 + FIELDSIZE;
+	}
 
 
-	for (int ix = 0; ix < FIELDSIZE + 1; ix++) {
-		for (int iy = 0; iy < FIELDSIZE + 1; iy++) {
-			/*if (board[ix][ iy].state == ROCK) {
-				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE, ix * SQUARESIZE + 47, iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
-			}
-			if (board[ix][iy].state == CASTLE) {
-				DrawGraph( ix * SQUARESIZE,  iy * SQUARESIZE, HandleCastle, TRUE);
-			}*/
+	//for (int ix = 0; ix <exhibitXsize; ix++) {
+	//	for (int iy = 0; iy < exhibitYsize ; iy++) {
+	for (int ix = GameBuf->exhibitX / 48; ix <exhibitXsize; ix++) {
+		for (int iy = GameBuf->exhibitY / 48; iy < exhibitYsize ; iy++) {
 
-			/*if (board[GameBuf->exhibitX / 48 + ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
-				DrawBox(GameBuf->exhibitX / 48 + ix * SQUARESIZE, GameBuf->exhibitY / 48 + iy * SQUARESIZE, GameBuf->exhibitX / 48 + ix * SQUARESIZE + 47, GameBuf->exhibitY / 48 + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
-			}
-			if (board[ix][iy].state == CASTLE) {
-				DrawGraph(GameBuf->exhibitX / 48 + ix * SQUARESIZE, GameBuf->exhibitY / 48 + iy * SQUARESIZE, HandleCastle, TRUE);
-			}*/
-
-			if (board[GameBuf->exhibitX / 48+ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
+			/*if (board[GameBuf->exhibitX / 48+ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
 				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY+ iy * SQUARESIZE, -GameBuf->exhibitX+ ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
 			}
 			if (board[ix][iy].state == CASTLE) {
 				DrawGraph(-GameBuf->exhibitX  + ix * SQUARESIZE, -GameBuf->exhibitY  + iy * SQUARESIZE, HandleCastle, TRUE);
-			}
+			}*/
 
-			if (board[GameBuf->exhibitX / 48 + ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
+			/*if (board[GameBuf->exhibitX / 48 + ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
+				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, -GameBuf->exhibitX + ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
+			}
+			if (board[ix][iy].state == CASTLE) {
+				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, HandleCastle, TRUE);
+			}*/
+
+			
+
+
+			if (board[ix][iy].state == ROCK) {
 				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, -GameBuf->exhibitX + ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
 			}
 			if (board[ix][iy].state == CASTLE) {
 				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, HandleCastle, TRUE);
 			}
+			/*if (ix == 19 && iy == 10) {
+				actionMsg = "X19,Y10‚ð•`‰æ’†";
+				WaitKey();
+			}*/
 
 
 
