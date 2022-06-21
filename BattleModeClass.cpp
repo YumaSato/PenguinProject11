@@ -69,19 +69,19 @@ BattleMode_GameManager::BattleMode_GameManager(int xSize, int ySize) {//コンスト
 
 
 
-	exhibitX = handledCharacters[0].x - FIELDSIZE - (FIELDSIZE /2);//キャラ0から表示マスサイズの半分の距離だけ左上から表示。つまりキャラ0を中心に画面を描画。
-	exhibitY = handledCharacters[0].y - FIELDSIZE - (FIELDSIZE /2);
+	exhibitX = handledCharacters[0].x * 48 - (FIELDSIZE - (FIELDSIZE /2) * 48);//キャラ0から表示マスサイズの半分の距離だけ左上から表示。つまりキャラ0を中心に画面を描画。
+	exhibitY = handledCharacters[0].y * 48 - (FIELDSIZE - (FIELDSIZE /2) * 48);
 	if (exhibitX < 0) {
 		exhibitX = 0;
 	}
-	if (exhibitX + FIELDSIZE > sizeX) {
-		exhibitX = sizeX - FIELDSIZE;
+	if (exhibitX/48 + FIELDSIZE > sizeX) {
+		exhibitX = (sizeX - FIELDSIZE)*48;
 	}
 	if (exhibitY < 0) {
 		exhibitY = 0;
 	}
-	if (exhibitY + FIELDSIZE > sizeY) {
-		exhibitY = sizeY - FIELDSIZE;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
+	if (exhibitY/48 + FIELDSIZE > sizeY) {
+		exhibitY = (sizeY - FIELDSIZE)*48;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
 	}
 }
 

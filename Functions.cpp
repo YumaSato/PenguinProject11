@@ -66,7 +66,7 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 	string turn = "";
 	bool HPexhibitOrNot;
 	ClearDrawScreen();//一度画面を全消し
-	DrawGraph(0, 0, HandleBoard, TRUE);
+	//DrawGraph(0, 0, HandleBoard, TRUE);
 
 	if (attention == TRUE) {//注目対象キャラのマスに注目用の円を表示するか否か
 		DrawBox(markX * 48 + 2, markY * 48 + 2, markX * 48 + 46, markY * 48 + 46, GetColor(255, 200, 0), TRUE);
@@ -74,14 +74,26 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 
 
 
-	for (int ix = 0; ix < FIELDSIZE; ix++) {
-		for (int iy = 0; iy < FIELDSIZE; iy++) {
-			if (board[ix][iy].state == ROCK) {
-				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE, ix * SQUARESIZE + 47, iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
+	for (int ix = 0; ix < FIELDSIZE + 1; ix++) {
+		for (int iy = 0; iy < FIELDSIZE + 1; iy++) {
+			if (board[ix][ iy].state == ROCK) {
+				DrawBox(ix * SQUARESIZE, iy * SQUARESIZE,  ix * SQUARESIZE + 47,  iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
 			}
 			if (board[ix][iy].state == CASTLE) {
-				DrawGraph(ix * SQUARESIZE, iy * SQUARESIZE, HandleCastle, TRUE);
+				DrawGraph( ix * SQUARESIZE,  iy * SQUARESIZE, HandleCastle, TRUE);
 			}
+
+		/*	if (board[GameBuf->exhibitX / 48 + ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
+				DrawBox(GameBuf->exhibitX / 48 + ix * SQUARESIZE, GameBuf->exhibitY / 48 + iy * SQUARESIZE, GameBuf->exhibitX / 48 + ix * SQUARESIZE + 47, GameBuf->exhibitY / 48 + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
+			}
+			if (board[ix][iy].state == CASTLE) {
+				DrawGraph(GameBuf->exhibitX / 48 + ix * SQUARESIZE, GameBuf->exhibitY / 48 + iy * SQUARESIZE, HandleCastle, TRUE);
+			}*/
+
+
+
+
+
 
 
 			HPexhibitOrNot = FALSE;//体力が満タンでない場合、これがTRUEになり、メータが表示される。
