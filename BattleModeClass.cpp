@@ -37,15 +37,23 @@ BattleMode_GameManager::BattleMode_GameManager(int xSize, int ySize) {//ƒRƒ“ƒXƒg
 
 	board = new Grid * [xSize];
 
-	for (int yi = 0; yi < ySize; yi++) {
+	for (int xi = 0; xi < xSize; xi++) {
 		Grid* yGrid = new Grid[ySize];
-		board[yi] = yGrid;//Grid‚ª‚½‚Ì‰Šú‰»
+		board[xi] = yGrid;//Grid‚ª‚½‚Ì‰Šú‰»
 	}
 	this->sizeX = xSize;
 	this->sizeY = ySize;
 	GameBuf = this;
-	
 
+	//board = new Grid * [xSize];
+
+	//for (int yi = 0; yi < ySize; yi++) {
+	//	Grid* yGrid = new Grid[ySize];
+	//	board[yi] = yGrid;//Grid‚ª‚½‚Ì‰Šú‰»
+	//}
+	//this->sizeX = xSize;
+	//this->sizeY = ySize;
+	//GameBuf = this;
 
 
 
