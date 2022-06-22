@@ -16,7 +16,7 @@ using namespace std;
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);//ターンの最後にまとめて行われる操作。
+//bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);//ターンの最後にまとめて行われる操作。
 
 void enemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);//敵が襲来する動作。
 void yieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
@@ -140,16 +140,14 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 
 
-	int actionReturn = 1;
-
+	int actionReturn = 1;//何が返ってくるか。0ならばゲーム終了。1は正常に行動を完了させたという意味。2はタイトルに戻る。
 	gameMode = 1;
-
 	while (gameMode == 1) {
-
 
 		for (int i = 0; i < CHARACTERNUM; i++) {
 			if (handledCharacters[i].HP > 0) {
 				actionReturn = handledCharacters[i].selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+				actionMsg = "";
 				if (actionReturn == 0) {
 					return 0;
 				}
@@ -163,60 +161,21 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 
 
-		//if (Emperor1.HP > 0) {
-		//	actionReturn = Emperor1.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
-		//	if (actionReturn ==0) {
-		//		return 0;
-		//	}
-		//	if (actionReturn == 2) {
-		//		return 2;
-		//	}
-
-		//}
-		//if (Emperor2.HP > 0) {
-		//	actionReturn = Emperor2.selectAction(mobs_PenguinKids, mobs_Bull, board, *handledCharacters);
-		//	if (actionReturn == 0) {
-		//		return 0;//ゲーム直接終了
-		//	}
-		//	if (actionReturn == 2) {
-		//		return 2;//タイトル画面に戻る
-		//	}
-		//}
-
 		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0) || board[CASTLE_X][CASTLE_Y].state == VACANT) {
-			mainMsg = "ゲームオーバー";
-			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board, handledCharacters);
-			WaitKey();
-			while (1) {
-				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
-					return FALSE;
-				}
-
-				if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
-					return FALSE;
-				}
-				WaitTimer(10);
+			if (GameOver() == 0) {//ゲームオーバー
+				return 0;
 			}
-			return FALSE;
 		}
 
-		if ((stageLevel == 0 && turnNum == 60) || (stageLevel == 1 && turnNum == 100)) {
-			mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
-			actionMsg = "戦わされた子ペンギンの数:" + std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
-			exhibitScreen(0, 0, FALSE, board, handledCharacters);
-			WaitKey();
-			if (ending() == FALSE) {
-				return FALSE;
+		if ((stageLevel == 0 && turnNum == 60) || (stageLevel == 1 && turnNum == 100)) {//ゲームクリア
+			if (GameClear() == 0) {
+				return 0;
 			}
-
-			exhibitScreen(0, 0, FALSE, board, handledCharacters);
-			WaitKey();
 		}
 
 
 		mainMsg = "";
-		if (turnFinal(mobs_PenguinKids, mobs_Bull, board, handledCharacters) == FALSE) {
+		if (TurnFinal() == FALSE) {
 			return FALSE;
 		}
 
@@ -252,6 +211,38 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 
 
+int  BattleMode_GameManager::GameClear() {
+	mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
+	actionMsg = "戦わされた子ペンギンの数:" + std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
+	exhibitScreen(0, 0, FALSE, board, handledCharacters);
+	WaitKey();
+	if (ending() == FALSE) {
+		return FALSE;
+	}
+
+	exhibitScreen(0, 0, FALSE, board, handledCharacters);
+	WaitKey();
+
+}
+
+int  BattleMode_GameManager::GameOver() {
+
+	mainMsg = "ゲームオーバー";
+	actionMsg = "Escを押すと、ゲームを終了します。";
+	exhibitScreen(0, 0, FALSE, board, handledCharacters);
+	WaitKey();
+	while (1) {
+		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
+			return FALSE;
+		}
+
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+			return FALSE;
+		}
+		WaitTimer(10);
+	}
+	return FALSE;
+}
 
 
 
@@ -261,7 +252,11 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 
 
-bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {//素早さ順にmobが行動していく関数。
+
+
+
+
+int  BattleMode_GameManager::TurnFinal() {//素早さ順にmobが行動していく関数。
 	string mobStatusMsg;
 	string numSpeed;
 	string numX;
@@ -300,41 +295,134 @@ bool turnFinal(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emp
 
 	for (int i = 0; i < mobNumberNow; i++) {
 
-		if (mobsSpeedOrder[i] == NULL) {//スピード順配列にもう何もなければ終了。
-			return TRUE;
-		}
-		if (mobsSpeedOrder[i]->speed < 0) {//スピードがマイナス、つまり死んでいたら終了。
-			return TRUE;
-		}
+		
 
-
-		//if (mobsSpeedOrder[i]->pass == TRUE) {//キャラは居るけど行動しない状態であればコンティニュー。
-		//	continue;
+		//if (mobsSpeedOrder[i] == NULL) {//スピード順配列にもう何もなければ終了。
+		//	return TRUE;
 		//}
+		//if (mobsSpeedOrder[i]->speed < 0) {//スピードがマイナス、つまり死んでいたら終了。
+		//	return TRUE;
+		//}
+		if (mobsSpeedOrder[i] != NULL && mobsSpeedOrder[i]->speed >= 0) {//モブがいるとき
+			actionMsg = "";
+			if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
+				moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 
-		if (mobsSpeedOrder[i]->status == NORMAL || mobsSpeedOrder[i]->status == ELDER) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<PenguinKids*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
+			if (mobsSpeedOrder[i]->status == BULL) {//牛なら牛のselectActionを呼ぶ。
+				moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
+			}
 
+			if (moveOrNot == TRUE) {
+				/*exhibitScreen(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y, TRUE, board, handledCharacters);
+				ScreenMove(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y);*/
 
-			//渡すべき引数、下の二つのうちどっちが正しんだ！？！？
-			//&mobs_PenguinKids[mobLimit], & mobs_Bull[mobLimit]
-			//mobs_PenguinKids, mobs_Bull
+				/*if (quitGame == TRUE) {
+					return FALSE;
+				}*/
+
+				if (GoNext(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y) ==FALSE) {
+					return FALSE;
+				}
+			}
 		}
+		//WaitKey();
 
-
-
-		if (mobsSpeedOrder[i]->status == BULL) {//普通or老人ペンギンならペンギンのselectActionを呼ぶ。
-			moveOrNot = reinterpret_cast<Bull*>(mobsSpeedOrder[i])->selectAction(mobs_PenguinKids, mobs_Bull, board, handledCharacters);
-		}
-
-		if (quitGame == TRUE) {
-			return FALSE;
-		}
+		
 
 	}
 	return TRUE;
 
 }
+
+
+
+int BattleMode_GameManager::GoNext(int markX, int markY) {
+	{
+		int mouse = NULL;
+		int xClick = NULL;
+		int yClick = NULL;
+		while (1) {
+			if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+				return 0;
+			}
+			exhibitScreen(markX, markY, TRUE, board, handledCharacters);
+			mouse = NULL;
+			xClick = NULL;
+			yClick = NULL;
+			if (CheckHitKey(KEY_INPUT_RETURN) == FALSE) {
+				pushingKey = FALSE;
+			}
+
+			ScreenMove(markX,markY);
+			DrawBox(FIELDSIZE * SQUARESIZE + 120, 700, FIELDSIZE * SQUARESIZE + 320, 785, GetColor(30, 233, 233), TRUE);
+			DrawString(FIELDSIZE * SQUARESIZE + 170, 720, "次へ進む\n(Enter)",GetColor(20,0,40));
+			GetClickPlace(&xClick, &yClick);
+			if (xClick > FIELDSIZE * SQUARESIZE + 100 && xClick < FIELDSIZE * SQUARESIZE + 250 && yClick > 700 && yClick < 770) {
+				return 1;
+			}
+			if (CheckHitKey(KEY_INPUT_RETURN)== TRUE && pushingKey == FALSE) {//現在の押下状態がFALSEで、いまEnterが押された場合
+				pushingKey = 1;
+				return 1;
+			}
+			
+
+
+			ScreenFlip();
+		}
+	}
+
+}
+
+
+
+int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
+	if (CheckHitKey(KEY_INPUT_W) == TRUE) {//WASDで視点移動
+		if (GameBuf->exhibitY > 0) {
+			GameBuf->exhibitY -= 4;
+			if (GameBuf->exhibitY < 0) {
+				GameBuf->exhibitY = 0;
+			}
+			exhibitScreen(markX,markY, TRUE, board, handledCharacters);
+			//WaitTimer(10);
+
+		}
+	}
+	if (CheckHitKey(KEY_INPUT_S) == TRUE) {
+		if (GameBuf->exhibitY < (GameBuf->sizeY - FIELDSIZE) * SQUARESIZE) {
+			GameBuf->exhibitY += 4;
+			if (GameBuf->exhibitY / 48 + FIELDSIZE >= GameBuf->sizeY) {//描画中心が被っているマス＋描画マス数＋１(描画下端マス)が、二次元配列サイズを超えていたら
+				GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE) * 48;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
+			}
+
+			exhibitScreen(markX,markY, TRUE, board, handledCharacters);
+			//WaitTimer(10);
+		}
+	}
+	if (CheckHitKey(KEY_INPUT_A) == TRUE) {//WASDで視点移動
+		if (GameBuf->exhibitX > 0) {
+			GameBuf->exhibitX -= 4;
+			if (GameBuf->exhibitX < 0) {
+				GameBuf->exhibitX = 0;
+			}
+			exhibitScreen(markX,markY, TRUE, board, handledCharacters);
+			//WaitTimer(10);
+
+		}
+	}
+	if (CheckHitKey(KEY_INPUT_D) == TRUE) {
+		if (GameBuf->exhibitX < (GameBuf->sizeX - FIELDSIZE) * SQUARESIZE) {
+			GameBuf->exhibitX += 4;
+			if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
+				GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE) * 48;
+			}
+			exhibitScreen(markX, markY, TRUE, board, handledCharacters);
+			//WaitTimer(10);
+		}
+	}
+	return 0;
+}
+
 
 
 

@@ -13,6 +13,7 @@ int gameMode = 0;
 int turnNum = 0;
 int score = 0;
 int clicking = 0;
+int pushingKey = 0;
 
 
 //Creature mobs[1024];

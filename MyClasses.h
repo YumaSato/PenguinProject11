@@ -183,6 +183,12 @@ public:
 	Emperor* Emperor2;
 
 
+	int GameOver();
+	int GameClear();
+	int TurnFinal();
+	int ScreenMove(int markX,int markY);
+	int GoNext(int markX, int markY);
+
 	~BattleMode_GameManager();
 
 };

@@ -21,6 +21,7 @@ extern int gameMode;
 extern int turnNum;
 extern int score;
 extern int clicking;
+extern int pushingKey;
 
 //extern Creature mobs[1024];
 //extern vector<PenguinKids> kids;//ペンギンキッズのインスタンスを生成毎に入れていく可変長配列。
@@ -63,3 +64,5 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 void exhibitWalking(int markX, int markY, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid** board, Emperor* handledCharacters);
 void exhibitRule();
+
+void GetClickPlace(int* xCllick, int* yClick);

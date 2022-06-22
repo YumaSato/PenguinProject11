@@ -181,12 +181,12 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 
 	turn = "現在のターン:" + std::to_string(turnNum) + "   現在のスコア:" + std::to_string(score);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 20, turn.c_str(), GetColor(255, 200, 255));
-	actionMsg = "";
+	//actionMsg = "";
 
 	exhibitStatusMsg(handledCharacters);
 
-	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 80, std::to_string(GameBuf->exhibitX).c_str(), GetColor(255, 200, 255));
-	DrawString(FIELDSIZE * SQUARESIZE + 100, FIELDSIZE * SQUARESIZE - 80, std::to_string(GameBuf->exhibitY).c_str(), GetColor(255, 200, 255));
+	DrawString(FIELDSIZE * SQUARESIZE + 320, FIELDSIZE * SQUARESIZE - 20, std::to_string(GameBuf->exhibitX).c_str(), GetColor(10, 20, 100));
+	DrawString(FIELDSIZE * SQUARESIZE + 355, FIELDSIZE * SQUARESIZE - 20, std::to_string(GameBuf->exhibitY).c_str(), GetColor(10, 20, 100));
 }
 
 
@@ -456,43 +456,25 @@ void GETxyBYdirection(int* x, int* y, Direction drctn) {
 
 
 
-//
-//void RandomDirection(int* tmpx, int* tmpy) {//周囲8方向を調べる際の順番をランダムにする。８個入る配列の入れ替え。
-//
-//	for (int i = 0; i < 8; i++) {//８方向調べる。これなんでswitch使うとi==7の場合しか発動しないの？←ブレイクを書いていなかったから。
-//
-//		switch (i) {
-//		case 0:
-//			*tmpx = -1;
-//			*tmpy = -1;
-//			break;
-//		case 1:
-//			*tmpx = 0;
-//			*tmpy = -1;
-//			break;
-//		case 2:
-//			*tmpx = 1;
-//			*tmpy = -1;
-//			break;
-//		case 3:
-//			*tmpx = 1;
-//			*tmpy = 0;
-//			break;
-//		case 4:
-//			*tmpx = 1;
-//			*tmpy = 1;
-//			break;
-//		case 5:
-//			*tmpx = 0;
-//			*tmpy = 1;
-//			break;
-//		case 6:
-//			*tmpx = -1;
-//			*tmpy = 1;
-//			break;
-//		case 7:
-//			*tmpx = -1;
-//			*tmpy = 0;
-//			break;
-//		}
-//	}
+void GetClickPlace(int* xClick, int* yClick) {
+
+	int mouse = NULL;
+	int xc = NULL;
+	int yc = NULL;
+	mouse = GetMouseInput();
+	if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
+		clicking = 0;
+	}
+	if (mouse & MOUSE_INPUT_LEFT) {
+		if (clicking == 0) {
+			clicking = 1;
+			GetMousePoint(&xc, &yc);
+		}
+	}
+	*xClick = xc;
+	*yClick = yc;
+}
+
+
+
+

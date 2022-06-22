@@ -106,27 +106,12 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 
 
 	if (attack( board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		WaitKey();
-		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
-			quitGame = TRUE;
-		}
 		return TRUE;
 	}
 	if (specialMovement1( mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		WaitKey();
-		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
-			quitGame = TRUE;
-		}
 		return TRUE;
 	}
 	if (specialMovement2( board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		WaitKey();
-		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
-			quitGame = TRUE;
-		}
 		return TRUE;
 	}
 	return FALSE;
@@ -227,6 +212,7 @@ bool PenguinKids::attack( Grid** board, Emperor* handledCharacters) {
 
 						SETdirection(tmpx, tmpy);//敵の方を向いて
 						damage(checkX, checkY, board, handledCharacters);//攻撃。
+						//actionMsg = name + "は" + board[checkX][checkY].creature->name + "を攻撃した。";
 						return TRUE;
 					}
 				}

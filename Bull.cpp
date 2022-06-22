@@ -81,7 +81,7 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** bo
 
 	if (skip == TRUE) {//skipする状態なら、即終了。
 		skip = FALSE;
-		return TRUE;
+		return FALSE;
 	}
 
 	HP += GetRand(2);
@@ -90,19 +90,9 @@ int Bull::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** bo
 	}
 
 	if (attack( board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		WaitKey();
-		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
-			quitGame = TRUE;
-		}
 		return TRUE;
 	}
 	if (walk( board, handledCharacters) == TRUE) {
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		WaitKey();
-		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
-			quitGame = TRUE;
-		}
 		return TRUE;
 	}
 	return FALSE;
