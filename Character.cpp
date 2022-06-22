@@ -69,20 +69,19 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
-		//mouse = GetMouseInput();
-		//if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
-		//	clicking = 0;
-		//}
+		mouse = GetMouseInput();
+		if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
+			clicking = 0;
+		}
+		if ((mouse & MOUSE_INPUT_RIGHT)&& clicking == 0) {//右クリックされたら
+			clicking = 1;
+			GetMousePoint(&xClick, &yClick);
+
+		/*if (GetClickPlace(&xClick, &yClick) == 2) {*/
 
 
-		//if (mouse & MOUSE_INPUT_RIGHT) {//右クリックされたら
-		
 
-		if (GetClickPlace(&xClick, &yClick) == 2) {
-
-
-
-			/*GetMousePoint(&xClick, &yClick);*/
+			
 			xClick = xClick / 48;
 			yClick = yClick / 48;
 
@@ -97,19 +96,18 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
-		afew = GetClickPlace(&xClick, &yClick);//エラー確認用で返り値を描画。
-		actionMsg = "afew=" + std::to_string(afew);
-		exhibitScreen(x, y, TRUE, board, handledCharacters);//なんで？？？？
-		WaitKey();
-
-
-		if (afew == 1){
-
-		//mouse = GetMouseInput();
-		//if (mouse & MOUSE_INPUT_LEFT) {//左クリックが行われた際の処理
-		
-		
+		//afew = GetClickPlace(&xClick, &yClick);//エラー確認用で返り値を描画。
+		//actionMsg = "afew=" + std::to_string(afew);
+		//exhibitScreen(x, y, TRUE, board, handledCharacters);//なんで？？？？
+		//WaitKey();
+		//if (afew == 1){
 		//if (GetClickPlace(&xClick, &yClick) == 1) {
+
+
+		if ((mouse & MOUSE_INPUT_LEFT) && clicking == 0) {//左クリックが行われた際の処理
+			clicking = 1;
+			GetMousePoint(&xClick, &yClick);
+		
 
 			if (exhibitMyStatusOrNot == TRUE) {//操作可能キャラの詳細を表示するフラグが立っていた場合
 				bool turnFinish = FALSE;
