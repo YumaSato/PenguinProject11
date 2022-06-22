@@ -456,23 +456,44 @@ void GETxyBYdirection(int* x, int* y, Direction drctn) {
 
 
 
-void GetClickPlace(int* xClick, int* yClick) {
+int GetClickPlace(int* xClick, int* yClick) {//なにも押されていなければ0、左クリックなら1、右クリックなら2を返し、渡したアドレスにクリック時のマウス座標を格納。
 
 	int mouse = NULL;
 	int xc = NULL;
 	int yc = NULL;
 	mouse = GetMouseInput();
-	if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
-		clicking = 0;
-	}
 	if (mouse & MOUSE_INPUT_LEFT) {
 		if (clicking == 0) {
 			clicking = 1;
 			GetMousePoint(&xc, &yc);
+			*xClick = xc;
+			*yClick = yc;
+			return 1;
 		}
 	}
-	*xClick = xc;
-	*yClick = yc;
+	if (mouse & MOUSE_INPUT_RIGHT) {
+		if (clicking == 0) {
+			clicking = 1;
+			GetMousePoint(&xc, &yc);
+			*xClick = xc;
+			*yClick = yc;
+			return 2;
+		}
+	}
+	if(!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
+		clicking = 0;
+		return 0;
+	}
+
+
+	//if (clicking == 0) {
+	//	clicking = 1;
+	//	GetMousePoint(&xc, &yc);
+	//	*xClick = xc;
+	//	*yClick = yc;
+	//	return 1;
+	//}
+
 }
 
 

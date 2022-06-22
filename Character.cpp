@@ -26,6 +26,9 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 	bool exhibitMyStatusOrNot = FALSE;
 	int color = 10;
 
+
+	int afew = -2;//エラー解決用
+
 	clicking = 0;
 
 	mainMsg = name + msg;
@@ -66,132 +69,138 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
-		mouse = GetMouseInput();
+		//mouse = GetMouseInput();
+		//if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
+		//	clicking = 0;
+		//}
 
 
-		if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//右も左もどちらのクリックも押されていなかったら、次のクリックを受け付ける。
-			clicking = 0;
-		}
+		//if (mouse & MOUSE_INPUT_RIGHT) {//右クリックされたら
+		
+
+		if (GetClickPlace(&xClick, &yClick) == 2) {
 
 
-		if (mouse & MOUSE_INPUT_RIGHT) {//右クリックされたら
 
-			if (clicking == 0) {
-				clicking = 1;
+			/*GetMousePoint(&xClick, &yClick);*/
+			xClick = xClick / 48;
+			yClick = yClick / 48;
 
-				GetMousePoint(&xClick, &yClick);
-				xClick = xClick / 48;
-				yClick = yClick / 48;
+			dx = xClick - x;
+			dy = yClick - y;
+			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスの上にマウスポインタがある場合
+				SETdirection(dx, dy);
+				exhibitScreen(x, y, TRUE, board, handledCharacters);//その方向を向く。
 
-				dx = xClick - x;
-				dy = yClick - y;
-				if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//自分の隣のマスの上にマウスポインタがある場合
-					SETdirection(dx, dy);
-					exhibitScreen(x, y, TRUE, board, handledCharacters);//その方向を向く。
-				}
 			}
 		}
 
 
 
-		if (mouse & MOUSE_INPUT_LEFT) {//左クリックが行われた際の処理
+		afew = GetClickPlace(&xClick, &yClick);//エラー確認用で返り値を描画。
+		actionMsg = "afew=" + std::to_string(afew);
+		exhibitScreen(x, y, TRUE, board, handledCharacters);//なんで？？？？
+		WaitKey();
 
 
-			if (clicking == 0) {
-				clicking = 1;
+		if (afew == 1){
 
-				GetMousePoint(&xClick, &yClick);//マウスポインタがどこにあるかを取得
+		//mouse = GetMouseInput();
+		//if (mouse & MOUSE_INPUT_LEFT) {//左クリックが行われた際の処理
+		
+		
+		//if (GetClickPlace(&xClick, &yClick) == 1) {
 
-				if (exhibitMyStatusOrNot == TRUE) {//操作可能キャラの詳細を表示するフラグが立っていた場合
-					bool turnFinish = FALSE;
-					for (int iii = 0; iii < 6; iii++) {//６つの選択肢がクリックを受け付ける。
-						if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
+			if (exhibitMyStatusOrNot == TRUE) {//操作可能キャラの詳細を表示するフラグが立っていた場合
+				bool turnFinish = FALSE;
+				for (int iii = 0; iii < 6; iii++) {//６つの選択肢がクリックを受け付ける。
+					if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
 
-							if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
-								if (walk(board, handledCharacters) == TRUE) {
-									turnFinish = TRUE;
-									break;
-								}
+						if (iii == 0) {//キャラ詳細表示の各ボタンを押すと行動が行われる
+							if (walk(board, handledCharacters) == TRUE) {
+								turnFinish = TRUE;
+								break;
 							}
-							if (iii == 1) {
-								if (specialMovement1(mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
-									turnFinish = TRUE;
-									break;
-								}
+						}
+						if (iii == 1) {
+							if (specialMovement1(mobs_PenguinKids, mobs_Bull, board, handledCharacters) == TRUE) {
+								turnFinish = TRUE;
+								break;
 							}
-							if (iii == 2) {
-								if (specialMovement2(board, handledCharacters) == TRUE) {
-									turnFinish = TRUE;
-									break;
-								}
+						}
+						if (iii == 2) {
+							if (specialMovement2(board, handledCharacters) == TRUE) {
+								turnFinish = TRUE;
+								break;
 							}
-							if (iii == 3) {
-								if (attack( board, handledCharacters) == TRUE) {
-									turnFinish = TRUE;
-									break;
-								}
+						}
+						if (iii == 3) {
+							if (attack(board, handledCharacters) == TRUE) {
+								turnFinish = TRUE;
+								break;
 							}
-							if (iii == 4) {
-								if (kick( board, handledCharacters) == TRUE) {
-									turnFinish = TRUE;
-									break;
-								}
+						}
+						if (iii == 4) {
+							if (kick(board, handledCharacters) == TRUE) {
+								turnFinish = TRUE;
+								break;
 							}
-							if (iii == 5) {
-								if (turnFinish == FALSE) {
-									turnFinish = TRUE;
-									break;
-								}
+						}
+						if (iii == 5) {
+							if (turnFinish == FALSE) {
+								turnFinish = TRUE;
+								break;
 							}
 						}
 					}
-					if (turnFinish == TRUE) {
-						break;
-					}
-
 				}
-				//これより上は、操作を受け付ける内容。この下は、
-
-
-
-				xClick = xClick / 48;//この先は、XClickとYClickが、押したマスを表す。
-				yClick = yClick / 48;
-				if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
-
-
-					if (board[xClick][yClick].creature == NULL) {//押したマスがNULLなら、ステータス表示状態を解除。
-						exhibitOrNot = FALSE;
-						XBuf = -1;
-						YBuf = -1;
-						exhibitScreen(x, y, TRUE, board, handledCharacters);
-					}
-
-					if (board[xClick][yClick].creature != NULL) {//キャラがいる場所をクリックした際
-
-						if (XBuf >= 0 && XBuf < FIELDSIZE && YBuf >= 0 && YBuf < FIELDSIZE) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
-							if (board[xClick][yClick].creature == board[XBuf][YBuf].creature) {//表示中のマスを触ったらステータス表示消える。
-								exhibitOrNot = FALSE;
-								XBuf = -1;
-								YBuf = -1;
-								exhibitScreen(x, y, TRUE, board, handledCharacters);
-							}
-						}
-						else {
-							exhibitOrNot = TRUE;
-						}
-
-
-
-						if (xClick == x && yClick == y) {
-							exhibitMyStatusOrNot = TRUE;
-						}
-						else {
-							exhibitMyStatusOrNot = FALSE;
-						}
-					}
-
+				if (turnFinish == TRUE) {
+					break;
 				}
+
 			}
+			//これより上は、操作を受け付ける内容。この下は、
+
+
+
+			xClick = xClick / 48;//この先は、XClickとYClickが、押したマスを表す。
+			yClick = yClick / 48;
+			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+
+
+				if (board[xClick][yClick].creature == NULL) {//押したマスがNULLなら、ステータス表示状態を解除。
+					exhibitOrNot = FALSE;
+					XBuf = -1;
+					YBuf = -1;
+					exhibitScreen(x, y, TRUE, board, handledCharacters);
+				}
+
+				if (board[xClick][yClick].creature != NULL) {//キャラがいる場所をクリックした際
+
+					if (XBuf >= 0 && XBuf < FIELDSIZE && YBuf >= 0 && YBuf < FIELDSIZE) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
+						if (board[xClick][yClick].creature == board[XBuf][YBuf].creature) {//表示中のマスを触ったらステータス表示消える。
+							exhibitOrNot = FALSE;
+							XBuf = -1;
+							YBuf = -1;
+							exhibitScreen(x, y, TRUE, board, handledCharacters);
+						}
+					}
+					else {
+						exhibitOrNot = TRUE;
+					}
+
+
+
+					if (xClick == x && yClick == y) {
+						exhibitMyStatusOrNot = TRUE;
+					}
+					else {
+						exhibitMyStatusOrNot = FALSE;
+					}
+				}
+
+			}
+
 		}
 
 

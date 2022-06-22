@@ -65,4 +65,4 @@ void exhibitWalking(int markX, int markY, int color, PenguinKids* mobs_PenguinKi
 void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid** board, Emperor* handledCharacters);
 void exhibitRule();
 
-void GetClickPlace(int* xCllick, int* yClick);
+int GetClickPlace(int* xCllick, int* yClick);

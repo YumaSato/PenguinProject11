@@ -342,6 +342,7 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 		int mouse = NULL;
 		int xClick = NULL;
 		int yClick = NULL;
+		int nextFlag = -1;
 		while (1) {
 			if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 				return 0;
@@ -357,15 +358,21 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 			ScreenMove(markX,markY);
 			DrawBox(FIELDSIZE * SQUARESIZE + 120, 700, FIELDSIZE * SQUARESIZE + 320, 785, GetColor(30, 233, 233), TRUE);
 			DrawString(FIELDSIZE * SQUARESIZE + 170, 720, "次へ進む\n(Enter)",GetColor(20,0,40));
-			GetClickPlace(&xClick, &yClick);
-			if (xClick > FIELDSIZE * SQUARESIZE + 100 && xClick < FIELDSIZE * SQUARESIZE + 250 && yClick > 700 && yClick < 770) {
-				return 1;
+
+			//nextFlag = GetClickPlace(&xClick, &yClick);
+			//actionMsg = "afew=" + std::to_string(nextFlag);
+			//exhibitScreen(markX, markY, TRUE, board, handledCharacters);//なんで？？？？
+			//WaitKey();
+
+			if (GetClickPlace(&xClick, &yClick) == 1) {
+				if (xClick > FIELDSIZE * SQUARESIZE + 100 && xClick < FIELDSIZE * SQUARESIZE + 250 && yClick > 700 && yClick < 770) {
+					return 1;
+				}
+				if (CheckHitKey(KEY_INPUT_RETURN) == TRUE && pushingKey == FALSE) {//現在の押下状態がFALSEで、いまEnterが押された場合
+					pushingKey = 1;
+					return 1;
+				}
 			}
-			if (CheckHitKey(KEY_INPUT_RETURN)== TRUE && pushingKey == FALSE) {//現在の押下状態がFALSEで、いまEnterが押された場合
-				pushingKey = 1;
-				return 1;
-			}
-			
 
 
 			ScreenFlip();
