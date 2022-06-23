@@ -100,11 +100,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		DrawString(960, 320, "モードを選択してください。\n\n\n1:通常モード(Normal)\n60ターン生き残れ！\n\n\n2:難関モード(Lunatic)\n100ターン生き残れ！\n\n\nEsc:やめる\n\n\n\n\n\n\n\n\n\n\n\n            VERSION:2", GetColor(titleStringColor, 245, 255));
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
+			pushingKey = 1;
 			BattleMode_GameManager* battle0 = new BattleMode_GameManager(20, 25);
 			game = battle0->BattleMode(0);//FALSEだとゲーム終了。
 			delete battle0;
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
+			pushingKey = 1;
 			BattleMode_GameManager* battle1 = new BattleMode_GameManager(17, 17);
 			game = battle1->BattleMode(1);//FALSEだとゲーム終了。
 			delete battle1;
@@ -163,6 +165,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 void handlePenguin() {//ハンドルに画像のポインタを代入
 	handle[red][EGG][NW] = LoadGraph("Imgs/redEgg.png");
 	handle[blue][EGG][NW] = LoadGraph("Imgs/blueEgg.png");
+	
+	handleField[0] = LoadGraph("Imgs/Field/grassGreen.png");
+	handleField[1] = LoadGraph("Imgs/Field/grassLight.png");
+
 
 	char tmp[50];
 	for (int i = 0; i <= 7; i++) {

@@ -29,11 +29,12 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 	int afew = -2;//ƒGƒ‰[‰ğŒˆ—p
 
-	clicking = 0;
+	clicking = 1;
+	pushingKey = 1;
 
 	mainMsg = name + msg;
 	exhibitScreen(x, y, TRUE, board, handledCharacters);
-	WaitKey();
+	//WaitKey();
 
 	while (1) {
 		if (ProcessMessage() != 0) { //ƒEƒBƒ“ƒhƒE‚Ì•Â‚¶‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚é‚Æƒ‹[ƒv‚ğ”²‚¯‚é
@@ -41,12 +42,11 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		}
 
 		if (ruleExhibit == TRUE) {
-			while (1) {
-				WaitKey();
-				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE || CheckHitKey(KEY_INPUT_0) == TRUE) {
-					ruleExhibit = FALSE;
-					break;
-				}
+			exhibitScreen(x, y, TRUE, board, handledCharacters);
+			exhibitRule();
+			if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE || CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
+				pushingKey = 1;
+				ruleExhibit = FALSE;
 			}
 		}
 
@@ -73,6 +73,11 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//‰E‚à¶‚à‚Ç‚¿‚ç‚ÌƒNƒŠƒbƒN‚à‰Ÿ‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚çAŸ‚ÌƒNƒŠƒbƒN‚ğó‚¯•t‚¯‚éB
 			clicking = 0;
 		}
+		if (CheckHitKey(KEY_INPUT_1) == FALSE && CheckHitKey(KEY_INPUT_2) == FALSE && CheckHitKey(KEY_INPUT_3) == FALSE && CheckHitKey(KEY_INPUT_4) == FALSE && CheckHitKey(KEY_INPUT_5) == FALSE && CheckHitKey(KEY_INPUT_6) == FALSE && CheckHitKey(KEY_INPUT_ESCAPE) == FALSE && CheckHitKey(KEY_INPUT_RETURN) == FALSE && CheckHitKey(KEY_INPUT_SPACE) == FALSE) {
+			pushingKey = 0;
+		}
+
+
 		if ((mouse & MOUSE_INPUT_RIGHT)&& clicking == 0) {//‰EƒNƒŠƒbƒN‚³‚ê‚½‚ç
 			clicking = 1;
 			GetMousePoint(&xClick, &yClick);
@@ -82,8 +87,8 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 			
-			xClick = xClick / 48;
-			yClick = yClick / 48;
+			xClick = (GameBuf->exhibitX + xClick) / 48;
+			yClick = (GameBuf->exhibitY + yClick) / 48;
 
 			dx = xClick - x;
 			dy = yClick - y;
@@ -112,7 +117,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 			if (exhibitMyStatusOrNot == TRUE) {//‘€ì‰Â”\ƒLƒƒƒ‰‚ÌÚ×‚ğ•\¦‚·‚éƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚½ê‡
 				bool turnFinish = FALSE;
 				for (int iii = 0; iii < 6; iii++) {//‚U‚Â‚Ì‘I‘ğˆ‚ªƒNƒŠƒbƒN‚ğó‚¯•t‚¯‚éB
-					if (xClick > x * 48 + 50 + iii * 51 && xClick < x * 48 + 85 + iii * 51 && yClick > y * 48 + 24 && yClick < y * 48 + 43) {
+					if (xClick > -GameBuf->exhibitX + x * 48 + 50 + iii * 51 && xClick < -GameBuf->exhibitX + x * 48 + 85 + iii * 51 && yClick > -GameBuf->exhibitY + y * 48 + 24 && yClick < -GameBuf->exhibitY + y * 48 + 43) {
 
 						if (iii == 0) {//ƒLƒƒƒ‰Ú×•\¦‚ÌŠeƒ{ƒ^ƒ“‚ğ‰Ÿ‚·‚Æs“®‚ªs‚í‚ê‚é
 							if (walk(board, handledCharacters) == TRUE) {
@@ -161,8 +166,12 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
-			xClick = xClick / 48;//‚±‚Ìæ‚ÍAXClick‚ÆYClick‚ªA‰Ÿ‚µ‚½ƒ}ƒX‚ğ•\‚·B
-			yClick = yClick / 48;
+			//‚±‚Ìæ‚ÍAXClick‚ÆYClick‚ªA‰Ÿ‚µ‚½ƒ}ƒX‚ğ•\‚·B
+			xClick = (GameBuf->exhibitX + xClick) / 48;
+			yClick = (GameBuf->exhibitY + yClick) / 48;
+
+
+
 			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
 
 
@@ -219,15 +228,12 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
+
+
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
 			exhibitOrNot = FALSE;
 			exhibitScreen(x, y, TRUE, board, handledCharacters);
 		}
-
-
-
-
-
 		if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:‰E
 			//directionX = 1;
 			//directionY = 0;
@@ -283,55 +289,55 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
+		GameBuf->ScreenMove(x, y);
 
 
 
+		//if (CheckHitKey(KEY_INPUT_W) == TRUE) {//WASD‚Å‹“_ˆÚ“®
+		//	if (GameBuf->exhibitY >0) {
+		//		GameBuf->exhibitY -= 4;
+		//		if (GameBuf->exhibitY < 0) {
+		//			GameBuf->exhibitY = 0;
+		//		}
+		//		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		//		//WaitTimer(10);
+		//		
+		//	}
+		//}
+		//if (CheckHitKey(KEY_INPUT_S) == TRUE) {
+		//	if (GameBuf->exhibitY< (GameBuf->sizeY - FIELDSIZE)*SQUARESIZE) {
+		//		GameBuf->exhibitY += 4;
+		//		if (GameBuf->exhibitY / 48 + FIELDSIZE >= GameBuf->sizeY) {//•`‰æ’†S‚ª”í‚Á‚Ä‚¢‚éƒ}ƒX{•`‰æƒ}ƒX”{‚P(•`‰æ‰º’[ƒ}ƒX)‚ªA“ñŸŒ³”z—ñƒTƒCƒY‚ğ’´‚¦‚Ä‚¢‚½‚ç
+		//			GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE ) * 48;//•`‰æƒ}ƒX‚Ì¶ã‚ğ¦‚·exhibitXY‚ª”Õ–Êã‚É‚¨‚¯‚éƒ}ƒCƒiƒX‚âA•`‰æƒ}ƒX‚Ì‰E‰º‚ª”Õ–ÊƒTƒCƒY‚ğ‚Í‚İo‚éê‡A‚Í‚İo‚È‚¢êŠ‚ÉÄİ’èB
+		//		}
+		//		
+		//		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		//		//WaitTimer(10);
+		//	}
+		//}
+		//if (CheckHitKey(KEY_INPUT_A) == TRUE) {//WASD‚Å‹“_ˆÚ“®
+		//	if (GameBuf->exhibitX > 0) {
+		//		GameBuf->exhibitX -= 4;
+		//		if (GameBuf->exhibitX < 0) {
+		//			GameBuf->exhibitX = 0;
+		//		}
+		//		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		//		//WaitTimer(10);
 
-		if (CheckHitKey(KEY_INPUT_W) == TRUE) {//WASD‚Å‹“_ˆÚ“®
-			if (GameBuf->exhibitY >0) {
-				GameBuf->exhibitY -= 4;
-				if (GameBuf->exhibitY < 0) {
-					GameBuf->exhibitY = 0;
-				}
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
-				//WaitTimer(10);
-				
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_S) == TRUE) {
-			if (GameBuf->exhibitY< (GameBuf->sizeY - FIELDSIZE)*SQUARESIZE) {
-				GameBuf->exhibitY += 4;
-				if (GameBuf->exhibitY / 48 + FIELDSIZE >= GameBuf->sizeY) {//•`‰æ’†S‚ª”í‚Á‚Ä‚¢‚éƒ}ƒX{•`‰æƒ}ƒX”{‚P(•`‰æ‰º’[ƒ}ƒX)‚ªA“ñŸŒ³”z—ñƒTƒCƒY‚ğ’´‚¦‚Ä‚¢‚½‚ç
-					GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE ) * 48;//•`‰æƒ}ƒX‚Ì¶ã‚ğ¦‚·exhibitXY‚ª”Õ–Êã‚É‚¨‚¯‚éƒ}ƒCƒiƒX‚âA•`‰æƒ}ƒX‚Ì‰E‰º‚ª”Õ–ÊƒTƒCƒY‚ğ‚Í‚İo‚éê‡A‚Í‚İo‚È‚¢êŠ‚ÉÄİ’èB
-				}
-				
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
-				//WaitTimer(10);
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_A) == TRUE) {//WASD‚Å‹“_ˆÚ“®
-			if (GameBuf->exhibitX > 0) {
-				GameBuf->exhibitX -= 4;
-				if (GameBuf->exhibitX < 0) {
-					GameBuf->exhibitX = 0;
-				}
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
-				//WaitTimer(10);
-
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_D) == TRUE) {
-			if (GameBuf->exhibitX< (GameBuf->sizeX - FIELDSIZE)*SQUARESIZE) {
-				GameBuf->exhibitX += 4;
-				if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
-					GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE ) * 48;
-				}
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
-				//WaitTimer(10);
-			}
-		}
-		
-		
+		//	}
+		//}
+		//if (CheckHitKey(KEY_INPUT_D) == TRUE) {
+		//	if (GameBuf->exhibitX< (GameBuf->sizeX - FIELDSIZE)*SQUARESIZE) {
+		//		GameBuf->exhibitX += 4;
+		//		if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
+		//			GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE ) * 48;
+		//		}
+		//		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		//		//WaitTimer(10);
+		//	}
+		//}
+		//
+		//
 		
 		
 
@@ -343,63 +349,71 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
-
-		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
-			WaitTimer(100);
-			if (walk( board, handledCharacters) == TRUE) {
-				break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
-			if (specialMovement1( mobs_PenguinKids, mobs_Bull, board, &handledCharacters[0]) == TRUE) {
-				break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_3) == TRUE) {
-			if (specialMovement2( board, handledCharacters) == TRUE) {
-				break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_4) == TRUE) {
-			if (attack( board, handledCharacters) == TRUE) {
-				break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_5) == TRUE) {
-			if (kick( board, handledCharacters) == TRUE) {
-				break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
-			}
-		}
-		if (CheckHitKey(KEY_INPUT_6) == TRUE) {
-			break;
-		}
-
-		if (CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
-			ruleExhibit = TRUE;
-			exhibitRule();
-		}
-
-		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
-
-			while (1) {
-
-				mainMsg = "–{“–‚ÉƒQ[ƒ€‚ğI—¹‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H \nEnterƒL[:Yes 0:No";
-				ClearDrawScreen();
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
+		if (pushingKey == 0) {
 
 
-
-
-				if (CheckHitKey(KEY_INPUT_RETURN) == TRUE) {
-					return 2;
+			if (CheckHitKey(KEY_INPUT_1) == TRUE) {
+				pushingKey = 1;
+				if (walk(board, handledCharacters) == TRUE) {
+					break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
 				}
-				if (CheckHitKey(KEY_INPUT_0) == TRUE || CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
-					break;
+			}
+			if (CheckHitKey(KEY_INPUT_2) == TRUE) {
+				pushingKey = 1;
+				if (specialMovement1(mobs_PenguinKids, mobs_Bull, board, &handledCharacters[0]) == TRUE) {
+					break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
 				}
-				WaitTimer(10);
+			}
+			if (CheckHitKey(KEY_INPUT_3) == TRUE) {
+				pushingKey = 1;
+				if (specialMovement2(board, handledCharacters) == TRUE) {
+					break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
+				}
+			}
+			if (CheckHitKey(KEY_INPUT_4) == TRUE) {
+				pushingKey = 1;
+				if (attack(board, handledCharacters) == TRUE) {
+					break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
+				}
+			}
+			if (CheckHitKey(KEY_INPUT_5) == TRUE) {
+				pushingKey = 1;
+				if (kick(board, handledCharacters) == TRUE) {
+					break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
+				}
+			}
+			if (CheckHitKey(KEY_INPUT_6) == TRUE) {
+				pushingKey = 1;
+				break;
+			}
+
+			if (CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
+				pushingKey = 1;
+				ruleExhibit = TRUE;
+				exhibitRule();
+			}
+
+			if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
+				pushingKey = 1;
+				while (1) {
+
+					mainMsg = "–{“–‚ÉƒQ[ƒ€‚ğI—¹‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H \nEnterƒL[:Yes 0:No";
+					ClearDrawScreen();
+					exhibitScreen(x, y, TRUE, board, handledCharacters);
+
+
+
+
+					if (CheckHitKey(KEY_INPUT_RETURN) == TRUE) {
+						return 2;
+					}
+					if (CheckHitKey(KEY_INPUT_0) == TRUE || CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
+						break;
+					}
+					WaitTimer(10);
+				}
 			}
 		}
-
 
 
 
@@ -420,8 +434,10 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 	mainMsg = "";
 	actionMsg = "s“®I—¹B‘Ì—Í‚ª‰ñ•œ‚µ‚Ü‚·B";
-	exhibitScreen(x, y, TRUE, board, handledCharacters);
-	WaitKey();
+	//exhibitScreen(x, y, TRUE, board, handledCharacters);
+	GameBuf->GoNext(x, y);
+
+	//WaitKey();
 
 	return TRUE;
 };
@@ -546,9 +562,8 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 
 
 		GetMousePoint(&xClick, &yClick);
-		xClick = xClick / 48;
-		yClick = yClick / 48;
-
+		xClick = (GameBuf->exhibitX + xClick) / 48;
+		yClick = (GameBuf->exhibitY + yClick) / 48;
 
 		if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
 

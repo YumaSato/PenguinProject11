@@ -41,6 +41,7 @@ int hHP;
 int HandleCastle;
 int handle[3][9][8];//[team][status][direction]でペンギンの画像のハンドルを格納する3次元配列。
 int handleMusic;
+int handleField[10];
 
 
 //Grid board[FIELDSIZE][FIELDSIZE];

@@ -368,12 +368,12 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 				if (xClick > FIELDSIZE * SQUARESIZE + 100 && xClick < FIELDSIZE * SQUARESIZE + 250 && yClick > 700 && yClick < 770) {
 					return 1;
 				}
-				if (CheckHitKey(KEY_INPUT_RETURN) == TRUE && pushingKey == FALSE) {//Œ»Ý‚Ì‰Ÿ‰ºó‘Ô‚ªFALSE‚ÅA‚¢‚ÜEnter‚ª‰Ÿ‚³‚ê‚½ê‡
-					pushingKey = 1;
-					return 1;
-				}
+				
 			}
-
+			if (CheckHitKey(KEY_INPUT_RETURN) == TRUE && pushingKey == FALSE) {//Œ»Ý‚Ì‰Ÿ‰ºó‘Ô‚ªFALSE‚ÅA‚¢‚ÜEnter‚ª‰Ÿ‚³‚ê‚½ê‡
+				pushingKey = 1;
+				return 1;
+			}
 
 			ScreenFlip();
 		}

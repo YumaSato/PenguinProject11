@@ -68,9 +68,7 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 	ClearDrawScreen();//一度画面を全消し
 	//DrawGraph(0, 0, HandleBoard, TRUE);
 
-	if (attention == TRUE) {//注目対象キャラのマスに注目用の円を表示するか否か
-		DrawBox(-GameBuf->exhibitX + markX * 48 + 2, -GameBuf->exhibitY + markY * 48 + 2, -GameBuf->exhibitX + markX * 48 + 46, -GameBuf->exhibitY + markY * 48 + 46, GetColor(255, 200, 0), TRUE);
-	}
+	
 
 	int exhibitXsize = GameBuf->exhibitX / 48 + FIELDSIZE +1;
 	int exhibitYsize = GameBuf->exhibitY / 48 + FIELDSIZE +1;
@@ -82,26 +80,29 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 	}
 
 
+	
+
 	//for (int ix = 0; ix <exhibitXsize; ix++) {
 	//	for (int iy = 0; iy < exhibitYsize ; iy++) {
 	for (int ix = GameBuf->exhibitX / 48; ix <exhibitXsize; ix++) {
 		for (int iy = GameBuf->exhibitY / 48; iy < exhibitYsize ; iy++) {
 
-			/*if (board[GameBuf->exhibitX / 48+ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
-				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY+ iy * SQUARESIZE, -GameBuf->exhibitX+ ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
-			}
-			if (board[ix][iy].state == CASTLE) {
-				DrawGraph(-GameBuf->exhibitX  + ix * SQUARESIZE, -GameBuf->exhibitY  + iy * SQUARESIZE, HandleCastle, TRUE);
-			}*/
 
-			/*if (board[GameBuf->exhibitX / 48 + ix][GameBuf->exhibitY / 48 + iy].state == ROCK) {
-				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, -GameBuf->exhibitX + ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
-			}
-			if (board[ix][iy].state == CASTLE) {
-				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, HandleCastle, TRUE);
-			}*/
 
-			
+			if (board[ix][iy].state == VACANT) {
+				int stripe = 0;
+				if (ix % 2 == 0) {
+					if (iy % 2 == 1) {
+						stripe = 1;
+					}
+				}
+				else {
+					if (iy % 2 == 0) {
+						stripe = 1;
+					}
+				}
+				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[stripe], TRUE);
+			}
 
 
 			if (board[ix][iy].state == ROCK) {
@@ -116,6 +117,11 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 			}*/
 
 
+
+
+			if (attention == TRUE && markX == ix && markY == iy) {//注目対象キャラのマスに注目用の円を表示するか否か
+				DrawBox(-GameBuf->exhibitX + markX * 48 + 4, -GameBuf->exhibitY + markY * 48 + 4, -GameBuf->exhibitX + markX * 48 + 44, -GameBuf->exhibitY + markY * 48 + 44, GetColor(255, 200, 0), TRUE);
+			}
 
 
 
@@ -165,6 +171,9 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 					HPexhibitOrNot = TRUE;
 				}
 			}
+			
+
+
 			//LoadGraphScreen(0, 0, "back.png", TRUE);
 			DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, h, TRUE);//一度クラスの変数に格納したHandleで描画
 			//DrawString(450, 20, msg.c_str(), WHITE);
@@ -266,11 +275,11 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 			string Msg1 = "";
 			string Msg2 = "";
 
-			DrawBox(markX * 48 + 40, markY * 48 + 2, markX * 48 + 360, markY * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
-			DrawBox(markX * 48 + 39, markY * 48 + 1, markX * 48 + 361, markY * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
+			DrawBox(-GameBuf->exhibitX + markX * 48 + 40, -GameBuf->exhibitY + markY * 48 + 2, -GameBuf->exhibitX + markX * 48 + 360, -GameBuf->exhibitY + markY * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
+			DrawBox(-GameBuf->exhibitX + markX * 48 + 39, -GameBuf->exhibitY + markY * 48 + 1, -GameBuf->exhibitX + markX * 48 + 361, -GameBuf->exhibitY + markY * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
 
 			for (int iii = 0; iii < 6; iii++) {
-				DrawBox(markX * 48 + 50 + iii * 51, markY * 48 + 24, markX * 48 + 85 + iii * 51, markY * 48 + 43, GetColor(50 + ((color + iii * 3) / 10), 220 + iii * 5 - (color / 3), 100), TRUE);//選択ボックス
+				DrawBox(-GameBuf->exhibitX + markX * 48 + 50 + iii * 51, -GameBuf->exhibitY + markY * 48 + 24, -GameBuf->exhibitX + markX * 48 + 85 + iii * 51, -GameBuf->exhibitY + markY * 48 + 43, GetColor(50 + ((color + iii * 3) / 10), 220 + iii * 5 - (color / 3), 100), TRUE);//選択ボックス
 
 
 			}
@@ -278,20 +287,20 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 			Msg1 = board[markX][markY].creature->name + "のHP:" + std::to_string(board[markX][markY].creature->HP) + "/" + std::to_string(board[markX][markY].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[markX][markY].creature->speed);
 			Msg2 = " 歩く　産卵　孵化　攻撃　押す　パス";
 
-			DrawString(markX * 48 + 42, markY * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
-			DrawString(markX * 48 + 42, markY * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
+			DrawString(-GameBuf->exhibitX + markX * 48 + 42, -GameBuf->exhibitY + markY * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
+			DrawString(-GameBuf->exhibitX + markX * 48 + 42, -GameBuf->exhibitY + markY * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
 
 			WaitTimer(10);
 
 		}
 		else {
 
-			DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 300, statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
-			DrawBox(statusX * 48 + 40, statusY * 48 + 5, statusX * 48 + 300, statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
+			DrawBox(-GameBuf->exhibitX + statusX * 48 + 40, -GameBuf->exhibitY + statusY * 48 + 5, -GameBuf->exhibitX + statusX * 48 + 300, -GameBuf->exhibitY + statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
+			DrawBox(-GameBuf->exhibitX + statusX * 48 + 40, -GameBuf->exhibitY + statusY * 48 + 5, -GameBuf->exhibitX + statusX * 48 + 300, -GameBuf->exhibitY + statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
 
 			Msg = board[statusX][statusY].creature->name + "  HP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) + "　 Lv." + to_string(board[statusX][statusY].creature->levelUp) + "\n素早さ:" + to_string(board[statusX][statusY].creature->speed) + "  攻撃:" + (to_string(board[statusX][statusY].creature->attackPower)) + "  防御:" + to_string(board[statusX][statusY].creature->defensePower);
 
-			DrawString(statusX * 48 + 42, statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
+			DrawString(-GameBuf->exhibitX + statusX * 48 + 42, -GameBuf->exhibitY + statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
 
 
 		}

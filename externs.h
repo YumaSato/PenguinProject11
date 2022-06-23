@@ -45,6 +45,8 @@ extern int HandleBoard;
 extern int hHP;
 extern int HandleCastle;
 extern int handle[3][9][8];
+extern int handleField[10];
+
 extern int handleMusic;
 
 //extern Grid board[FIELDSIZE][FIELDSIZE];//‚»‚Ìƒ}ƒX‚É‰½‚ª‚¢‚é‚©
