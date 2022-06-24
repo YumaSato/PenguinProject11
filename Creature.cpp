@@ -335,7 +335,7 @@ void Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChar
 
 		}
 		actionMsg = name + msg1 + msg2 + msg3;
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 
 		board[checkX][checkY].creature->DeleteCreature();
 		board[checkX][checkY].creature = NULL;

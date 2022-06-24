@@ -189,7 +189,7 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0) || board[castleX][castleY].state == VACANT) {
 			mainMsg = "ゲームオーバー";
 			actionMsg = "Escを押すと、ゲームを終了します。";
-			exhibitScreen(0, 0, FALSE, board, handledCharacters);
+			exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
 			WaitKey();
 			while (1) {
 				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -209,7 +209,7 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 			return 0;
 		}
 		turnNum += 1;
-		exhibitScreen(0, 0, FALSE, board, handledCharacters);
+		exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
 		
 
 	}
@@ -223,13 +223,13 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 int  BattleMode_GameManager::GameClear() {
 	mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
 	actionMsg = "戦わされた子ペンギンの数:" + std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
-	exhibitScreen(0, 0, FALSE, board, handledCharacters);
+	exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
 	WaitKey();
 	if (ending() == FALSE) {
 		return FALSE;
 	}
 
-	exhibitScreen(0, 0, FALSE, board, handledCharacters);
+	exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
 	WaitKey();
 
 }
@@ -238,7 +238,7 @@ int  BattleMode_GameManager::GameOver() {
 
 	mainMsg = "ゲームオーバー";
 	actionMsg = "Escを押すと、ゲームを終了します。";
-	exhibitScreen(0, 0, FALSE, board, handledCharacters);
+	exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
 	WaitKey();
 	while (1) {
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
@@ -356,17 +356,17 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 			if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 				return 0;
 			}
-			exhibitScreen(markX, markY, TRUE, board, handledCharacters);
+			exhibitScreen(markX, markY, TRUE, FALSE, board, handledCharacters);
 			mouse = NULL;
 			xClick = NULL;
 			yClick = NULL;
-			if (CheckHitKey(KEY_INPUT_RETURN) == FALSE) {
-				pushingKey = FALSE;
+			if (CheckHitKey(KEY_INPUT_1) == FALSE && CheckHitKey(KEY_INPUT_2) == FALSE && CheckHitKey(KEY_INPUT_3) == FALSE && CheckHitKey(KEY_INPUT_4) == FALSE && CheckHitKey(KEY_INPUT_5) == FALSE && CheckHitKey(KEY_INPUT_6) == FALSE && CheckHitKey(KEY_INPUT_ESCAPE) == FALSE && CheckHitKey(KEY_INPUT_RETURN) == FALSE && CheckHitKey(KEY_INPUT_SPACE) == FALSE) {
+				pushingKey = 0;
 			}
 
 			ScreenMove(markX,markY);
 			DrawBox(FIELDSIZE * SQUARESIZE + 120, 700, FIELDSIZE * SQUARESIZE + 320, 785, GetColor(30, 233, 233), TRUE);
-			DrawString(FIELDSIZE * SQUARESIZE + 170, 720, "次へ進む\n(Enter)",GetColor(20,0,40));
+			DrawString(FIELDSIZE * SQUARESIZE + 170, 720, "次へ進む\n(SPACE)",GetColor(20,0,40));
 
 			//nextFlag = GetClickPlace(&xClick, &yClick);
 			//actionMsg = "afew=" + std::to_string(nextFlag);
@@ -379,7 +379,7 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 				}
 				
 			}
-			if (CheckHitKey(KEY_INPUT_RETURN) == TRUE && pushingKey == FALSE) {//現在の押下状態がFALSEで、いまEnterが押された場合
+			if (CheckHitKey(KEY_INPUT_SPACE) == TRUE && pushingKey == FALSE) {//現在の押下状態がFALSEで、いまEnterが押された場合
 				pushingKey = 1;
 				return 1;
 			}
@@ -399,7 +399,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 			if (GameBuf->exhibitY < 0) {
 				GameBuf->exhibitY = 0;
 			}
-			exhibitScreen(markX,markY, TRUE, board, handledCharacters);
+			exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
 			//WaitTimer(10);
 
 		}
@@ -411,7 +411,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 				GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE) * 48;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
 			}
 
-			exhibitScreen(markX,markY, TRUE, board, handledCharacters);
+			exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
 			//WaitTimer(10);
 		}
 	}
@@ -421,7 +421,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 			if (GameBuf->exhibitX < 0) {
 				GameBuf->exhibitX = 0;
 			}
-			exhibitScreen(markX,markY, TRUE, board, handledCharacters);
+			exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
 			//WaitTimer(10);
 
 		}
@@ -432,7 +432,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 			if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
 				GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE) * 48;
 			}
-			exhibitScreen(markX, markY, TRUE, board, handledCharacters);
+			exhibitScreen(markX, markY, TRUE, FALSE, board, handledCharacters);
 			//WaitTimer(10);
 		}
 	}

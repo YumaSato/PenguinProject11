@@ -11,7 +11,7 @@ using std::string;
 Character::Character() : Creature() {}
 
 int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
-	string msg = "‚Í‰½‚·‚é?\n\n©•ª‚ğ¶ƒNƒŠƒbƒN:s“®‚ğ‘I‘ğ\n1:•à‚­ 2:Y—‘ 3:›z‰» 4:UŒ‚ 5:‰Ÿ‚· 6:ƒpƒX\nƒLƒƒƒ‰ƒNƒ^‚ğ¶ƒNƒŠƒbƒN:ó‘Ô‚ğ•\¦\nWASDƒL[:‹“_ˆÚ“®\n\n—×‚Ìƒ}ƒX‚ğ‰EƒNƒŠƒbƒN(\šƒL[):Œü‚«•ÏX\n\n\n\n\nƒXƒy[ƒXƒL[:ƒ‹[ƒ‹‚ğ•\¦";
+	string msg = "‚Í‰½‚·‚é?\n\n©•ª‚ğ¶ƒNƒŠƒbƒN:s“®‚ğ‘I‘ğ\n1:•à‚­ 2:Y—‘ 3:›z‰» 4:UŒ‚ 5:‰Ÿ‚· 6:ƒpƒX\nƒLƒƒƒ‰ƒNƒ^‚ğ¶ƒNƒŠƒbƒN:ó‘Ô‚ğ•\¦\nWASDƒL[:‹“_ˆÚ“®\n\n—×‚Ìƒ}ƒX‚ğ‰EƒNƒŠƒbƒN(\šƒL[):Œü‚«•ÏX\n\n\n\n\nE:ƒ‹[ƒ‹‚ğ•\¦";
 	int xClick = 0;
 	int yClick = 0;
 	int XBuf = -49;//ƒXƒe[ƒ^ƒX•\¦‚ğs‚¤Û‚ÉA¡ƒNƒŠƒbƒN‚µ‚½‚í‚¯‚¶‚á‚È‚¢‚¯‚ÇƒXƒe[ƒ^ƒX•\¦ó‘Ô‚Æ‚µ‚Ä‘±‚µ‚Ä‚¢‚éƒ}ƒX‚ÌÀ•W‚ğ•\‚·B
@@ -34,21 +34,12 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 	pushingKey = 1;
 
 	mainMsg = name + msg;
-	exhibitScreen(x, y, TRUE, board, handledCharacters);
+	exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 	//WaitKey();
 
 	while (1) {
 		if (ProcessMessage() != 0) { //ƒEƒBƒ“ƒhƒE‚Ì•Â‚¶‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚é‚Æƒ‹[ƒv‚ğ”²‚¯‚é
 			return FALSE;
-		}
-
-		if (ruleExhibit == TRUE) {
-			exhibitScreen(x, y, TRUE, board, handledCharacters);
-			exhibitRule();
-			if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE || CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
-				pushingKey = 1;
-				ruleExhibit = FALSE;
-			}
 		}
 
 
@@ -74,13 +65,14 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 		if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//‰E‚à¶‚à‚Ç‚¿‚ç‚ÌƒNƒŠƒbƒN‚à‰Ÿ‚³‚ê‚Ä‚¢‚È‚©‚Á‚½‚çAŸ‚ÌƒNƒŠƒbƒN‚ğó‚¯•t‚¯‚éB
 			clicking = 0;
 		}
-		if (CheckHitKey(KEY_INPUT_1) == FALSE && CheckHitKey(KEY_INPUT_2) == FALSE && CheckHitKey(KEY_INPUT_3) == FALSE && CheckHitKey(KEY_INPUT_4) == FALSE && CheckHitKey(KEY_INPUT_5) == FALSE && CheckHitKey(KEY_INPUT_6) == FALSE && CheckHitKey(KEY_INPUT_ESCAPE) == FALSE && CheckHitKey(KEY_INPUT_RETURN) == FALSE && CheckHitKey(KEY_INPUT_SPACE) == FALSE) {
+		if (CheckHitKey(KEY_INPUT_1) == FALSE && CheckHitKey(KEY_INPUT_2) == FALSE && CheckHitKey(KEY_INPUT_3) == FALSE && CheckHitKey(KEY_INPUT_4) == FALSE && CheckHitKey(KEY_INPUT_5) == FALSE && CheckHitKey(KEY_INPUT_6) == FALSE && CheckHitKey(KEY_INPUT_ESCAPE) == FALSE && CheckHitKey(KEY_INPUT_RETURN) == FALSE && CheckHitKey(KEY_INPUT_SPACE) == FALSE && CheckHitKey(KEY_INPUT_E) == FALSE) {
 			pushingKey = 0;
 		}
 
 
 		if ((mouse & MOUSE_INPUT_RIGHT)&& clicking == 0) {//‰EƒNƒŠƒbƒN‚³‚ê‚½‚ç
 			clicking = 1;
+			//ruleExhibit = FALSE;
 			GetMousePoint(&xClick, &yClick);
 
 		/*if (GetClickPlace(&xClick, &yClick) == 2) {*/
@@ -95,7 +87,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 			dy = yClick - y;
 			if ((dx >= -1 && dx <= 1) && (dy >= -1 && dy <= 1) && (dx != 0 || dy != 0)) {//©•ª‚Ì—×‚Ìƒ}ƒX‚Ìã‚Éƒ}ƒEƒXƒ|ƒCƒ“ƒ^‚ª‚ ‚éê‡
 				SETdirection(dx, dy);
-				exhibitScreen(x, y, TRUE, board, handledCharacters);//‚»‚Ì•ûŒü‚ğŒü‚­B
+				exhibitScreen(x, y, TRUE, ruleExhibit ,board, handledCharacters);//‚»‚Ì•ûŒü‚ğŒü‚­B
 
 			}
 		}
@@ -112,6 +104,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 		if ((mouse & MOUSE_INPUT_LEFT) && clicking == 0) {//¶ƒNƒŠƒbƒN‚ªs‚í‚ê‚½Û‚Ìˆ—
 			clicking = 1;
+			//ruleExhibit = FALSE;
 			GetMousePoint(&xClick, &yClick);
 		
 
@@ -180,7 +173,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 					exhibitOrNot = FALSE;
 					XBuf = -1;
 					YBuf = -1;
-					exhibitScreen(x, y, TRUE, board, handledCharacters);
+					exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 				}
 
 				if (board[xClick][yClick].creature != NULL) {//ƒLƒƒƒ‰‚ª‚¢‚éêŠ‚ğƒNƒŠƒbƒN‚µ‚½Û
@@ -190,7 +183,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 							exhibitOrNot = FALSE;
 							XBuf = -1;
 							YBuf = -1;
-							exhibitScreen(x, y, TRUE, board, handledCharacters);
+							exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 						}
 					}
 					else {
@@ -222,7 +215,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 				exhibitStatus(x, y, XBuf, YBuf, TRUE, color, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (board[XBuf][YBuf].creature == NULL) {
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
+				exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 			}
 		}
 
@@ -233,55 +226,36 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
 			exhibitOrNot = FALSE;
-			exhibitScreen(x, y, TRUE, board, handledCharacters);
 		}
+
+
 		if (CheckHitKey(KEY_INPUT_RIGHT) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:‰E
-			//directionX = 1;
-			//directionY = 0;
 			SETdirection(1, 0);
 			if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:‰Eã
-				//directionY = -1;
 				SETdirection(1, -1);
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				WaitTimer(200);
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:‰E‰º
-				//directionY = 1;
 				SETdirection(1, 1);
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				WaitTimer(200);
 			}
-			exhibitScreen(x, y, TRUE, board, handledCharacters);
 		}
 		else if (CheckHitKey(KEY_INPUT_LEFT) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:¶
-			//directionX = -1;
-			//directionY = 0;
 			SETdirection(-1, 0);
 			if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:¶ã
-				//directionY = -1;
 				SETdirection(-1, -1);
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				WaitTimer(200);
 			}
 			if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:¶‰º
-				//directionY = 1;
 				SETdirection(-1, 1);
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
 				WaitTimer(200);
 			}
-			exhibitScreen(x, y, TRUE, board, handledCharacters);
 		}
 		else if (CheckHitKey(KEY_INPUT_DOWN) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:‰º
-			//directionX = 0;
-			//directionY = 1;
 			SETdirection(0, 1);
-			exhibitScreen(x, y, TRUE, board, handledCharacters);
 		}
 		else if (CheckHitKey(KEY_INPUT_UP) == TRUE) {//Œü‚«‚¾‚¯•Ï‚í‚é:ã
-			//directionX = 0;
-			//directionY = -1;
 			SETdirection(0, -1);
-			exhibitScreen(x, y, TRUE, board, handledCharacters);
 		}
 
 
@@ -294,67 +268,12 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
-		//if (CheckHitKey(KEY_INPUT_W) == TRUE) {//WASD‚Å‹“_ˆÚ“®
-		//	if (GameBuf->exhibitY >0) {
-		//		GameBuf->exhibitY -= 4;
-		//		if (GameBuf->exhibitY < 0) {
-		//			GameBuf->exhibitY = 0;
-		//		}
-		//		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		//		//WaitTimer(10);
-		//		
-		//	}
-		//}
-		//if (CheckHitKey(KEY_INPUT_S) == TRUE) {
-		//	if (GameBuf->exhibitY< (GameBuf->sizeY - FIELDSIZE)*SQUARESIZE) {
-		//		GameBuf->exhibitY += 4;
-		//		if (GameBuf->exhibitY / 48 + FIELDSIZE >= GameBuf->sizeY) {//•`‰æ’†S‚ª”í‚Á‚Ä‚¢‚éƒ}ƒX{•`‰æƒ}ƒX”{‚P(•`‰æ‰º’[ƒ}ƒX)‚ªA“ñŸŒ³”z—ñƒTƒCƒY‚ğ’´‚¦‚Ä‚¢‚½‚ç
-		//			GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE ) * 48;//•`‰æƒ}ƒX‚Ì¶ã‚ğ¦‚·exhibitXY‚ª”Õ–Êã‚É‚¨‚¯‚éƒ}ƒCƒiƒX‚âA•`‰æƒ}ƒX‚Ì‰E‰º‚ª”Õ–ÊƒTƒCƒY‚ğ‚Í‚İo‚éê‡A‚Í‚İo‚È‚¢êŠ‚ÉÄİ’èB
-		//		}
-		//		
-		//		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		//		//WaitTimer(10);
-		//	}
-		//}
-		//if (CheckHitKey(KEY_INPUT_A) == TRUE) {//WASD‚Å‹“_ˆÚ“®
-		//	if (GameBuf->exhibitX > 0) {
-		//		GameBuf->exhibitX -= 4;
-		//		if (GameBuf->exhibitX < 0) {
-		//			GameBuf->exhibitX = 0;
-		//		}
-		//		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		//		//WaitTimer(10);
-
-		//	}
-		//}
-		//if (CheckHitKey(KEY_INPUT_D) == TRUE) {
-		//	if (GameBuf->exhibitX< (GameBuf->sizeX - FIELDSIZE)*SQUARESIZE) {
-		//		GameBuf->exhibitX += 4;
-		//		if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
-		//			GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE ) * 48;
-		//		}
-		//		exhibitScreen(x, y, TRUE, board, handledCharacters);
-		//		//WaitTimer(10);
-		//	}
-		//}
-		//
-		//
-		
-		
-
-
-
-
-		//board[x][y].creature->directionX = this->directionX;
-		//board[x][y].creature->directionY = this->directionY;
-
-
-
 		if (pushingKey == 0) {
 
 
 			if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 				pushingKey = 1;
+				ruleExhibit = FALSE;
 				if (walk(board, handledCharacters) == TRUE) {
 					break;//1‚ª•Ô‚Á‚Ä‚­‚éA‚Â‚Ü‚è¬Œ÷‚·‚ê‚Îƒ‹[ƒv”²‚¯‚Åƒ^[ƒ“I—¹
 				}
@@ -388,19 +307,24 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 				break;
 			}
 
-			if (CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
+			if (CheckHitKey(KEY_INPUT_E) == TRUE) {
 				pushingKey = 1;
-				ruleExhibit = TRUE;
-				exhibitRule();
+				if (ruleExhibit == FALSE) {
+					ruleExhibit = TRUE;
+				}
+				else {
+					ruleExhibit = FALSE;
+				}
 			}
 
 			if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
 				pushingKey = 1;
+				ruleExhibit = FALSE;
 				while (1) {
 
 					mainMsg = "–{“–‚ÉƒQ[ƒ€‚ğI—¹‚µ‚Ä‚æ‚ë‚µ‚¢‚Å‚·‚©H \nEnterƒL[:Yes 0:No";
 					ClearDrawScreen();
-					exhibitScreen(x, y, TRUE, board, handledCharacters);
+					exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 
 
 
@@ -409,6 +333,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 						return 2;
 					}
 					if (CheckHitKey(KEY_INPUT_0) == TRUE || CheckHitKey(KEY_INPUT_SPACE) == TRUE) {
+						mainMsg = name + "‚Í‰½‚·‚é?\n\n©•ª‚ğ¶ƒNƒŠƒbƒN:s“®‚ğ‘I‘ğ\n1:•à‚­ 2:Y—‘ 3:›z‰» 4:UŒ‚ 5:‰Ÿ‚· 6:ƒpƒX\nƒLƒƒƒ‰ƒNƒ^‚ğ¶ƒNƒŠƒbƒN:ó‘Ô‚ğ•\¦\nWASDƒL[:‹“_ˆÚ“®\n\n—×‚Ìƒ}ƒX‚ğ‰EƒNƒŠƒbƒN(\šƒL[):Œü‚«•ÏX\n\n\n\n\nE:ƒ‹[ƒ‹‚ğ•\¦";
 						break;
 					}
 					WaitTimer(10);
@@ -416,7 +341,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 			}
 		}
 
-
+		exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 
 		WaitTimer(10);
 		ScreenFlip(); //— ‰æ–Ê‚ğ•\‰æ–Ê‚É”½‰f
@@ -529,7 +454,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 
 
 	while (distance < 3) {//Še•às‚Ì“ü—Í‘Ò‹@
-		exhibitScreen(x, y, TRUE, board, handledCharacters);
+		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 		checkX = 0;
 		checkY = 0;
 		mouse = 0;
@@ -551,7 +476,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 		//	}
 		//}
 
-		exhibitScreen(x, y, TRUE, board, handledCharacters);//•à‚¯‚éƒ}ƒX‚Í•\¦F•ÏXB
+		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);//•à‚¯‚éƒ}ƒX‚Í•\¦F•ÏXB
 		for (int iix = -1; iix <= 1; iix++) {
 			for (int iiy = -1; iiy <= 1; iiy++) {
 				if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
@@ -622,7 +547,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 					if (clicking == 0) {
 						clicking = 1;
 
-						exhibitScreen(x, y, TRUE, board, handledCharacters);//•às‰Â”\ƒ}ƒX•\¦‚ğÁ‚·B
+						exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);//•às‰Â”\ƒ}ƒX•\¦‚ğÁ‚·B
 						WaitTimer(130);
 						if (distance == 0) {
 							return FALSE;//0•à–Ú‚È‚çs“®‚Í‚È‚©‚Á‚½‚±‚Æ‚É‚È‚é
@@ -638,7 +563,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 			if (mouse & MOUSE_INPUT_RIGHT) {//‰EƒNƒŠƒbƒN‚³‚ê‚ÄA‚Ü‚¾•à‚¢‚Ä‚¢‚È‚¯‚ê‚Î•à‚«‚ğƒLƒƒƒ“ƒZƒ‹‚·‚é‚Ì‚É¬Œ÷B
 				if (distance == 0) {
 					return FALSE;
-					exhibitScreen(x, y, TRUE, board, handledCharacters);
+					exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 				}
 			}
 
@@ -740,7 +665,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {//1‚ğ‰Ÿ‚µ‚½‚ç•àsI—¹B
 			if (distance == 0) {
 				WaitTimer(100);
-				exhibitScreen(x, y, TRUE, board, handledCharacters);
+				exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 				return FALSE;
 			}
 			else {
@@ -774,7 +699,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 	return TRUE;
 	actionMsg = "•à‚«I‚í‚Á‚½I";
 
-	exhibitScreen(x, y, TRUE, board, handledCharacters);
+	exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 
 
 }

@@ -61,7 +61,7 @@ void exhibitStatusMsg(Emperor* handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ
 
 
 
-void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* handledCharacters) {//ƒyƒ“ƒMƒ“‚ð•`‰æiƒXƒe[ƒ^ƒX‚ÆŒü‚«‚©‚çƒyƒ“ƒMƒ“‚Ì“KØ‚È‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ð“üŽè‚µŠi”[‚µ‚Ä‚©‚ç•`‰æj
+void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid** board, Emperor* handledCharacters) {//ƒyƒ“ƒMƒ“‚ð•`‰æiƒXƒe[ƒ^ƒX‚ÆŒü‚«‚©‚çƒyƒ“ƒMƒ“‚Ì“KØ‚È‰æ‘œ‚Ìƒnƒ“ƒhƒ‹‚ð“üŽè‚µŠi”[‚µ‚Ä‚©‚ç•`‰æj
 	int h;//ƒnƒ“ƒhƒ‹Ši”[—p
 	string turn = "";
 	bool HPexhibitOrNot;
@@ -196,6 +196,9 @@ void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* 
 
 	DrawString(FIELDSIZE * SQUARESIZE + 320, FIELDSIZE * SQUARESIZE - 20, std::to_string(GameBuf->exhibitX).c_str(), GetColor(10, 20, 100));
 	DrawString(FIELDSIZE * SQUARESIZE + 355, FIELDSIZE * SQUARESIZE - 20, std::to_string(GameBuf->exhibitY).c_str(), GetColor(10, 20, 100));
+	if (ruleExhibit == TRUE) {
+		exhibitRule();
+	}
 }
 
 
@@ -237,7 +240,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 		if (damaging < damageHP) {
 			damaging += 1;
 		}
-		exhibitScreen(markX, markY, TRUE, board, handledCharacters);
+		exhibitScreen(markX, markY, TRUE, FALSE, board, handledCharacters);
 		DrawGraph(-GameBuf->exhibitX + damageX * SQUARESIZE + 5, -GameBuf->exhibitY + damageY * SQUARESIZE + 29, hHP, TRUE);
 		DrawBox(-GameBuf->exhibitX + damageX * SQUARESIZE + 16, -GameBuf->exhibitY + damageY * SQUARESIZE + 31, -GameBuf->exhibitX + damageX * SQUARESIZE + 16 + (substitute.HP - damaging) / 2, -GameBuf->exhibitY + damageY * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
 
@@ -261,7 +264,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
-	exhibitScreen(markX, markY, attention, board, handledCharacters);
+	exhibitScreen(markX, markY, attention,FALSE, board, handledCharacters);
 	string Msg = "";
 	string Bulls = "";
 
@@ -350,7 +353,7 @@ void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid** b
 	board[kickX + dx][kickY + dy].creature = NULL;
 	for (int i = 0; i < distance * SQUARESIZE / 4; i = i++) {
 
-		exhibitScreen(kickX, kickY, TRUE, board, handledCharacters);
+		exhibitScreen(kickX, kickY, TRUE, FALSE, board, handledCharacters);
 		DrawGraph(-GameBuf->exhibitX + (kickX + dx) * SQUARESIZE + (i * 4 * dx), -GameBuf->exhibitY + (kickY + dy) * SQUARESIZE + (i * 4 * dy), handleEgg, TRUE);
 		WaitTimer(2);
 		ScreenFlip(); //— ‰æ–Ê‚ð•\‰æ–Ê‚É”½‰f

@@ -65,7 +65,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 
 
 
-	exhibitScreen(x, y, TRUE, board, handledCharacters);
+	exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 	numSpeed = (to_string(speed));
 	numX = (to_string(x));
 	numY = (to_string(y));

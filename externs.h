@@ -59,7 +59,7 @@ extern BattleMode_GameManager* GameBuf;
 extern int randomSide;
 
 
-void exhibitScreen(int markX, int markY, bool attention, Grid** board, Emperor* handledCharacters);
+void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid** board, Emperor* handledCharacters);
 void exhibitStatusMsg(Emperor* handledCharacters);
 void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid** board, Emperor* handledCharacters);
 void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
