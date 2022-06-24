@@ -365,7 +365,7 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 			}
 
 			ScreenMove(markX,markY);
-			DrawBox(FIELDSIZE * SQUARESIZE + 120, 700, FIELDSIZE * SQUARESIZE + 320, 785, GetColor(30, 233, 233), TRUE);
+			DrawBox(FIELDSIZE * SQUARESIZE + 120, 700, FIELDSIZE * SQUARESIZE + 320, 785, GetColor(255, 183, 0), TRUE);
 			DrawString(FIELDSIZE * SQUARESIZE + 170, 720, "éüÇ÷êiÇﬁ\n(SPACE)",GetColor(20,0,40));
 
 			//nextFlag = GetClickPlace(&xClick, &yClick);

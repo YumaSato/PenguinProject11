@@ -95,7 +95,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 
-
+		ClearDrawScreen();
 		DrawGraph(0, 0, handleTitle, TRUE);
 		DrawString(960, 320, "モードを選択してください。\n\n\n1:通常モード(Normal)\n60ターン生き残れ！\n\n\n2:難関モード(Lunatic)\n100ターン生き残れ！\n\n\nEsc:やめる\n\n\n\n\n\n\n\n\n\n\n\n            VERSION:2", GetColor(titleStringColor, 245, 255));
 

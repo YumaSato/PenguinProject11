@@ -196,6 +196,11 @@ void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid*
 
 	DrawString(FIELDSIZE * SQUARESIZE + 320, FIELDSIZE * SQUARESIZE - 20, std::to_string(GameBuf->exhibitX).c_str(), GetColor(10, 20, 100));
 	DrawString(FIELDSIZE * SQUARESIZE + 355, FIELDSIZE * SQUARESIZE - 20, std::to_string(GameBuf->exhibitY).c_str(), GetColor(10, 20, 100));
+
+	DrawBox(FIELDSIZE* SQUARESIZE + 120, 700, FIELDSIZE* SQUARESIZE + 320, 785, GetColor(90, 70, 0), TRUE);
+	DrawString(FIELDSIZE* SQUARESIZE + 170, 720, "次へ進む\n(SPACE)", GetColor(20, 0, 40));
+
+
 	if (ruleExhibit == TRUE) {
 		exhibitRule();
 	}
@@ -368,14 +373,14 @@ void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid** b
 
 void exhibitRule() {
 
-	string rule1 = "ペンギンロボットバトル・ルールブック\n\n 皇帝ペンギンをを動かして、城を守れ！\n 敵に城を壊されたらゲームオーバー！\n\nターンについて：\n  盤面上の全てのキャラクタは、素早さ順に行動するぞ！";
+	string rule1 = "ペンギンロボットバトル・ルールブック\n\n 皇帝ペンギンをを動かして、城を守れ！\n 敵に城を壊されたらゲームオーバー！\n 赤皇帝と青皇帝が協力し合ってクローンペンギンを増やし、守りを固めろ！\n 卵を産んで孵化させ、クローンを作ろう。\n クローンは向いている方向に１度だけ卵を産んで、自分で孵化させるよ。\n クローンは敵に遭遇すると自動で戦ってくれるから、沢山増殖させよう！\n\n\nターンについて: 盤面上の全てのキャラクタは、素早さ順に行動するぞ！";
 	string rule2 = "行動について: \n  歩く:\n　　皇帝ペンギンは3歩まで歩ける。\n　産卵：\n　　向いている方向にクローンペンギンの卵を産む。";
 	string rule3 = "　孵化：\n　　向いている方向にいる卵を孵化させる。\n　　クローンは自分と同じ色の卵だけ孵化させる。\n　　生まれた子は孵化させたペンギンと同じ方向を向く。";
-	string rule4 = "\n　攻撃：\n　　向いている方向にいるキャラクタにダメージを与える。\n　蹴る：\n　　卵を蹴るとペンギンにぶつかるまで真っすぐ転がる。\n　　クローンペンギンを蹴ると、蹴った側と同じ方向を向く。";
+	string rule4 = "\n　攻撃：\n　　向いている方向にいるキャラクタにダメージを与える。\n　蹴る：\n　　卵を蹴るとペンギンにぶつかるまで真っすぐ転がる。\n　　クローンペンギンを押すと、押した皇帝と同じ方向を向く。";
 	string rule5 = "クローンペンギンについて:\n  クローンは歩けない。産卵と攻撃と孵化を行う。\n　クローンペンギンには、「卵・若者・老人」の3つの状態がある。\n　　若者：卵を産む前の状態。向いている方向に産卵しようとする。\n　　老人：卵を産むと老人になる。\n　　　　　周囲に敵がいれば攻撃し、卵があれば孵化させる。\n\n\n\nEsc:ルールを閉じる";
 
 
-	DrawBox(550, 30, 1150, 1150, GetColor(173, 255, 47), TRUE);
+	DrawBox(550, 30, 1150, 1150, GetColor(236, 232, 248), TRUE);
 	DrawBox(550, 30, 1150, 1150, GetColor(130, 0, 0), FALSE);
 	DrawString(560, 50, rule1.c_str(), GetColor(0, 40, 55));
 	DrawString(560, 250, rule2.c_str(), GetColor(0, 40, 55));
