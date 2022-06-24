@@ -91,6 +91,7 @@ public:
 	bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 	bool specialMovement2( Grid** board, Emperor* handledCharacters);
 	bool attack( Grid** board, Emperor* handledCharacters);
+	
 	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 };
 
@@ -135,6 +136,7 @@ public:
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters)override;
 	bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 	bool specialMovement2( Grid** board, Emperor* handledCharacters);
+	bool kick(Grid** board, Emperor* handledCharacters);
 	int GetExpPoint(int expP);
 };
 
@@ -192,6 +194,8 @@ public:
 	int TurnFinal();
 	int ScreenMove(int markX,int markY);
 	int GoNext(int markX, int markY);
+	int EnemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
+	int YieldEnemy(Status enemyType, Team enemyTeam, int dx, int dy, int cx, int cy, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 
 	~BattleMode_GameManager();
 

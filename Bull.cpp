@@ -71,7 +71,7 @@ void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int 
 	numY = (to_string(y));
 	mobStatusMsg = "X:" + numX + ",Y:" + numY + "Ç…ì¨ãçÇ™åªÇÍÇΩÅI";
 	actionMsg = mobStatusMsg;
-	WaitKey();
+	//WaitKey();
 }
 
 

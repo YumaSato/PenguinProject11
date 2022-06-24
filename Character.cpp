@@ -25,6 +25,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 	bool exhibitOrNot = FALSE;
 	bool exhibitMyStatusOrNot = FALSE;
 	int color = 10;
+	actionMsg = "";
 
 
 	int afew = -2;//ƒGƒ‰[‰ğŒˆ—p

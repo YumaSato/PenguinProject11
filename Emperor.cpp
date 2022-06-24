@@ -137,6 +137,113 @@ bool Emperor::specialMovement2( Grid** board, Emperor* handledCharacters) {//“Á
 	}
 }
 
+bool Emperor::kick(Grid** board, Emperor* handledCharacters) {
+	int cX = 0;
+	int cY = 0;
+	int drctnX, drctnY;
+	string s;
+
+	GETdirectionXY(&drctnX, &drctnY);
+	cX = x + drctnX;
+	cY = y + drctnY;
+
+	if (cX > 0 && cX < GameBuf->sizeX && cY > 0 && cY < GameBuf->sizeY) {
+		if (board[cX][cY].creature == NULL) {//‰Ÿ‚µ‚½ƒ}ƒX‚Ì•ûŒü‚É‰½‚à‚¢‚È‚©‚Á‚½‚çˆ—‚ğI—¹B
+			return FALSE;
+		}
+
+		if (status == EMPEROR) {
+			if (board[cX][cY].creature->status == NORMAL || board[cX][cY].creature->status == ELDER) {//‰Ÿ‚µ‚½ƒ}ƒX‚Ì•ûŒü‚É‘ål‚ª‚¢‚½‚ç
+				board[cX][cY].creature->SETdirection(drctnX, drctnY);//ƒ_ƒ[ƒW‚Í–³‚µBŒü‚«‚¾‚¯•Ï‚¦‚éB
+				/*board[cX][cY].creature->HP -= 5;
+				if (board[cX][cY].creature->HP <= 0) {
+					board[cX][cY].creature->DeleteCreature();
+				}*/
+				return TRUE;
+			}
+			if (board[cX][cY].creature->status == EGG) {
+				//exhibitScreen(x, y, TRUE);
+				//DrawString(800, 180, "kickŠJn", WHITE);
+				//WaitKey();
+				int i = 0;
+				while (1) {
+
+
+					cX = cX + drctnX;//“]‚ª‚é•ûŒü‚Ìƒ}ƒX‚ğ‚Ğ‚Æ‚Â‚Ã‚Â’²‚×‚éB
+					cY = cY + drctnY;
+
+					/*s = "";
+					s = "X:" + std::to_string(cX) + "Y:" + std::to_string(cY);
+					exhibitScreen(x, y, TRUE);
+					DrawString(800, 570, s.c_str(), WHITE);
+					WaitKey();*/
+
+					if (cX < 0 || cX >= GameBuf->sizeX || cY < 0 || cY >= GameBuf->sizeY || (cX == GameBuf->castleX && cY == GameBuf->castleY)) {//ƒ}ƒX–Ú‚Ì’[‚Á‚±‚Ü‚Å’²‚×‚½‚çA—‘‚ªÁ‚¦‚éB
+
+						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
+
+						board[x + drctnX][y + drctnY].creature->DeleteCreature();
+						board[x + drctnX][y + drctnY].creature = NULL;
+						break;
+					}
+
+					if (board[cX][cY].creature != NULL) {//“]‚ª‚é•ûŒü‚É‰½‚©‹‚½‚çƒ‹[ƒv”²‚¯B
+
+						if (board[cX][cY].creature->status == EMPEROR || board[cX][cY].creature->status == ELDER || board[cX][cY].creature->status == NORMAL) {//‘ålƒyƒ“ƒMƒ“‚ªŒ©‚Â‚©‚Á‚½‚ç
+
+							exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
+
+							board[x + drctnX][y + drctnY].creature->x = cX - drctnX;//Œ³‚Ì‹êŠ‚©‚ç“®‚­ƒyƒ“ƒMƒ“‚ğw’è‚µA‚»‚ÌXY‚ğ•ÏXB
+							board[x + drctnX][y + drctnY].creature->y = cY - drctnY;
+							board[cX - drctnX][cY - drctnY].creature = board[x + drctnX][y + drctnY].creature;//V‚µ‚¢‚Ü‚·‚É—‘ƒAƒhƒŒƒX‚ğ‘ã“üB
+							board[x + drctnX][y + drctnY].creature = NULL;//Œ³‚ÌˆÊ’u‚Ì—‘ƒAƒhƒŒƒX‚ğíœB
+
+						/*	s = "";
+							s = "NewPlace X:" + std::to_string(cX - drctnX) + "Y:" + std::to_string(cY - drctnY);
+							exhibitScreen(x, y, TRUE);
+							DrawString(800, 570, s.c_str(), WHITE);
+							WaitKey();*/
+						}
+
+
+						else if (board[cX][cY].creature->status == EGG) {//—‘‚ªŒ©‚Â‚©‚Á‚½‚ç
+
+							exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
+
+							board[cX][cY].creature->DeleteCreature();
+							board[cX][cY].creature = NULL;
+
+							board[x + drctnX][y + drctnY].creature->DeleteCreature();
+							board[x + drctnX][y + drctnY].creature = NULL;
+						}
+
+
+						else if (board[cX][cY].creature->status == BULL) {//‚±‚ÌŒx‚Í‚Ç‚¤‚¢‚¤‚±‚ÆHH
+
+							exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
+							board[x + drctnX][y + drctnY].creature->DeleteCreature();
+							board[x + drctnX][y + drctnY].creature = NULL;
+						}
+						/*s = "—‘‚ª‚Ô‚Â‚©‚Á‚½I";
+						exhibitScreen(x, y, TRUE);
+						DrawString(800, 570, s.c_str(), WHITE);
+						WaitKey();*/
+
+						break;
+
+
+					}
+					i++;
+				}
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
+
+}
+
+
 
 
 int Emperor::GetExpPoint(int expP) {
