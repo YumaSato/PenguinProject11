@@ -185,6 +185,10 @@ void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid*
 
 		}
 	}
+	DrawBox(FIELDSIZE* SQUARESIZE , 0, FIELDSIZE* SQUARESIZE + 380, FIELDSIZE* SQUARESIZE, GetColor(256, 256, 256), TRUE);
+	DrawGraph(FIELDSIZE* SQUARESIZE, 0, handleBack[0], TRUE);
+
+
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 20, mainMsg.c_str(), WHITE);
 	DrawString(FIELDSIZE * SQUARESIZE + 5, 170, actionMsg.c_str(), GetColor(255, 200, 255));
 

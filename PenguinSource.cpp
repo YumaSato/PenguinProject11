@@ -64,7 +64,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	int handleTitle;
 	int titleStringColor = 200;
 	bool colorUpOrDown = TRUE;
-	handleTitle = LoadGraph("Imgs/title.jpg");
+	//handleTitle = LoadGraph("Imgs/title.jpg");
 
 
 	int music;
@@ -96,7 +96,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 
 		ClearDrawScreen();
-		DrawGraph(0, 0, handleTitle, TRUE);
+		DrawGraph(0, 0, handleBack[1], TRUE);
 		DrawString(960, 320, "モードを選択してください。\n\n\n1:通常モード(Normal)\n60ターン生き残れ！\n\n\n2:難関モード(Lunatic)\n100ターン生き残れ！\n\n\nEsc:やめる\n\n\n\n\n\n\n\n\n\n\n\n            VERSION:2", GetColor(titleStringColor, 245, 255));
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
@@ -168,6 +168,10 @@ void handlePenguin() {//ハンドルに画像のポインタを代入
 	
 	handleField[0] = LoadGraph("Imgs/Field/grassGreen.png");
 	handleField[1] = LoadGraph("Imgs/Field/grassLight.png");
+
+	handleBack[0] = LoadGraph("Imgs/Back/Nishikita.jpg");
+	handleBack[1] = LoadGraph("Imgs/Back/title.jpg");
+
 
 
 	char tmp[50];

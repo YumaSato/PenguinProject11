@@ -45,7 +45,8 @@ extern int HandleBoard;
 extern int hHP;
 extern int HandleCastle;
 extern int handle[3][9][8];
-extern int handleField[10];
+extern int handleField[64];
+extern int handleBack[32];
 
 extern int handleMusic;
 
