@@ -136,7 +136,7 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 
 		int randDi = 0;//歩き終わってから次に行動する方向を決定する。
 		randDi = GetRand(1);
-		if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
+		if (GameBuf->castleX - x > 0 && GameBuf->castleY - y > 0 && abs(GameBuf->castleX - x) > abs(GameBuf->castleY - y)) {
 			//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より長い場合(西北西)
 			if (randDi == 0) {
 				SETdirection(EE);
@@ -145,11 +145,11 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 				SETdirection(SE);
 			}
 		}
-		if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {
+		if (GameBuf->castleX - x > 0 && GameBuf->castleY - y > 0 && abs(GameBuf->castleX - x) == abs(GameBuf->castleY - y)) {
 			//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離と同じ場合(北西)
 			SETdirection(SE);
 		}
-		if (CASTLE_X - x > 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {
+		if (GameBuf->castleX - x > 0 && GameBuf->castleY - y > 0 && abs(GameBuf->castleX - x) < abs(GameBuf->castleY - y)) {
 			//x軸距離が+(城より左)で、かつy軸距離が+(城より上)で、かつX軸の城との距離がY軸の城との距離より短い場合（北北西）
 			if (randDi == 0) {
 				SETdirection(SS);
@@ -158,12 +158,12 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 				SETdirection(SE);
 			}
 		}
-		if (CASTLE_X - x > 0 && CASTLE_Y == y) {
+		if (GameBuf->castleX - x > 0 && GameBuf->castleY == y) {
 			//x軸距離が+(城より左)で、かつy軸距離が0(城と同じ)で、かつX軸の城との距離がY軸の城との距離より長い場合（西）
 			SETdirection(EE);
 		}
 
-		if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {
+		if (GameBuf->castleX - x > 0 && GameBuf->castleY - y < 0 && abs(GameBuf->castleX - x) > abs(GameBuf->castleY - y)) {
 			//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離より長い場合（西南西）
 			if (randDi == 0) {
 				SETdirection(EE);
@@ -172,12 +172,12 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 				SETdirection(NE);
 			}
 		}
-		if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {
+		if (GameBuf->castleX - x > 0 && GameBuf->castleY - y < 0 && abs(GameBuf->castleX - x) == abs(GameBuf->castleY - y)) {
 			//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離が同じ場合（南西）
 			SETdirection(NE);
 		}
 
-		if (CASTLE_X - x > 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {
+		if (GameBuf->castleX - x > 0 && GameBuf->castleY - y < 0 && abs(GameBuf->castleX - x) < abs(GameBuf->castleY - y)) {
 			//x軸距離が+(城より左)で、かつy軸距離が-(城より下)で、かつX軸の城との距離がY軸の城との距離より短い場合（南南西）
 			if (randDi == 0) {
 				SETdirection(NN);
@@ -188,7 +188,7 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 		}
 
 
-		if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {//東北東
+		if (GameBuf->castleX - x < 0 && GameBuf->castleY - y > 0 && abs(GameBuf->castleX - x) > abs(GameBuf->castleY - y)) {//東北東
 			if (randDi == 0) {
 				SETdirection(WW);
 			}
@@ -196,10 +196,10 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 				SETdirection(SW);
 			}
 		}
-		if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {//北東
+		if (GameBuf->castleX - x < 0 && GameBuf->castleY - y > 0 && abs(GameBuf->castleX - x) == abs(GameBuf->castleY - y)) {//北東
 			SETdirection(SW);
 		}
-		if (CASTLE_X - x < 0 && CASTLE_Y - y > 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {//北北東
+		if (GameBuf->castleX - x < 0 && GameBuf->castleY - y > 0 && abs(GameBuf->castleX - x) < abs(GameBuf->castleY - y)) {//北北東
 			if (randDi == 0) {
 				SETdirection(SS);
 			}
@@ -207,11 +207,11 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 				SETdirection(SW);
 			}
 		}
-		if (CASTLE_X - x < 0 && CASTLE_Y == y) {//東
+		if (GameBuf->castleX - x < 0 && GameBuf->castleY == y) {//東
 			SETdirection(WW);
 		}
 
-		if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) > abs(CASTLE_Y - y)) {//東南東
+		if (GameBuf->castleX - x < 0 && GameBuf->castleY - y < 0 && abs(GameBuf->castleX - x) > abs(GameBuf->castleY - y)) {//東南東
 			if (randDi == 0) {
 				SETdirection(WW);
 			}
@@ -219,10 +219,10 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 				SETdirection(NW);
 			}
 		}
-		if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) == abs(CASTLE_Y - y)) {//南東
+		if (GameBuf->castleX - x < 0 && GameBuf->castleY - y < 0 && abs(GameBuf->castleX - x) == abs(GameBuf->castleY - y)) {//南東
 			SETdirection(NW);
 		}
-		if (CASTLE_X - x < 0 && CASTLE_Y - y < 0 && abs(CASTLE_X - x) < abs(CASTLE_Y - y)) {//南南東
+		if (GameBuf->castleX - x < 0 && GameBuf->castleY - y < 0 && abs(GameBuf->castleX - x) < abs(GameBuf->castleY - y)) {//南南東
 			if (randDi == 0) {
 				SETdirection(NN);
 			}
@@ -231,10 +231,10 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 			}
 		}
 
-		if (CASTLE_X == x && CASTLE_Y - y < 0) {//南
+		if (GameBuf->castleX == x && GameBuf->castleY - y < 0) {//南
 			SETdirection(NN);
 		}
-		if (CASTLE_X == x && CASTLE_Y - y > 0) {//北
+		if (GameBuf->castleX == x && GameBuf->castleY - y > 0) {//北
 			SETdirection(SS);
 		}
 

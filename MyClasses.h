@@ -163,7 +163,7 @@ class Trap {
 
 class BattleMode_GameManager {
 public:
-	BattleMode_GameManager(int xSize, int ySize);
+	BattleMode_GameManager(int stageLevel, int xSize, int ySize);
 
 	int BattleMode(int stageLevel);
 	//const int FIELDSIZE;
@@ -173,11 +173,14 @@ public:
 
 	Emperor handledCharacters[CHARACTERNUM];//操作可能なキャラクタのアドレスを格納する変数。配列インデックスは、キャラ番号。
 
-	int sizeX;
+	int sizeX;//ステージ幅
 	int sizeY;
 
-	int exhibitX;
+	int exhibitX;//表示基準点。この座標が表示ゾーン17*17の左上。
 	int exhibitY;
+
+	int castleX;//この座標に向かって牛がすすむ。
+	int castleY;
 
 	Grid** board;
 	Emperor* Emperor1;

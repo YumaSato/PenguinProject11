@@ -20,8 +20,8 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 
 	if (ParentTeam == red) {//Ôƒ`[ƒ€(=1)‚Ìc’é‚Å‚ ‚ê‚ÎÔc’é‚ð”Õ–Êã•”‚ÉƒXƒ|[ƒ“
 		this->name = "Ôc’é";
-		this->x = CASTLE_X - 1;
-		this->y = CASTLE_Y - 1;
+		this->x = GameBuf->castleX - 1;
+		this->y = GameBuf->castleY - 1;
 		//this->directionX = 0;
 		//this->directionY = -1;
 		SETdirection(0, -1);
@@ -45,8 +45,8 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 
 	if (ParentTeam == blue) {//Âƒ`[ƒ€(=2)‚Ìc’é‚Å‚ ‚ê‚ÎÂc’é‚ð”Õ–Ê‰º•”‚ÉƒXƒ|[ƒ“
 		this->name = "Âc’é";
-		this->x = CASTLE_X + 1;
-		this->y = CASTLE_Y + 1;
+		this->x = GameBuf->castleX + 1;
+		this->y = GameBuf->castleY + 1;
 		//this->directionX = 0;
 		//this->directionY = 1;
 		SETdirection(0, 1);

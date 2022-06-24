@@ -102,7 +102,7 @@ bool Creature::kick( Grid** board, Emperor* handledCharacters) {
 					DrawString(800, 570, s.c_str(), WHITE);
 					WaitKey();*/
 
-					if (cX < 0 || cX >= GameBuf->sizeX || cY < 0 || cY >= GameBuf->sizeY || (cX == CASTLE_X && cY == CASTLE_Y)) {//マス目の端っこまで調べたら、卵が消える。
+					if (cX < 0 || cX >= GameBuf->sizeX || cY < 0 || cY >= GameBuf->sizeY || (cX == GameBuf->castleX && cY == GameBuf->castleY)) {//マス目の端っこまで調べたら、卵が消える。
 
 						exhibitRolling(x, y, drctnX, drctnY, i, board, handledCharacters);
 

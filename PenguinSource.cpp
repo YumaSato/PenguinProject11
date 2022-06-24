@@ -47,7 +47,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetGraphMode(FIELDSIZE * 48 + 384, FIELDSIZE * 48, 32); // 画面サイズは最大の1024, 900 にしておく
 	SetWindowSize(FIELDSIZE * 48 + 384, FIELDSIZE * 48);// 最初は 1024, 900 にしておく
 
-
+	
 
 
 	if (DxLib_Init() == -1) {
@@ -101,13 +101,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			pushingKey = 1;
-			BattleMode_GameManager* battle0 = new BattleMode_GameManager(20, 25);
+			BattleMode_GameManager* battle0 = new BattleMode_GameManager(0,20, 25);
 			game = battle0->BattleMode(0);//FALSEだとゲーム終了。
 			delete battle0;
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
 			pushingKey = 1;
-			BattleMode_GameManager* battle1 = new BattleMode_GameManager(17, 17);
+			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1,17, 17);
 			game = battle1->BattleMode(1);//FALSEだとゲーム終了。
 			delete battle1;
 		}

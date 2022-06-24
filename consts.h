@@ -47,8 +47,8 @@ constexpr int BUFFER = 256;
 
 constexpr int SQUARESIZE = 48;
 
-const int CASTLE_X = 8;
-const int CASTLE_Y = 8;
+//const int CASTLE_X = 8;
+//const int CASTLE_Y = 8;
 
 constexpr int CHARACTERNUM = 2;//操作可能なキャラクタ数
 
