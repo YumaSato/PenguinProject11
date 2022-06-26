@@ -11,7 +11,7 @@ using std::string;
 Character::Character() : Creature() {}
 
 int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
-	string msg = "は何する?\n\n自分を左クリック:行動を選択\n1:歩く 2:産卵 3:孵化 4:攻撃 5:押す 6:パス\nキャラクタを左クリック:状態を表示\nWASDキー:視点移動\n\n隣のマスを右クリック(十字キー):向き変更\n\n\n\n\nE:ルールを表示";
+	string msg = "は何する?\n\n自分を左クリック:行動を選択\n1:歩く 2:産卵 3:孵化 4:攻撃 5:押す 6:パス\nキャラクタを左クリック:状態を表示\nWASDキー:視点移動(SHIFTで高速移動)\n\n隣のマスを右クリック(十字キー):向き変更\n\n\n\n\nE:ルールを表示";
 	int xClick = 0;
 	int yClick = 0;
 	int XBuf = -49;//ステータス表示を行う際に、今クリックしたわけじゃないけどステータス表示状態として持続しているマスの座標を表す。

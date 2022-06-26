@@ -393,9 +393,14 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 
 
 int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
+	int moveSpeed = 6;
+	if (CheckHitKey(KEY_INPUT_RSHIFT) == TRUE || CheckHitKey(KEY_INPUT_LSHIFT) == TRUE) {
+		moveSpeed = 12;
+	}
+
 	if (CheckHitKey(KEY_INPUT_W) == TRUE) {//WASDで視点移動
 		if (GameBuf->exhibitY > 0) {
-			GameBuf->exhibitY -= 4;
+			GameBuf->exhibitY -= moveSpeed;
 			if (GameBuf->exhibitY < 0) {
 				GameBuf->exhibitY = 0;
 			}
@@ -406,7 +411,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 	}
 	if (CheckHitKey(KEY_INPUT_S) == TRUE) {
 		if (GameBuf->exhibitY < (GameBuf->sizeY - FIELDSIZE) * SQUARESIZE) {
-			GameBuf->exhibitY += 4;
+			GameBuf->exhibitY += moveSpeed;
 			if (GameBuf->exhibitY / 48 + FIELDSIZE >= GameBuf->sizeY) {//描画中心が被っているマス＋描画マス数＋１(描画下端マス)が、二次元配列サイズを超えていたら
 				GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE) * 48;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
 			}
@@ -417,7 +422,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 	}
 	if (CheckHitKey(KEY_INPUT_A) == TRUE) {//WASDで視点移動
 		if (GameBuf->exhibitX > 0) {
-			GameBuf->exhibitX -= 4;
+			GameBuf->exhibitX -= moveSpeed;
 			if (GameBuf->exhibitX < 0) {
 				GameBuf->exhibitX = 0;
 			}
@@ -428,7 +433,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 	}
 	if (CheckHitKey(KEY_INPUT_D) == TRUE) {
 		if (GameBuf->exhibitX < (GameBuf->sizeX - FIELDSIZE) * SQUARESIZE) {
-			GameBuf->exhibitX += 4;
+			GameBuf->exhibitX += moveSpeed;
 			if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
 				GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE) * 48;
 			}
