@@ -404,7 +404,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 			if (GameBuf->exhibitY < 0) {
 				GameBuf->exhibitY = 0;
 			}
-			exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
+			//exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
 			//WaitTimer(10);
 
 		}
@@ -416,7 +416,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 				GameBuf->exhibitY = (GameBuf->sizeY - FIELDSIZE) * 48;//描画マスの左上を示すexhibitXYが盤面上におけるマイナスや、描画マスの右下が盤面サイズをはみ出る場合、はみ出ない場所に再設定。
 			}
 
-			exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
+			//exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
 			//WaitTimer(10);
 		}
 	}
@@ -426,7 +426,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 			if (GameBuf->exhibitX < 0) {
 				GameBuf->exhibitX = 0;
 			}
-			exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
+			//exhibitScreen(markX,markY, TRUE, FALSE, board, handledCharacters);
 			//WaitTimer(10);
 
 		}
@@ -437,7 +437,7 @@ int  BattleMode_GameManager::ScreenMove(int markX, int markY) {
 			if (GameBuf->exhibitX / 48 + FIELDSIZE >= GameBuf->sizeX) {
 				GameBuf->exhibitX = (GameBuf->sizeX - FIELDSIZE) * 48;
 			}
-			exhibitScreen(markX, markY, TRUE, FALSE, board, handledCharacters);
+			//exhibitScreen(markX, markY, TRUE, FALSE, board, handledCharacters);
 			//WaitTimer(10);
 		}
 	}

@@ -38,9 +38,13 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 	//WaitKey();
 
 	while (1) {
+		
+
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			return FALSE;
 		}
+
+		exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 
 
 		if (colorUpOrDown == TRUE) {
@@ -76,9 +80,6 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 			GetMousePoint(&xClick, &yClick);
 
 		/*if (GetClickPlace(&xClick, &yClick) == 2) {*/
-
-
-
 			
 			xClick = (GameBuf->exhibitX + xClick) / 48;
 			yClick = (GameBuf->exhibitY + yClick) / 48;
@@ -173,7 +174,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 					exhibitOrNot = FALSE;
 					XBuf = -1;
 					YBuf = -1;
-					exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
+					//exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 				}
 
 				if (board[xClick][yClick].creature != NULL) {//キャラがいる場所をクリックした際
@@ -183,21 +184,22 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 							exhibitOrNot = FALSE;
 							XBuf = -1;
 							YBuf = -1;
-							exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
+							//exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 						}
 					}
 					else {
 						exhibitOrNot = TRUE;
+						ruleExhibit = FALSE;
 					}
 
 
-
-					if (xClick == x && yClick == y) {
-						exhibitMyStatusOrNot = TRUE;
-					}
-					else {
+					if (xClick != x || yClick != y || (xClick == x && yClick == y && exhibitMyStatusOrNot == TRUE)) {
 						exhibitMyStatusOrNot = FALSE;
 					}
+					else if (xClick == x && yClick == y) {
+						exhibitMyStatusOrNot = TRUE;
+					}
+					
 				}
 
 			}
@@ -215,7 +217,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 				exhibitStatus(x, y, XBuf, YBuf, TRUE, color, mobs_PenguinKids, mobs_Bull, board, handledCharacters);
 			}
 			if (board[XBuf][YBuf].creature == NULL) {
-				exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
+				//exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
 			}
 		}
 
@@ -321,14 +323,9 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 				pushingKey = 1;
 				ruleExhibit = FALSE;
 				while (1) {
-
 					mainMsg = "本当にゲームを終了してよろしいですか？ \nEnterキー:Yes 0:No";
 					ClearDrawScreen();
 					exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
-
-
-
-
 					if (CheckHitKey(KEY_INPUT_RETURN) == TRUE) {
 						return 2;
 					}
@@ -341,10 +338,9 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 			}
 		}
 
-		exhibitScreen(x, y, TRUE, ruleExhibit, board, handledCharacters);
-
-		WaitTimer(10);
+		//WaitTimer(10);
 		ScreenFlip(); //裏画面を表画面に反映
+		
 	}
 
 	//stamina += staminaRecoverAbility;//スタミナ回復

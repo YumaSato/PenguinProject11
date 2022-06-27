@@ -275,7 +275,7 @@ void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attentio
 
 
 void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
-	exhibitScreen(markX, markY, attention,FALSE, board, handledCharacters);
+	//exhibitScreen(markX, markY, attention,FALSE, board, handledCharacters);
 	string Msg = "";
 	string Bulls = "";
 
@@ -304,7 +304,7 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 			DrawString(-GameBuf->exhibitX + markX * 48 + 42, -GameBuf->exhibitY + markY * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
 			DrawString(-GameBuf->exhibitX + markX * 48 + 42, -GameBuf->exhibitY + markY * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
 
-			WaitTimer(10);
+			//WaitTimer(10);
 
 		}
 		else {
