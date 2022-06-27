@@ -257,14 +257,86 @@ int Emperor::GetExpPoint(int expP) {
 
 		surplus_expP = expPoint - (levelUp * 100 / 3 + 150);//今回のレベルアップで余った経験値
 		levelUp += 1;
-		attackPower += 1 + GetRand(1);
-		defensePower += 2 + GetRand(2);
-		expPoint = 0;
-		GetExpPoint(surplus_expP);
+		mainMsg = "";
 
-		return levelUp;//上がったレベルを返す。
+		int xClick = NULL;
+		int yClick = NULL;
+		bool colorUpOrDown = TRUE;
+		bool exhibitOrNot = FALSE;
+		int color = 0;
+		int selectAttackX = FIELDSIZE * SQUARESIZE + 40;
+		int selectDefenceX = FIELDSIZE * SQUARESIZE + 140;
+		int GoNextFlag = NULL;
+		bool clickedOrNot = FALSE;
+		int powerUp = GetRand(2) + 2;
+
+		while (1) {
+			if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+				return 0;
+			}
+
+			if (colorUpOrDown == TRUE) {
+				color += 15;
+			}
+			if (colorUpOrDown == FALSE) {
+				color -= 15;
+			}
+			if (color >= 225) {
+				colorUpOrDown = FALSE;
+			}
+			if (color <= 26) {
+				colorUpOrDown = TRUE;
+			}
+
+			xClick = NULL;
+			yClick = NULL;
+			actionMsg = name + "のレベルが上がった。\nどの能力を上昇させる？";
+			exhibitScreen(x, y, TRUE, FALSE, GameBuf->board, GameBuf->handledCharacters);
+			DrawBox(selectAttackX, 220, selectAttackX + 80, 270, GetColor(252-color/4, 202, color), TRUE);
+			DrawBox(selectDefenceX, 220, selectDefenceX + 80, 270, GetColor(252 - color / 4, 202, color), TRUE);
+			DrawString(selectAttackX + 5, 230, "攻撃力　  　防御力", GetColor(0, color / 8, 0));
+
+
+
+			if (GetClickPlace(&xClick, &yClick) == 1) {
+
+				if (xClick > selectAttackX && xClick < selectAttackX + 80 && yClick >220 && yClick < 270) {
+					actionMsg = name + "の攻撃力が" + std::to_string(powerUp).c_str() + "アップした！";
+					attackPower += powerUp;
+					clickedOrNot = TRUE;
+				}
+				if (xClick > selectDefenceX && xClick < selectDefenceX + 80 && yClick >220 && yClick < 270) {
+					actionMsg = name + "の防御力が" + std::to_string(powerUp).c_str() + "アップした！";
+					defensePower += powerUp;
+					clickedOrNot = TRUE;
+				}
+
+				if (clickedOrNot == TRUE) {
+
+					GoNextFlag = GameBuf->GoNext(x, y);
+					if (GoNextFlag == 1) {
+						break;
+					}
+					if (GoNextFlag == 0) {
+						return 0;
+					}
+				}
+			}
+			ScreenFlip();
+		}
+
+
+	
+		expPoint = 0;
+
+
+
+
+		if (GetExpPoint(surplus_expP) == 0) {//再帰関数により連続レベルアップが起きている場合に繰り返す。
+			return 0;
+		}
 	}
-	return 0;
+	return 1;
 }
 
 

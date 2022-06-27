@@ -277,7 +277,7 @@ void Creature::incubate(int checkX, int checkY, Grid** board, Emperor* handledCh
 
 
 
-void Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledCharacters) {//指定地点に生物がいる前提。攻撃の内容を実行。
+int Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledCharacters) {//指定地点に生物がいる前提。攻撃の内容を実行。
 
 	int damageHP = 0;
 	damageHP = (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ダメ計
@@ -320,19 +320,18 @@ void Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChar
 	if (board[checkX][checkY].creature->HP <= 0) {//HPがマイナスになったら死ぬ
 		board[checkX][checkY].creature->HP = 0;
 		int expUp;
-		int lv = 0;
+		int lvUp = 0;
 		expUp = board[checkX][checkY].creature->giveExpPoint;
-		if (team == red) {//倒した側のTeamの皇帝が経験値を得る。
-			lv = handledCharacters[0].GetExpPoint(expUp);
+		if (team == red && enemy == FALSE) {//倒した側のTeamの皇帝が経験値を得る。
+			lvUp = handledCharacters[0].GetExpPoint(expUp);
 		}
-		else if (team == blue) {
-			lv = handledCharacters[1].GetExpPoint(expUp);
+		else if (team == blue && enemy == FALSE) {
+			lvUp = handledCharacters[1].GetExpPoint(expUp);
 		}
 		msg2 = "\n相手をやっつけた。";
 
-		if (lv > 0) {
-			msg3 = "\n" + handledCharacters[1].name + "のレベルが" + std::to_string(lv) + "に上がった！";
-
+		if (lvUp == 0) {
+			return 0;
 		}
 		actionMsg = name + msg1 + msg2 + msg3;
 		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
@@ -343,5 +342,6 @@ void Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChar
 
 
 		score += expUp;
+		return 1;//成功したら1を返す。
 	}
 }

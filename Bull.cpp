@@ -273,7 +273,12 @@ bool Bull::attack( Grid** board, Emperor* handledCharacters) {
 				return FALSE;
 			}
 			if (board[ix][iy].creature->enemy == FALSE) {//NULL‚¶‚á‚È‚­‚Äƒƒ{ƒbƒg‚Ç‚à‚¾‚Á‚½‚çUŒ‚
-				damage(ix, iy, board, handledCharacters);
+				if (damage(ix, iy, board, handledCharacters) == 0) {
+					return 0;
+				}
+
+
+
 				return TRUE;
 			}
 		}

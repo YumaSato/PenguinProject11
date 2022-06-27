@@ -145,7 +145,9 @@ bool PenguinKids::attack( Grid** board, Emperor* handledCharacters) {
 	if (checkX >= 0 && checkX < GameBuf->sizeX && checkY >= 0 && checkY < GameBuf->sizeY) {//攻撃優先モードに当てはまるかを調べる。
 		if (board[checkX][checkY].creature != NULL) {//目の前に生物がいたら
 			if (board[checkX][checkY].creature->enemy == TRUE) {//そこにいるやつが敵ならば攻撃。
-				damage(checkX, checkY, board, handledCharacters);
+				if (damage(checkX, checkY, board, handledCharacters) == 0) {
+					return 0;
+				}
 				return TRUE;
 			}
 			if (status == NORMAL && (board[checkX][checkY].creature->status != EGG || board[checkX][checkY].creature->team != team)) {//目の前に別チームもしくは卵以外がいて、かつ卵を産みたい状態のとき

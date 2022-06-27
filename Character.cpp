@@ -720,7 +720,9 @@ bool Character::attack( Grid** board, Emperor* handledCharacters) {
 		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
 			return FALSE;
 		}
-		damage(checkX, checkY, board, handledCharacters);
+		if (damage(checkX, checkY, board, handledCharacters) == 0) {
+			return 0;
+		}
 
 
 		//string msg1 = "は攻撃した。";

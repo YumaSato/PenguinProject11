@@ -64,7 +64,7 @@ public:
 	Direction GETdirection();
 	void DeleteCreature();
 	void incubate(int checkX, int checkY, Grid** board, Emperor* handledCharacters);
-	void damage(int checkX, int checkY, Grid** board, Emperor* handledCharacters);
+	int damage(int checkX, int checkY, Grid** board, Emperor* handledCharacters);
 };
 
 
