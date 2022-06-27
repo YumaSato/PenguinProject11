@@ -279,65 +279,47 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 	string Msg = "";
 	string Bulls = "";
 
-	if (statusX < GameBuf->exhibitX && statusY < GameBuf->exhibitY) {
+	//if (statusX < GameBuf->exhibitX && statusY < GameBuf->exhibitY) {
 
 
 
-		if (markX == statusX && markY == statusY) {//ステータス表示キャラと操作可能キャラが同じだった場合、行動選択の表示を行う。
+	if (markX == statusX && markY == statusY) {//ステータス表示キャラと操作可能キャラが同じだった場合、行動選択の表示を行う。
 
 
-			string Msg1 = "";
-			string Msg2 = "";
+		string Msg1 = "";
+		string Msg2 = "";
 
-			DrawBox(-GameBuf->exhibitX + markX * 48 + 40, -GameBuf->exhibitY + markY * 48 + 2, -GameBuf->exhibitX + markX * 48 + 360, -GameBuf->exhibitY + markY * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
-			DrawBox(-GameBuf->exhibitX + markX * 48 + 39, -GameBuf->exhibitY + markY * 48 + 1, -GameBuf->exhibitX + markX * 48 + 361, -GameBuf->exhibitY + markY * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
+		DrawBox(-GameBuf->exhibitX + markX * 48 + 40, -GameBuf->exhibitY + markY * 48 + 2, -GameBuf->exhibitX + markX * 48 + 360, -GameBuf->exhibitY + markY * 48 + 46, GetColor(225, 200, 0), TRUE);//外側のボックス
+		DrawBox(-GameBuf->exhibitX + markX * 48 + 39, -GameBuf->exhibitY + markY * 48 + 1, -GameBuf->exhibitX + markX * 48 + 361, -GameBuf->exhibitY + markY * 48 + 47, GetColor(125, 0, 0), FALSE);//外側のボックスの縁
 
-			for (int iii = 0; iii < 6; iii++) {
-				DrawBox(-GameBuf->exhibitX + markX * 48 + 50 + iii * 51, -GameBuf->exhibitY + markY * 48 + 24, -GameBuf->exhibitX + markX * 48 + 85 + iii * 51, -GameBuf->exhibitY + markY * 48 + 43, GetColor(50 + ((color + iii * 3) / 10), 220 + iii * 5 - (color / 3), 100), TRUE);//選択ボックス
-
-
-			}
-
-			Msg1 = board[markX][markY].creature->name + "のHP:" + std::to_string(board[markX][markY].creature->HP) + "/" + std::to_string(board[markX][markY].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[markX][markY].creature->speed);
-			Msg2 = " 歩く　産卵　孵化　攻撃　押す　パス";
-
-			DrawString(-GameBuf->exhibitX + markX * 48 + 42, -GameBuf->exhibitY + markY * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
-			DrawString(-GameBuf->exhibitX + markX * 48 + 42, -GameBuf->exhibitY + markY * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
-
-			//WaitTimer(10);
-
-		}
-		else {
-
-			DrawBox(-GameBuf->exhibitX + statusX * 48 + 40, -GameBuf->exhibitY + statusY * 48 + 5, -GameBuf->exhibitX + statusX * 48 + 300, -GameBuf->exhibitY + statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
-			DrawBox(-GameBuf->exhibitX + statusX * 48 + 40, -GameBuf->exhibitY + statusY * 48 + 5, -GameBuf->exhibitX + statusX * 48 + 300, -GameBuf->exhibitY + statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
-
-			Msg = board[statusX][statusY].creature->name + "  HP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) + "　 Lv." + to_string(board[statusX][statusY].creature->levelUp) + "\n素早さ:" + to_string(board[statusX][statusY].creature->speed) + "  攻撃:" + (to_string(board[statusX][statusY].creature->attackPower)) + "  防御:" + to_string(board[statusX][statusY].creature->defensePower);
-
-			DrawString(-GameBuf->exhibitX + statusX * 48 + 42, -GameBuf->exhibitY + statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
+		for (int iii = 0; iii < 6; iii++) {
+			DrawBox(-GameBuf->exhibitX + markX * 48 + 50 + iii * 51, -GameBuf->exhibitY + markY * 48 + 24, -GameBuf->exhibitX + markX * 48 + 85 + iii * 51, -GameBuf->exhibitY + markY * 48 + 43, GetColor(50 + ((color + iii * 3) / 10), 220 + iii * 5 - (color / 3), 100), TRUE);//選択ボックス
 
 
 		}
 
+		Msg1 = board[markX][markY].creature->name + "のHP:" + std::to_string(board[markX][markY].creature->HP) + "/" + std::to_string(board[markX][markY].creature->HP_Limit) + "   素早さ値:" + std::to_string(board[markX][markY].creature->speed);
+		Msg2 = " 歩く　産卵　孵化　攻撃　押す　パス";
 
+		DrawString(-GameBuf->exhibitX + markX * 48 + 42, -GameBuf->exhibitY + markY * 48 + 5, Msg1.c_str(), GetColor(0, 10, 55));
+		DrawString(-GameBuf->exhibitX + markX * 48 + 42, -GameBuf->exhibitY + markY * 48 + 26, Msg2.c_str(), GetColor(0, 10, 55));
 
+		//WaitTimer(10);
 
-		////以下、モブ配列がバグっているので調査
-		//DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 235, "mobs_PenguinKids", GetColor(255, 200, 255));
-		//for (int i = 0; i < 12; i++) {
-		//	Bulls = std::to_string(mobs_PenguinKids[i].num) + " X:" + std::to_string(mobs_PenguinKids[i].x) + " Y:" + std::to_string(mobs_PenguinKids[i].y);
-		//	DrawString(FIELDSIZE * SQUARESIZE + 5, FIELDSIZE * SQUARESIZE - 220 + i*13, Bulls.c_str(), GetColor(255, 200, 255));
-		//	DrawString(FIELDSIZE * SQUARESIZE + 100, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_PenguinKids[i].name.c_str(), GetColor(255, 200, 255));
-		//}
-		//DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 235, "mobs_Bull", GetColor(255, 200, 255));
-		//for (int i = 0; i < 12; i++) {
-		//	Bulls = std::to_string(mobs_Bull[i].num) + " X:" + std::to_string(mobs_Bull[i].x) + " Y:" + std::to_string(mobs_Bull[i].y);
-		//	DrawString(FIELDSIZE * SQUARESIZE + 200, FIELDSIZE * SQUARESIZE - 220 + i * 13, Bulls.c_str(), GetColor(255, 200, 255));
-		//	DrawString(FIELDSIZE * SQUARESIZE + 295, FIELDSIZE * SQUARESIZE - 220 + i * 13, mobs_Bull[i].name.c_str(), GetColor(255, 200, 255));
-		//}
+	}
+	else {
+
+		DrawBox(-GameBuf->exhibitX + statusX * 48 + 40, -GameBuf->exhibitY + statusY * 48 + 5, -GameBuf->exhibitX + statusX * 48 + 300, -GameBuf->exhibitY + statusY * 48 + 43, GetColor(225, 200, 0), TRUE);
+		DrawBox(-GameBuf->exhibitX + statusX * 48 + 40, -GameBuf->exhibitY + statusY * 48 + 5, -GameBuf->exhibitX + statusX * 48 + 300, -GameBuf->exhibitY + statusY * 48 + 43, GetColor(125, 000, 0), FALSE);
+
+		Msg = board[statusX][statusY].creature->name + "  HP:" + to_string(board[statusX][statusY].creature->HP) + "/" + to_string(board[statusX][statusY].creature->HP_Limit) + "　 Lv." + to_string(board[statusX][statusY].creature->levelUp) + "\n素早さ:" + to_string(board[statusX][statusY].creature->speed) + "  攻撃:" + (to_string(board[statusX][statusY].creature->attackPower)) + "  防御:" + to_string(board[statusX][statusY].creature->defensePower);
+
+		DrawString(-GameBuf->exhibitX + statusX * 48 + 42, -GameBuf->exhibitY + statusY * 48 + 7, Msg.c_str(), GetColor(0, 10, 55));
 
 
 	}
+
+	//}
 }
 
 

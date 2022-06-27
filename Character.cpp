@@ -487,7 +487,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 		xClick = (GameBuf->exhibitX + xClick) / 48;
 		yClick = (GameBuf->exhibitY + yClick) / 48;
 
-		if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+		if (xClick < GameBuf->sizeX && yClick < GameBuf->sizeY) {
 
 
 
