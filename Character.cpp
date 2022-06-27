@@ -179,7 +179,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 				if (board[xClick][yClick].creature != NULL) {//キャラがいる場所をクリックした際
 
-					if (XBuf >= 0 && XBuf < FIELDSIZE && YBuf >= 0 && YBuf < FIELDSIZE) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
+					if (XBuf >= 0 && XBuf < GameBuf->sizeX && YBuf >= 0 && YBuf < GameBuf->sizeY) {//ステータス表示中のマスを示すXBufとYBufが盤面上の座標を示していた場合
 						if (board[xClick][yClick].creature == board[XBuf][YBuf].creature) {//表示中のマスを触ったらステータス表示消える。
 							exhibitOrNot = FALSE;
 							XBuf = -1;

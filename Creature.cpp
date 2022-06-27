@@ -327,35 +327,42 @@ int Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChara
 	if (board[checkX][checkY].creature->HP <= 0) {//HPがマイナスになったら死ぬ
 		board[checkX][checkY].creature->HP = 0;
 
-		if (this->HP > 0) {
-
-			int expUp;
-			int lvUp = NULL;
-			expUp = board[checkX][checkY].creature->giveExpPoint;
-			if (team == red && enemy == FALSE) {//倒した側のTeamの皇帝が経験値を得る。
-				lvUp = handledCharacters[0].GetExpPoint(expUp);
-			}
-			else if (team == blue && enemy == FALSE) {
-				lvUp = handledCharacters[1].GetExpPoint(expUp);
-			}
-			msg2 = "\n相手をやっつけた。";
-
-			if (lvUp == 0) {//経験値獲得関数内でゲームが終了されたら
-				return 0;
-			}
-			score += expUp;
-		}
-
-
-		actionMsg = name + msg1 + msg2 + msg3;
-		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
+		int expUp;
+		int lvUp = NULL;
+		expUp = board[checkX][checkY].creature->giveExpPoint;
 
 		board[checkX][checkY].creature->DeleteCreature();
 		board[checkX][checkY].creature = NULL;
 
+		if (team == red && enemy == FALSE) {//倒した側のTeamの皇帝が経験値を得る。
+			if (handledCharacters[0].HP > 0) {//皇帝が生存していれば
+				lvUp = handledCharacters[0].GetExpPoint(expUp);
+			}
+		}
+		else if (team == blue && enemy == FALSE) {
+			if (handledCharacters[1].HP > 0) {
+				lvUp = handledCharacters[1].GetExpPoint(expUp);
+			}
+		}
+		msg2 = "\n相手をやっつけた。";
+
+		if (lvUp == 0) {//経験値獲得関数内でゲームが終了されたら
+			return 0;
+		}
+		score += expUp;
+
+
+
+		actionMsg = name + msg1 + msg2 + msg3;
 		
 
+		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
+
 		
+
+
+
+
 		return 1;//成功したら1を返す。
 	}
 }
