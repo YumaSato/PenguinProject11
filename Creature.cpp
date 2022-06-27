@@ -46,7 +46,7 @@ Creature::Creature() {//コンストラクタ。チームと位置を受け取る。
 }
 
 
-void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters) {
+void Creature::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, int pareAtt, int pareDef, Grid** board, Emperor* handledCharacters) {
 }
 
 int Creature::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
@@ -271,7 +271,7 @@ void Creature::DeleteCreature() {
 void Creature::incubate(int checkX, int checkY, Grid** board, Emperor* handledCharacters) {//指定地点に生物がいる前提。孵化の内容を実行。
 
 	board[checkX][checkY].creature->status = NORMAL;
-	board[checkX][checkY].creature->defensePower = 22 + GetRand(2) + levelUp * 2;
+	
 	board[checkX][checkY].creature->SETdirection(GETdirection());
 }
 
@@ -280,7 +280,14 @@ void Creature::incubate(int checkX, int checkY, Grid** board, Emperor* handledCh
 int Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledCharacters) {//指定地点に生物がいる前提。攻撃の内容を実行。
 
 	int damageHP = 0;
-	damageHP = (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ダメ計
+	if (board[checkX][checkY].creature->status == EGG) {//卵相手なら確実に殺す
+		damageHP = 51;
+	}
+	else {
+		damageHP = (30 + GetRand(2)) * attackPower / board[checkX][checkY].creature->defensePower;//ダメ計
+	}
+
+
 	board[checkX][checkY].creature->HP = board[checkX][checkY].creature->HP - damageHP;//体力-damageHPの計算を行う。
 
 	if (board[checkX][checkY].creature->status == NORMAL || board[checkX][checkY].creature->status == ELDER) {//相手がペンギンだった場合、向きが変わる。
@@ -319,29 +326,36 @@ int Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChara
 
 	if (board[checkX][checkY].creature->HP <= 0) {//HPがマイナスになったら死ぬ
 		board[checkX][checkY].creature->HP = 0;
-		int expUp;
-		int lvUp = 0;
-		expUp = board[checkX][checkY].creature->giveExpPoint;
-		if (team == red && enemy == FALSE) {//倒した側のTeamの皇帝が経験値を得る。
-			lvUp = handledCharacters[0].GetExpPoint(expUp);
-		}
-		else if (team == blue && enemy == FALSE) {
-			lvUp = handledCharacters[1].GetExpPoint(expUp);
-		}
-		msg2 = "\n相手をやっつけた。";
 
-		if (lvUp == 0) {
-			return 0;
+		if (this->HP > 0) {
+
+			int expUp;
+			int lvUp = NULL;
+			expUp = board[checkX][checkY].creature->giveExpPoint;
+			if (team == red && enemy == FALSE) {//倒した側のTeamの皇帝が経験値を得る。
+				lvUp = handledCharacters[0].GetExpPoint(expUp);
+			}
+			else if (team == blue && enemy == FALSE) {
+				lvUp = handledCharacters[1].GetExpPoint(expUp);
+			}
+			msg2 = "\n相手をやっつけた。";
+
+			if (lvUp == 0) {//経験値獲得関数内でゲームが終了されたら
+				return 0;
+			}
+			score += expUp;
 		}
+
+
 		actionMsg = name + msg1 + msg2 + msg3;
 		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 
 		board[checkX][checkY].creature->DeleteCreature();
 		board[checkX][checkY].creature = NULL;
 
+		
 
-
-		score += expUp;
+		
 		return 1;//成功したら1を返す。
 	}
 }

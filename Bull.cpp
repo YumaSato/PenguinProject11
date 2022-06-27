@@ -10,7 +10,7 @@ using namespace std;
 Bull::Bull() {
 }
 
-void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters) {//実質的なコンストラクタ。
+void Bull::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, int pareAtt, int pareDef, Grid** board, Emperor* handledCharacters) {//実質的なコンストラクタ。
 	//未初期化のBull配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;

@@ -16,7 +16,7 @@ PenguinKids::PenguinKids() {
 
 
 
-void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters) {//実質的なコンストラクタ。
+void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, int pareAtt, int pareDef, Grid** board, Emperor* handledCharacters) {//実質的なコンストラクタ。
 	//未初期化のPenguinKids配列を作るためにはコンストラクタに何か書いてあるとダメらしいので、コンストラクタでやるべきことを別の関数にした。
 
 	string mobStatusMsg;
@@ -36,8 +36,8 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	HP_Limit = 50;
 	levelUp = initLevel;
 	expPoint = NULL;
-	attackPower = 30 + GetRand(3) + (levelUp * 4) / 3;
-	defensePower = 1;
+	attackPower = pareAtt -1;
+	defensePower = pareDef -1;
 
 	int random = GetRand(100) + 30;
 	speed = ((parentSpeed - 1) * (random - GetRand(20)) / random) - 1;//素早さは世代を重ねるごとに低下する。減少量はランダム。
@@ -76,7 +76,7 @@ int PenguinKids::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Gr
 		return FALSE;
 	}
 
-	HP += 12;
+	HP += 5;
 	if (HP > HP_Limit) {//自然治癒
 		HP = HP_Limit;
 	}
@@ -247,7 +247,7 @@ bool PenguinKids::specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bu
 
 
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, levelUp, speed, board, handledCharacters);
+			penguinKids.setMobs(team, tmpx, tmpy, ix, iy, levelUp, speed, attackPower, defensePower, board, handledCharacters);
 
 
 			mobs_PenguinKids[num_penguinKids] = penguinKids;

@@ -131,13 +131,13 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 		}
 	}
 	Emperor1 = new Emperor();//インスタンス化
-	Emperor1->setMobs(red, 1, 0, 1, 0, 0, 0, board, handledCharacters);
+	Emperor1->setMobs(red, 1, 0, 1, 0, 0, 0, 0,0,board, handledCharacters);
 	handledCharacters[0] = *Emperor1;
 	board[Emperor1->x][Emperor1->y].creature = &handledCharacters[0];//マス目に自分のポインタを代入。
 
 
 	Emperor2 = new Emperor();//インスタンス化
-	Emperor2->setMobs(blue, 2, 0, 0, 1, 0, 0, board, handledCharacters);
+	Emperor2->setMobs(blue, 2, 0, 0, 1, 0, 0, 0, 0, board, handledCharacters);
 	handledCharacters[1] = *Emperor2;
 	board[Emperor2->x][Emperor2->y].creature = &handledCharacters[1];
 
@@ -655,7 +655,7 @@ int BattleMode_GameManager::YieldEnemy(Status enemyType, Team enemyTeam, int dx,
 		if (board[cx][cy].creature == NULL) {
 
 			Bull bull = Bull();
-			bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 10 + 1, 400000, board, handledCharacters);
+			bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 10 + 1, 400000,0,0, board, handledCharacters);
 			mobs_Bull[num_bull] = bull;
 			board[cx][cy].creature = &mobs_Bull[num_bull];
 			mobNumber += 1;

@@ -12,11 +12,11 @@ Emperor::Emperor() {//皇帝のコンストラクタ
 }
 
 
-void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters) {
+void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, int pareAtt, int pareDef, Grid** board, Emperor* handledCharacters) {
 	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更
 	this->team = ParentTeam;
 
-	giveExpPoint = 600;
+	giveExpPoint = 1000;
 
 	if (ParentTeam == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
 		this->name = "赤皇帝";
@@ -83,7 +83,7 @@ bool Emperor::specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, 
 	if (checkX >= 0 && checkX < GameBuf->sizeX && checkY >= 0 && checkY < GameBuf->sizeY) {
 		if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//押したマスの方向が空いていたらインスタンス化を実行
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, levelUp, speed, board, handledCharacters);
+			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, levelUp, speed, attackPower, defensePower,board, handledCharacters);
 
 			//kids.push_back(penguinKids);
 			//board[checkX][checkY].creature = &kids.back();
@@ -259,6 +259,8 @@ int Emperor::GetExpPoint(int expP) {
 		levelUp += 1;
 		mainMsg = "";
 
+		
+
 		int xClick = NULL;
 		int yClick = NULL;
 		bool colorUpOrDown = TRUE;
@@ -268,7 +270,7 @@ int Emperor::GetExpPoint(int expP) {
 		int selectDefenceX = FIELDSIZE * SQUARESIZE + 140;
 		int GoNextFlag = NULL;
 		bool clickedOrNot = FALSE;
-		int powerUp = GetRand(2) + 2;
+		int powerUp = GetRand(3) + 2;
 
 		while (1) {
 			if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
