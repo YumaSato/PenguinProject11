@@ -167,7 +167,7 @@ int Character::selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid
 
 
 
-			if (xClick < FIELDSIZE && yClick < FIELDSIZE) {
+			if (xClick < GameBuf->sizeX && yClick < GameBuf->sizeY) {
 
 
 				if (board[xClick][yClick].creature == NULL) {//押したマスがNULLなら、ステータス表示状態を解除。

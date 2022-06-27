@@ -279,7 +279,7 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 	string Msg = "";
 	string Bulls = "";
 
-	if (statusX < FIELDSIZE && statusY < FIELDSIZE) {
+	if (statusX < GameBuf->exhibitX && statusY < GameBuf->exhibitY) {
 
 
 
