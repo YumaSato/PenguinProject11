@@ -64,7 +64,7 @@ void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid*
 void exhibitStatusMsg(Emperor* handledCharacters);
 void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid** board, Emperor* handledCharacters);
 void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attention, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
-void exhibitWalking(int markX, int markY, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
+void exhibitWalking(int markX, int markY, int dx, int dy, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 void exhibitRolling(int kickX, int kickY, int dx, int dy, int distance, Grid** board, Emperor* handledCharacters);
 void exhibitRule();
 

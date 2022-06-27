@@ -694,7 +694,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 		}
 
 
-		WaitTimer(20);
+		WaitTimer(10);
 	}
 	return TRUE;
 	actionMsg = "•à‚«I‚í‚Á‚½I";

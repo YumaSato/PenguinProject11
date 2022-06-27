@@ -10,7 +10,7 @@
 using std::to_string;
 
 
-
+void exhiHP(int exhiX, int exhiY, Creature* cre);
 
 
 
@@ -179,9 +179,11 @@ void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid*
 			//DrawString(450, 20, msg.c_str(), WHITE);
 
 			if (HPexhibitOrNot == TRUE) {
-				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE + 5, -GameBuf->exhibitY + iy * SQUARESIZE + 29, hHP, TRUE);
+				exhiHP(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, board[ix][iy].creature);
+
+				/*DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE + 5, -GameBuf->exhibitY + iy * SQUARESIZE + 29, hHP, TRUE);
 				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE + 16, -GameBuf->exhibitY + iy * SQUARESIZE + 31, -GameBuf->exhibitX + ix * SQUARESIZE + 16 + board[ix][iy].creature->HP / 2, -GameBuf->exhibitY + iy * SQUARESIZE + 36, GetColor(45, 205, 50), TRUE);
-			}
+			*/}
 
 		}
 	}
@@ -339,8 +341,21 @@ void exhibitStatus(int markX, int markY, int statusX, int statusY, bool attentio
 }
 
 
-void exhibitWalking(int markX, int markY, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
+void exhibitWalking(int markX, int markY, int dx, int dy, int color, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
 
+	Creature* walking = board[markX][markY].creature;//蹴られた卵のポインタを仮置き場に代入し保持。
+	board[markX][markY].creature = NULL;//一旦盤面からキャラクタを除去。
+
+	Direction directionNum;
+	directionNum = board[markX][markY].creature->GETdirection();
+	int handleWalking = handle[walking->team][walking->status][directionNum];
+
+	for (int i = 0; i < SQUARESIZE; i++) {
+		exhibitScreen(markX, markY, FALSE, FALSE, board, handledCharacters);
+
+		
+
+	}
 
 }
 
@@ -517,6 +532,22 @@ int GetClickPlace(int* xClick, int* yClick) {//なにも押されていなければ0、左クリ
 
 }
 
+
+
+
+
+
+
+
+
+
+
+void exhiHP(int exhiX, int exhiY, Creature* cre) {//ダメージ受けてるキャラのHPを表示する。
+
+	DrawGraph(exhiX + 5, exhiY + 29, hHP, TRUE);
+	DrawBox(exhiX + 16, exhiY + 31, exhiX + 16 + cre->HP / 2, exhiY + 36, GetColor(45, 205, 50), TRUE);
+
+}
 
 
 
