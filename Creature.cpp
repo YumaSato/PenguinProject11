@@ -322,7 +322,7 @@ void Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChar
 		int expUp;
 		int lv = 0;
 		expUp = board[checkX][checkY].creature->giveExpPoint;
-		if (team == red) {
+		if (team == red) {//“|‚µ‚½‘¤‚ÌTeam‚Ìc’é‚ªŒoŒ±’l‚ğ“¾‚éB
 			lv = handledCharacters[0].GetExpPoint(expUp);
 		}
 		else if (team == blue) {

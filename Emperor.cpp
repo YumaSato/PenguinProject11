@@ -141,7 +141,7 @@ bool Emperor::kick(Grid** board, Emperor* handledCharacters) {
 	int cX = 0;
 	int cY = 0;
 	int drctnX, drctnY;
-	string s;
+//	string s;
 
 	GETdirectionXY(&drctnX, &drctnY);
 	cX = x + drctnX;

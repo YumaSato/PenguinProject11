@@ -738,3 +738,11 @@ bool Character::attack( Grid** board, Emperor* handledCharacters) {
 	}
 	return FALSE;
 }
+
+
+
+
+
+bool Character::kick(Grid** board, Emperor* handledCharacters) {
+	return FALSE;
+}

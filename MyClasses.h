@@ -52,7 +52,7 @@ public:
 	virtual bool walk( Grid** board, Emperor* handledCharacters);
 	virtual void changeDirection(Grid** board, Emperor* handledCharacters);
 	virtual bool attack( Grid** board, Emperor* handledCharacters);
-	bool kick( Grid** board, Emperor* handledCharacters);
+	virtual bool kick( Grid** board, Emperor* handledCharacters);
 	virtual bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 	virtual bool specialMovement2( Grid** board, Emperor* handledCharacters);
 	virtual int useItem( Grid** board, Emperor* handledCharacters);
@@ -77,6 +77,8 @@ public:
 	//void changeDirection();
 	bool walk( Grid** board, Emperor* handledCharacters) override;
 	bool attack( Grid** board, Emperor* handledCharacters);
+	bool kick(Grid** board, Emperor* handledCharacters) override;
+
 	Character();//キャラクタのコンストラクタ
 };
 
@@ -91,6 +93,7 @@ public:
 	bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 	bool specialMovement2( Grid** board, Emperor* handledCharacters);
 	bool attack( Grid** board, Emperor* handledCharacters);
+	
 	
 	int selectAction(PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 };
@@ -110,16 +113,6 @@ public:
 
 
 
-
-
-
-
-
-
-
-
-
-
 class Grid {//各マス
 public:
 	State state = VACANT;//マス目の状態。1:地面　2:水　3:毒沼
@@ -136,7 +129,7 @@ public:
 	void setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, int iy, int initLevel, int parentSpeed, Grid** board, Emperor* handledCharacters)override;
 	bool specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters);
 	bool specialMovement2( Grid** board, Emperor* handledCharacters);
-	bool kick(Grid** board, Emperor* handledCharacters);
+	bool kick(Grid** board, Emperor* handledCharacters) override;
 	int GetExpPoint(int expP);
 };
 
