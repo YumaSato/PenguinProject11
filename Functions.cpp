@@ -329,16 +329,20 @@ void exhibitWalking(int markX, int markY, int dx, int dy, int color, PenguinKids
 	board[markX][markY].creature = NULL;//一旦盤面からキャラクタを除去。
 
 	Direction directionNum;
-	directionNum = board[markX][markY].creature->GETdirection();
+	directionNum = walking->GETdirection();
 	int handleWalking = handle[walking->team][walking->status][directionNum];
 
-	for (int i = 0; i < SQUARESIZE; i++) {
+	for (int i = 0; i < SQUARESIZE; i+=7) {
 		exhibitScreen(markX, markY, FALSE, FALSE, board, handledCharacters);
-
-		
-
+		DrawGraph(markX*SQUARESIZE + dx * i, markY * SQUARESIZE + dy * i, handleWalking, TRUE);
+		if (walking->HP < walking->HP_Limit) {
+			exhiHP(markX * SQUARESIZE + dx * i, markY * SQUARESIZE + dy * i, walking);
+		}
+		GameBuf->ScreenMove(markX, markY);
+		ScreenFlip();
 	}
 
+	board[markX][markY].creature = walking;
 }
 
 

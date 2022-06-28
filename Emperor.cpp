@@ -83,7 +83,7 @@ bool Emperor::specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, 
 	if (checkX >= 0 && checkX < GameBuf->sizeX && checkY >= 0 && checkY < GameBuf->sizeY) {
 		if (board[checkX][checkY].creature == NULL && board[checkX][checkY].state == VACANT) {//押したマスの方向が空いていたらインスタンス化を実行
 			PenguinKids penguinKids = PenguinKids();
-			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, levelUp, speed, attackPower, defensePower,board, handledCharacters);
+			penguinKids.setMobs(team, drctnX, drctnY, checkX, checkY, levelUp, speed, attackPower * 5 / 6, defensePower * 3 / 4,board, handledCharacters);
 
 			//kids.push_back(penguinKids);
 			//board[checkX][checkY].creature = &kids.back();

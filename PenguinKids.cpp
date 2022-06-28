@@ -36,8 +36,8 @@ void PenguinKids::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int i
 	HP_Limit = 50;
 	levelUp = initLevel;
 	expPoint = NULL;
-	attackPower = pareAtt -5;
-	defensePower = pareDef -10;
+	attackPower = pareAtt ;
+	defensePower = pareDef;
 
 	int random = GetRand(100) + 30;
 	speed = ((parentSpeed - 1) * (random - GetRand(20)) / random) - 1;//素早さは世代を重ねるごとに低下する。減少量はランダム。

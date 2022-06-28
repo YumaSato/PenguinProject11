@@ -510,14 +510,17 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//ï‡Ç≠ÅBî’ñ ÉTÉ
 
 						if (clicking == 0) {
 							clicking = 1;
+							SETdirection(dx, dy);
+							exhibitWalking(x, y, dx, dy, StringColor, GameBuf->mobs_PenguinKids, GameBuf->mobs_Bull, board, handledCharacters);
 
 							board[xClick][yClick].creature = this;
 							board[x][y].creature = NULL;
 
 							x = xClick;//ãèèÍèäÇêVÇΩÇ»É}ÉXÇ…ê›íËÅB
 							y = yClick;
-							SETdirection(dx, dy);
+							
 
+							
 
 							distance++;
 
@@ -675,6 +678,8 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//ï‡Ç≠ÅBî’ñ ÉTÉ
 
 				SETdirection(checkX, checkY);
 
+				exhibitWalking(x,y,checkX,checkY,StringColor, GameBuf->mobs_PenguinKids, GameBuf->mobs_Bull,board,handledCharacters);
+
 				board[x + checkX][y + checkY].creature = this;
 				board[x][y].creature = NULL;
 
@@ -685,12 +690,13 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//ï‡Ç≠ÅBî’ñ ÉTÉ
 
 				distance += 1;
 
-				WaitTimer(150);
+				WaitTimer(100);
 			}
 		}
 
 
-		WaitTimer(10);
+
+		ScreenFlip();
 	}
 	return TRUE;
 	actionMsg = "ï‡Ç´èIÇÌÇ¡ÇΩÅI";
@@ -735,7 +741,7 @@ bool Character::attack( Grid** board, Emperor* handledCharacters) {
 
 		//exhibitScreen(x, y, TRUE, board, handledCharacters);
 		//DrawString(800, 180, actionMsg.c_str(), GetColor(255, 200, 255));
-		WaitKey();
+		//WaitKey();
 		return TRUE;
 	}
 	return FALSE;
