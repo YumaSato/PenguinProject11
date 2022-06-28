@@ -334,9 +334,9 @@ void exhibitWalking(int markX, int markY, int dx, int dy, int color, PenguinKids
 
 	for (int i = 0; i < SQUARESIZE; i+=7) {
 		exhibitScreen(markX, markY, FALSE, FALSE, board, handledCharacters);
-		DrawGraph(markX*SQUARESIZE + dx * i, markY * SQUARESIZE + dy * i, handleWalking, TRUE);
+		DrawGraph(-GameBuf->exhibitX + markX*SQUARESIZE + dx * i, -GameBuf->exhibitY + markY * SQUARESIZE + dy * i, handleWalking, TRUE);
 		if (walking->HP < walking->HP_Limit) {
-			exhiHP(markX * SQUARESIZE + dx * i, markY * SQUARESIZE + dy * i, walking);
+			exhiHP(-GameBuf->exhibitX + markX * SQUARESIZE + dx * i, -GameBuf->exhibitY+ markY * SQUARESIZE + dy * i, walking);
 		}
 		GameBuf->ScreenMove(markX, markY);
 		ScreenFlip();

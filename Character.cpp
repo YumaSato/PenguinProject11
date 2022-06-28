@@ -450,10 +450,31 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 
 
 	while (distance < 3) {//Še•às‚Ì“ü—Í‘Ò‹@
+
+		GameBuf->ScreenMove(x, y);
+
 		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
 		checkX = 0;
 		checkY = 0;
 		mouse = 0;
+
+		if (colorUpOrDown == TRUE) {
+			StringColor += 9;
+		}
+		if (colorUpOrDown == FALSE) {
+			StringColor -= 9;
+		}
+		if (StringColor >= 230) {
+			colorUpOrDown = FALSE;
+		}
+		if (StringColor <= 11) {
+			colorUpOrDown = TRUE;
+		}
+
+
+
+
+		//GameBuf->ScreenMove(x, y);
 
 		//if (!(mouse & MOUSE_INPUT_RIGHT) && !(mouse & MOUSE_INPUT_LEFT)) {//—¼•ûƒNƒŠƒbƒN‚ª‰ğœ‚³‚ê‚Ä‚¢‚½‚çAŸ‚ÌƒNƒŠƒbƒN‚ğó‚¯•t‚¯‚éB
 		//	clicking = 0;
@@ -472,7 +493,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 		//	}
 		//}
 
-		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);//•à‚¯‚éƒ}ƒX‚Í•\¦F•ÏXB
+		
 		for (int iix = -1; iix <= 1; iix++) {
 			for (int iiy = -1; iiy <= 1; iiy++) {
 				if (board[x + iix][y + iiy].creature == NULL && board[x + iix][y + iiy].state == VACANT) {
@@ -480,6 +501,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 				}
 			}
 		}
+
 
 
 
@@ -547,7 +569,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 						clicking = 1;
 
 						exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);//•às‰Â”\ƒ}ƒX•\¦‚ğÁ‚·B
-						WaitTimer(130);
+						//WaitTimer(130);
 						if (distance == 0) {
 							return FALSE;//0•à–Ú‚È‚çs“®‚Í‚È‚©‚Á‚½‚±‚Æ‚É‚È‚é
 						}
@@ -575,18 +597,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 
 
 
-		if (colorUpOrDown == TRUE) {
-			StringColor += 9;
-		}
-		if (colorUpOrDown == FALSE) {
-			StringColor -= 9;
-		}
-		if (StringColor >= 230) {
-			colorUpOrDown = FALSE;
-		}
-		if (StringColor <= 11) {
-			colorUpOrDown = TRUE;
-		}
+		
 
 
 
