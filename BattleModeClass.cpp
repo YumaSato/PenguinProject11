@@ -329,6 +329,9 @@ int  BattleMode_GameManager::TurnFinal() {//‘f‘‚³‡‚Émob‚ªs“®‚µ‚Ä‚¢‚­ŠÖ”B
 				/*if (quitGame == TRUE) {
 					return FALSE;
 				}*/
+				if (quitGame == TRUE) {
+					return FALSE;
+				}
 
 				if (GoNext(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y) ==FALSE) {
 					return FALSE;

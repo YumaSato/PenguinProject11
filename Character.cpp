@@ -737,8 +737,12 @@ bool Character::attack( Grid** board, Emperor* handledCharacters) {
 		if (board[checkX][checkY].creature == NULL) {//殴った場所に誰もいなければ、FALSEを返して、行動なし判定。
 			return FALSE;
 		}
-		if (damage(checkX, checkY, board, handledCharacters) == 0) {
+		/*if (damage(checkX, checkY, board, handledCharacters) == 0) {
 			return 0;
+		}*/
+
+		if (damage(checkX, checkY, board, handledCharacters) == 2) {
+			quitGame = TRUE;
 		}
 
 

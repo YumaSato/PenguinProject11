@@ -213,9 +213,15 @@ bool PenguinKids::attack( Grid** board, Emperor* handledCharacters) {
 					if (board[checkX][checkY].creature->enemy == TRUE) {//‚»‚ê‚ª“G‚¾‚Æ”»’è‚³‚ê‚½‚ç
 
 						SETdirection(tmpx, tmpy);//“G‚Ì•û‚ğŒü‚¢‚Ä
-						damage(checkX, checkY, board, handledCharacters);//UŒ‚B
-						//actionMsg = name + "‚Í" + board[checkX][checkY].creature->name + "‚ğUŒ‚‚µ‚½B";
+						//damage(checkX, checkY, board, handledCharacters);//UŒ‚B
+						
+						if (damage(checkX, checkY, board, handledCharacters) == 2) {
+							quitGame = TRUE;
+						}
 						return TRUE;
+
+
+
 					}
 				}
 			}
