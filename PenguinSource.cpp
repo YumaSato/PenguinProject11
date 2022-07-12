@@ -67,15 +67,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//handleTitle = LoadGraph("Imgs/title.jpg");
 
 
-	int music;
+	//int music;
 
 	//int pm;
 	//pm = LoadSoundMem("Imsg/SampleBGM.ogg");
 	//int counter = 0;
 	/*handleMusic = LoadSoundMem("Imgs/SampleYukkuri.wav");*/
 
-	PlayMusic("Imgs/ochaBGM.mp3", DX_PLAYTYPE_LOOP);
-	SetVolumeMusic(40);
+	/*PlayMusic("Imgs/ochaBGM.mp3", DX_PLAYTYPE_LOOP);
+	SetVolumeMusic(40);*/
 
 	//PlaySoundMem(handleMusic, DX_PLAYTYPE_LOOP, 1);
 	//PlaySoundMem(pm, DX_PLAYTYPE_BACK, 1);
@@ -168,9 +168,20 @@ void handlePenguin() {//ハンドルに画像のポインタを代入
 	
 	handleField[0] = LoadGraph("Imgs/Field/grassGreen.png");
 	handleField[1] = LoadGraph("Imgs/Field/grassLight.png");
+	handleField[2] = LoadGraph("Imgs/Field/cliff0.png");
+	handleField[3] = LoadGraph("Imgs/Field/cliff1.png");
+	handleField[4] = LoadGraph("Imgs/Field/cliff2.png");
+	handleField[5] = LoadGraph("Imgs/Field/cliff3.png");
+	handleField[6] = LoadGraph("Imgs/Field/cliff4.png");
+	handleField[7] = LoadGraph("Imgs/Field/cliff5.png");
+	handleField[8] = LoadGraph("Imgs/Field/cliff6.png");
+	handleField[9] = LoadGraph("Imgs/Field/cliff7.png");
+
 
 	handleBack[0] = LoadGraph("Imgs/Back/Nishikita.jpg");
 	handleBack[1] = LoadGraph("Imgs/Back/title.jpg");
+
+	
 
 
 

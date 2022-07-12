@@ -188,12 +188,12 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 		if ((handledCharacters[0].HP <= 0 && handledCharacters[1].HP <= 0) || board[castleX][castleY].state == VACANT) {
 			mainMsg = "ゲームオーバー";
-			actionMsg = "Escを押すと、ゲームを終了します。";
+			actionMsg = "ENTERを押すと、対戦を終了します。";
 			exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
 			WaitKey();
 			while (1) {
-				if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
-					return FALSE;
+				if (CheckHitKey(KEY_INPUT_RETURN) == TRUE) {
+					return 2;
 				}
 
 				if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける

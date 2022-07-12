@@ -40,7 +40,7 @@ int HandleBoard;//ゲーム盤の画像ハンドル
 int hHP;
 int HandleCastle;
 int handle[3][9][8];//[team][status][direction]でペンギンの画像のハンドルを格納する3次元配列。
-int handleMusic;
+int handleMusic[8];
 int handleField[64];
 int handleBack[32];
 

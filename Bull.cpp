@@ -128,6 +128,7 @@ bool Bull::walk( Grid** board, Emperor* handledCharacters) {
 	}
 
 	if (walkOrNot == TRUE) {//歩く判定TRUEなら、調べたマスに自分のアドレスを入れる。
+		exhibitWalking(x, y, dx, dy, 0, GameBuf->mobs_PenguinKids, GameBuf->mobs_Bull, board, handledCharacters);
 		board[ix][iy].creature = this;
 		board[x][y].creature = NULL;
 		x = ix;//自分の位置をxyに入れる。
@@ -276,9 +277,6 @@ bool Bull::attack( Grid** board, Emperor* handledCharacters) {
 				if (damage(ix, iy, board, handledCharacters) == 0) {
 					return 0;
 				}
-
-
-
 				return TRUE;
 			}
 		}
@@ -338,6 +336,7 @@ bool Bull::attack( Grid** board, Emperor* handledCharacters) {
 						if (board[ix][iy].creature != NULL) {//向いている方向のマスに何か居たら
 							if (board[ix][iy].creature->enemy == FALSE && board[ix][iy].creature->status != EGG) {//それがペンギン共で、卵じゃなければ
 								SETdirection(dx, dy);//敵の方を向いて
+								
 								damage(ix, iy, board, handledCharacters);
 								return TRUE;
 							}

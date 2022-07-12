@@ -345,6 +345,9 @@ int Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChara
 			}
 		}
 		msg2 = "\n相手をやっつけた。";
+		PlayMusic("Imgs/Sound/Killed.wav", DX_PLAYTYPE_BACK);
+		SetVolumeMusic(250);
+
 
 		if (lvUp == 0) {//経験値獲得関数内でゲームが終了されたら
 			return 0;

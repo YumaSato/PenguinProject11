@@ -48,7 +48,7 @@ extern int handle[3][9][8];
 extern int handleField[64];
 extern int handleBack[32];
 
-extern int handleMusic;
+extern int handleMusic[8];
 
 //extern Grid board[FIELDSIZE][FIELDSIZE];//‚»‚Ìƒ}ƒX‚É‰½‚ª‚¢‚é‚©
 

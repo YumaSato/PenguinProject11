@@ -254,6 +254,8 @@ int Emperor::GetExpPoint(int expP) {
 
 		//expPoint = expPoint - (levelUp * 100 / 6 + 100);//レベルアップ達成時に余った経験値は次のレベル用に貯められる。
 
+		PlayMusic("Imgs/Sound/LevelUp.wav", DX_PLAYTYPE_BACK);
+		SetVolumeMusic(750);
 
 		surplus_expP = expPoint - (levelUp * 100 / 3 + 150);//今回のレベルアップで余った経験値
 		levelUp += 1;
@@ -293,6 +295,9 @@ int Emperor::GetExpPoint(int expP) {
 			xClick = NULL;
 			yClick = NULL;
 			actionMsg = name + "のレベルが上がった。\nどの能力を上昇させる？";
+			
+
+
 			exhibitScreen(x, y, TRUE, FALSE, GameBuf->board, GameBuf->handledCharacters);
 			DrawBox(selectAttackX, 220, selectAttackX + 80, 270, GetColor(252-color/4, 202, color), TRUE);
 			DrawBox(selectDefenceX, 220, selectDefenceX + 80, 270, GetColor(252 - color / 4, 202, color), TRUE);
