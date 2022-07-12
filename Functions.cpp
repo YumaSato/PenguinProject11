@@ -106,28 +106,28 @@ void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid*
 
 
 			if (board[ix][iy].state == ROCK) {
-				//DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, -GameBuf->exhibitX + ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
+				DrawBox(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, -GameBuf->exhibitX + ix * SQUARESIZE + 47, -GameBuf->exhibitY + iy * SQUARESIZE + 47, GetColor(205, 133, 63), TRUE);
 				
-				if (ix < GameBuf->sizeX-1) {
-					if (board[ix + 1][iy].state == VACANT) {//右側がフィールド外でなくて、そこがVACANTだったら
-						DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[1],TRUE);
-					}
-				}
-				if (ix > 0) {
-					if (board[ix - 1][iy].state == VACANT) {//左側がフィールド外でなくて、そこがVACANTだったら
-						DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[5], TRUE);
-					}
-				}
-				if (iy < GameBuf->sizeY - 1) {
-					if (board[ix][iy + 1].state == VACANT) {//下側がフィールド外でなくて、そこがVACANTだったら
-						DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[3], TRUE);
-					}
-				}
-				if (iy > 0) {
-					if (board[ix][iy - 1].state == VACANT) {//上側がフィールド外でなくて、そこがVACANTだったら
-						DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[7], TRUE);
-					}
-				}
+				//if (ix < GameBuf->sizeX-1) {
+				//	if (board[ix + 1][iy].state == VACANT) {//右側がフィールド外でなくて、そこがVACANTだったら
+				//		DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[1],TRUE);
+				//	}
+				//}
+				//if (ix > 0) {
+				//	if (board[ix - 1][iy].state == VACANT) {//左側がフィールド外でなくて、そこがVACANTだったら
+				//		DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[5], TRUE);
+				//	}
+				//}
+				//if (iy < GameBuf->sizeY - 1) {
+				//	if (board[ix][iy + 1].state == VACANT) {//下側がフィールド外でなくて、そこがVACANTだったら
+				//		DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[3], TRUE);
+				//	}
+				//}
+				//if (iy > 0) {
+				//	if (board[ix][iy - 1].state == VACANT) {//上側がフィールド外でなくて、そこがVACANTだったら
+				//		DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[7], TRUE);
+				//	}
+				//}
 			
 			
 			

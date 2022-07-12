@@ -97,20 +97,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		ClearDrawScreen();
 		DrawGraph(0, 0, handleBack[1], TRUE);
-		DrawString(960, 320, "モードを選択してください。\n\n\n1:通常モード(Normal)\n60ターン生き残れ！\n\n\n2:難関モード(Lunatic)\n100ターン生き残れ！\n\n\nEsc:やめる\n\n\n\n\n\n\n\n\n\n\n\n            VERSION:2", GetColor(titleStringColor, 245, 255));
+		DrawString(960, 320, "モードを選択してください。\n\n\n1:簡単モード(Easy)\n60ターン生き残れ！\n\n\n2:通常モード(Normal)\n60ターン生き残れ！\n\n\n3:難関モード(Lunatic)\n100ターン生き残れ！\n\n\nEsc:やめる\n\n\n\n\n\n\n\n\n\n            VERSION:2", GetColor(titleStringColor, 245, 255));
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			pushingKey = 1;
-			BattleMode_GameManager* battle0 = new BattleMode_GameManager(0,20, 25);
+			BattleMode_GameManager* battle0 = new BattleMode_GameManager(0,20, 24);
 			game = battle0->BattleMode(0);//FALSEだとゲーム終了。
 			delete battle0;
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
 			pushingKey = 1;
-			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1,17, 17);
+			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1,17, 19);
+			game = battle1->BattleMode(0);//FALSEだとゲーム終了。
+			delete battle1;
+		}
+		if (CheckHitKey(KEY_INPUT_3) == TRUE) {
+			pushingKey = 1;
+			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1, 18, 19);
 			game = battle1->BattleMode(1);//FALSEだとゲーム終了。
 			delete battle1;
 		}
+
 
 
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == TRUE) {
