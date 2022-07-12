@@ -348,9 +348,10 @@ int Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChara
 		PlayMusic("Imgs/Sound/Killed.wav", DX_PLAYTYPE_BACK);
 		SetVolumeMusic(250);
 
-
-		if (lvUp == 0) {//経験値獲得関数内でゲームが終了されたら
-			return 0;
+		if (enemy == FALSE) {
+			if (lvUp == 0) {//経験値獲得関数内でゲームが終了されたら
+				return 2;
+			}
 		}
 		score += expUp;
 
@@ -360,11 +361,6 @@ int Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledChara
 		
 
 		exhibitScreen(x, y, TRUE, FALSE, board, handledCharacters);
-
-		
-
-
-
 
 		return 1;//成功したら1を返す。
 	}
