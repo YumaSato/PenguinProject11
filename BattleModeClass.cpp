@@ -34,6 +34,7 @@ bool speedOrder(Creature* a, Creature* b);
 
 BattleMode_GameManager::BattleMode_GameManager(int stageLevel, int xSize, int ySize) {//コンストラクタ。
 	turnNum = 0;
+	score = 0;
 
 	board = new Grid * [xSize];
 
@@ -555,7 +556,7 @@ int BattleMode_GameManager::EnemyEnter(int turn, int level, PenguinKids* mobs_Pe
 
 
 
-	if (turn % 8 == 6 && level == 1) {
+	if (turn % 10 == 6 && level == 1) {
 
 		side = GetRand(3);
 		place = GetRand(GameBuf->sizeX - 3);

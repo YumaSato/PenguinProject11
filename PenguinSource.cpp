@@ -107,7 +107,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
 			pushingKey = 1;
-			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1,17, 19);
+			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1,20, 19);
 			game = battle1->BattleMode(0);//FALSE‚¾‚ÆƒQ[ƒ€I—¹B
 			delete battle1;
 		}
