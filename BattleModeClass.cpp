@@ -535,7 +535,7 @@ int BattleMode_GameManager::EnemyEnter(int turn, int level, PenguinKids* mobs_Pe
 		}
 	}
 
-	if ((turn % 2 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 30)) {
+	if ((turn % 3 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 33)) {
 
 		side = GetRand(3);
 		place = GetRand(GameBuf->sizeX - 3);
@@ -659,7 +659,13 @@ int BattleMode_GameManager::YieldEnemy(Status enemyType, Team enemyTeam, int dx,
 		if (board[cx][cy].creature == NULL) {
 
 			Bull bull = Bull();
-			bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 10 + 1, 400000,0,0, board, handledCharacters);
+			if (enemyTeam == red) {
+				bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 10 + 1, 400000, 0, 0, board, handledCharacters);
+			}
+			if (enemyTeam == blue) {
+				bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 25 + 1, 400000, 0, 0, board, handledCharacters);
+			}
+
 			mobs_Bull[num_bull] = bull;
 			board[cx][cy].creature = &mobs_Bull[num_bull];
 			mobNumber += 1;

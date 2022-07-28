@@ -80,6 +80,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//PlaySoundMem(handleMusic, DX_PLAYTYPE_LOOP, 1);
 	//PlaySoundMem(pm, DX_PLAYTYPE_BACK, 1);
 
+
+	int levelU = 0;
+	int px = 3;
+
 	while (game == TRUE) {
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
 			break;
@@ -117,6 +121,26 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			game = battle1->BattleMode(1);//FALSEだとゲーム終了。
 			delete battle1;
 		}
+
+
+
+		//3 + (levelU / 5)
+		//expPoint - (levelUp * 100 / 3 + 150)
+
+		if (CheckHitKey(KEY_INPUT_Z) == TRUE) {
+			levelU++;
+			if (levelU % (4 + (levelU / 5)) == 0) {
+				px++;
+			}
+			WaitTimer(60);
+		}
+	
+		//+levelU / (3 + );
+		DrawString(960, 270, std::to_string(levelU).c_str(), GetColor(250, 200, 100));
+		DrawString(960, 300, std::to_string(px).c_str(), GetColor(250, 200, 100));
+
+
+
 
 
 

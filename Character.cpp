@@ -430,7 +430,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 	int distance = 0;
 	int checkX = 0;
 	int checkY = 0;
-	int staminaNeed = 10;
+	int staminaNeed = staminaRecoverAbility + 3;//•à‚¯‚é‹——£
 
 	int xClick = 0;
 	int yClick = 0;
@@ -441,7 +441,9 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 	string Msg = "";
 	bool colorUpOrDown = TRUE;
 
-	actionMsg = "•à‚±‚¤!@Esc:ˆÚ“®I—¹@SHIFT:Î‚ßƒTƒ|[ƒg";
+
+
+	actionMsg = std::to_string(staminaNeed)+"ƒ}ƒX‚Ü‚Å•à‚¯‚é‚æB\nEsc:ˆÚ“®I—¹@SHIFT:Î‚ßƒTƒ|[ƒg";
 
 	clicking = 1;
 
@@ -449,7 +451,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 
 
 
-	while (distance < 3) {//Še•às‚Ì“ü—Í‘Ò‹@
+	while (distance < staminaRecoverAbility + 3) {//Še•às‚Ì“ü—Í‘Ò‹@
 
 		GameBuf->ScreenMove(x, y);
 
@@ -701,7 +703,7 @@ bool Character::walk( Grid** board, Emperor* handledCharacters) {//•à‚­B”Õ–ÊƒTƒ
 
 				distance += 1;
 
-				WaitTimer(100);
+				//WaitTimer(300);
 			}
 		}
 

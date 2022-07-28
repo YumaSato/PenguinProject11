@@ -23,7 +23,7 @@ void exhibitStatusMsg(Emperor* handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ
 	int exhibitY = 600;
 	for (int i = 0; i < CHARACTERNUM; i++) {
 
-		DrawBox(830, 300 + i * 100, 1150, 385 + i * 100, GetColor(240, 230, 140), TRUE);
+		DrawBox(830, 300 + i * 100, 1180, 385 + i * 100, GetColor(240, 230, 140), TRUE);
 
 		DrawGraph(832, 305 + i * 100, handle[handledCharacters[i].team][handledCharacters[i].status][5], TRUE);
 
@@ -42,13 +42,15 @@ void exhibitStatusMsg(Emperor* handledCharacters) {//“®‚©‚¹‚éƒLƒƒƒ‰ƒNƒ^‚ÌƒXƒe[ƒ
 		defe = (to_string(handledCharacters[i].defensePower));
 		string neededExp;
 		neededExp = (to_string(handledCharacters[i].levelUp * 100 / 3 + 150));
+		string stamina;
+		stamina = (to_string(handledCharacters[i].staminaRecoverAbility +3));
 
-		CharacterStatusMsg = handledCharacters[i].name + "      Lv." + numLevel + "\n ó‘Ô HP : " + numHP + " / " + numHP_Limit + "\n UŒ‚—ÍF" + atta + "   –hŒä—ÍF" + defe + "\n ŒoŒ±’lF" + numExp + " / " + neededExp;
+		CharacterStatusMsg = handledCharacters[i].name + "      Lv." + numLevel + "\n ó‘Ô HP : " + numHP + " / " + numHP_Limit + "\n UŒ‚—ÍF" + atta + "   –hŒä—ÍF" + defe + "\n ŒoŒ±’lF" + numExp + "/" + neededExp + "  @ •à”F"+ stamina + "ƒ}ƒX";
 
 
 
 
-		DrawString(880, 305 + i * 100, CharacterStatusMsg.c_str(), GetColor(20, 0, 0));
+		DrawString(875, 305 + i * 100, CharacterStatusMsg.c_str(), GetColor(20, 0, 0));
 
 
 
@@ -362,7 +364,7 @@ void exhibitWalking(int markX, int markY, int dx, int dy, int color, PenguinKids
 	directionNum = walking->GETdirection();
 	int handleWalking = handle[walking->team][walking->status][directionNum];
 
-	for (int i = 0; i < SQUARESIZE; i+=7) {
+	for (int i = 0; i <= SQUARESIZE; i+=8) {
 		exhibitScreen(markX, markY, FALSE, FALSE, board, handledCharacters);
 		DrawGraph(-GameBuf->exhibitX + markX*SQUARESIZE + dx * i, -GameBuf->exhibitY + markY * SQUARESIZE + dy * i, handleWalking, TRUE);
 		if (walking->HP < walking->HP_Limit) {

@@ -16,7 +16,7 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更
 	this->team = ParentTeam;
 
-	giveExpPoint = 1000;
+	giveExpPoint = 2000;
 
 	if (ParentTeam == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
 		this->name = "赤皇帝";
@@ -33,7 +33,7 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 		this->attackPower = 20;
 		this->defensePower = 35;
 		this->speed = 1001;
-		this->staminaRecoverAbility = 10;
+		this->staminaRecoverAbility = 0;
 		this->num = 0;
 
 
@@ -58,7 +58,7 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 		this->attackPower = 20;
 		this->defensePower = 35;
 		this->speed = 1000;
-		this->staminaRecoverAbility = 5;
+		this->staminaRecoverAbility = 0;
 		this->num = 1;
 
 		//setCreature(num, x, y);
@@ -142,6 +142,16 @@ bool Emperor::kick(Grid** board, Emperor* handledCharacters) {
 	int cY = 0;
 	int drctnX, drctnY;
 //	string s;
+
+	//if (levelUp >= 10) {
+	//	mainMsg = "どのくらいの力で押す？";
+	//	while (1) {
+	//	}
+	//}
+
+
+
+
 
 	GETdirectionXY(&drctnX, &drctnY);
 	cX = x + drctnX;
@@ -250,7 +260,10 @@ int Emperor::GetExpPoint(int expP) {
 	expPoint += expP;
 	int surplus_expP;
 
-	if (expPoint >= levelUp * 100 / 3 + 150) {//レベルアップ必要分の経験値を得たら、レベルアップ
+	if (expPoint >= levelUp * 100 / 3 + 120) {//レベルアップ必要分の経験値を得たら、レベルアップ
+
+
+		
 
 		//expPoint = expPoint - (levelUp * 100 / 6 + 100);//レベルアップ達成時に余った経験値は次のレベル用に貯められる。
 
@@ -263,6 +276,15 @@ int Emperor::GetExpPoint(int expP) {
 
 		
 
+		if (levelUp == (3 * (staminaRecoverAbility+1))+ staminaRecoverAbility) {
+			staminaRecoverAbility ++;
+			actionMsg = name + "のレベルが上がった。歩ける距離が1増えた。\nどの能力を上昇させる？";
+		}
+		else {
+			actionMsg = name + "のレベルが上がった。\nどの能力を上昇させる？";
+		}
+
+
 		int xClick = NULL;
 		int yClick = NULL;
 		bool colorUpOrDown = TRUE;
@@ -273,6 +295,8 @@ int Emperor::GetExpPoint(int expP) {
 		int GoNextFlag = NULL;
 		bool clickedOrNot = FALSE;
 		int powerUp = GetRand(3) + 2;
+
+		
 
 		while (1) {
 			if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -294,7 +318,7 @@ int Emperor::GetExpPoint(int expP) {
 
 			xClick = NULL;
 			yClick = NULL;
-			actionMsg = name + "のレベルが上がった。\nどの能力を上昇させる？";
+			
 			
 
 
