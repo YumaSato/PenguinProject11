@@ -61,6 +61,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	HandleCastle = LoadGraph("Imgs/Castle.png");
 
 	bool game = TRUE;
+	bool debug = FALSE;
 	int handleTitle;
 	int titleStringColor = 200;
 	bool colorUpOrDown = TRUE;
@@ -83,6 +84,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	int levelU = 0;
 	int px = 3;
+	int haight = 21;
 
 	while (game == TRUE) {
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
@@ -105,19 +107,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 		if (CheckHitKey(KEY_INPUT_1) == TRUE) {
 			pushingKey = 1;
-			BattleMode_GameManager* battle0 = new BattleMode_GameManager(0,20, 24);
+			BattleMode_GameManager* battle0 = new BattleMode_GameManager(0,haight, 24);
 			game = battle0->BattleMode(0);//FALSEだとゲーム終了。
 			delete battle0;
 		}
 		if (CheckHitKey(KEY_INPUT_2) == TRUE) {
 			pushingKey = 1;
-			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1,20, 19);
+			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1,18, 19);
 			game = battle1->BattleMode(0);//FALSEだとゲーム終了。
 			delete battle1;
 		}
 		if (CheckHitKey(KEY_INPUT_3) == TRUE) {
 			pushingKey = 1;
-			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1, 18, 19);
+			BattleMode_GameManager* battle1 = new BattleMode_GameManager(1, 19, haight);
 			game = battle1->BattleMode(1);//FALSEだとゲーム終了。
 			delete battle1;
 		}
@@ -127,18 +129,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		//3 + (levelU / 5)
 		//expPoint - (levelUp * 100 / 3 + 150)
 
-		if (CheckHitKey(KEY_INPUT_Z) == TRUE) {
-			levelU++;
-			if (levelU % (4 + (levelU / 5)) == 0) {
-				px++;
-			}
-			WaitTimer(60);
+		
+		if ((CheckHitKey(KEY_INPUT_SPACE) == TRUE) || (CheckHitKey(KEY_INPUT_W)) && (CheckHitKey(KEY_INPUT_LSHIFT)) || (CheckHitKey(KEY_INPUT_RSHIFT))) {//裏技
+			debug = TRUE;
 		}
-	
-		//+levelU / (3 + );
-		DrawString(960, 270, std::to_string(levelU).c_str(), GetColor(250, 200, 100));
-		DrawString(960, 300, std::to_string(px).c_str(), GetColor(250, 200, 100));
+		if (debug) {
+			if (CheckHitKey(KEY_INPUT_Z) == TRUE || (CheckHitKey(KEY_INPUT_A)) || (CheckHitKey(KEY_INPUT_W)) || (CheckHitKey(KEY_INPUT_UP))) {
+				levelU++;
+				if (levelU % (4 + (levelU / 5)) == 0) {
+					px++;
+				}
+				WaitTimer(60);
+			}
+			//+levelU / (3 + );
+			DrawString(960, 270, std::to_string(levelU).c_str(), GetColor(250, 200, 100));
+			DrawString(960, 300, std::to_string(px).c_str(), GetColor(250, 200, 100));
 
+			haight = px + 18;
+		}
 
 
 
