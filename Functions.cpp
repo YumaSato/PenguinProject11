@@ -138,7 +138,10 @@ void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid*
 			
 			}
 			if (board[ix][iy].state == CASTLE) {
-				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, HandleCastle, TRUE);
+				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[11], TRUE);
+			}
+			if (board[ix][iy].state == BROKENCASTLE) {
+				DrawGraph(-GameBuf->exhibitX + ix * SQUARESIZE, -GameBuf->exhibitY + iy * SQUARESIZE, handleField[10], TRUE);
 			}
 			/*if (ix == 19 && iy == 10) {
 				actionMsg = "X19,Y10‚ð•`‰æ’†";

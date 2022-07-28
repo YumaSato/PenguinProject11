@@ -38,7 +38,7 @@ enum State {
 	WATER,   //…
 	POISON,   //“ÅÀ
 	CASTLE, //é
-
+	BROKENCASTLE//ˆê“xUŒ‚‚³‚ê‚½é
 };
 
 constexpr int BUFFER = 256;

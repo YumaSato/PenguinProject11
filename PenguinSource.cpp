@@ -207,7 +207,8 @@ void handlePenguin() {//ハンドルに画像のポインタを代入
 	handleField[7] = LoadGraph("Imgs/Field/cliff5.png");
 	handleField[8] = LoadGraph("Imgs/Field/cliff6.png");
 	handleField[9] = LoadGraph("Imgs/Field/cliff7.png");
-
+	handleField[10] = LoadGraph("Imgs/BrokenCastle.png");
+	handleField[11] = LoadGraph("Imgs/Castle.png");
 
 	handleBack[0] = LoadGraph("Imgs/Back/Nishikita.jpg");
 	handleBack[1] = LoadGraph("Imgs/Back/title.jpg");

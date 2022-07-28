@@ -347,9 +347,13 @@ bool Bull::attack( Grid** board, Emperor* handledCharacters) {
 			}
 		}
 
-
-
 		if (board[ix][iy].state == CASTLE) {
+			board[ix][iy].state = BROKENCASTLE;
+			actionMsg = "é‚ªUŒ‚‚³‚ê‚Ä•ö‚ê‚»‚¤‚¾I";
+			return TRUE;
+		}
+
+		if (board[ix][iy].state == BROKENCASTLE) {
 			board[ix][iy].state = VACANT;
 			actionMsg = "é‚ğ‰ó‚³‚ê‚Ä‚µ‚Ü‚Á‚½B";
 			return TRUE;
