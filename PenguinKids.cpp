@@ -262,7 +262,8 @@ bool PenguinKids::specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bu
 			num_penguinKids += 1;
 			status = ELDER;//˜V‰»‚·‚é
 
-
+			PlayMusic("Imgs/Sound/YieldEgg.mp3", DX_PLAYTYPE_BACK);
+			SetVolumeMusic(250);
 
 			actionMsg = "X:" + std::to_string(x) + "Y:" + std::to_string(y) + "‚ªY—‘‚µ‚½I";
 

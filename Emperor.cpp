@@ -96,7 +96,8 @@ bool Emperor::specialMovement1( PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, 
 			mobNumber += 1;
 			num_penguinKids += 1;
 
-
+			PlayMusic("Imgs/Sound/YieldEgg.mp3", DX_PLAYTYPE_BACK);
+			SetVolumeMusic(250);
 
 
 			exhibitScreen(x, y, TRUE,FALSE, board, handledCharacters);

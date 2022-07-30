@@ -261,8 +261,8 @@ void exhibitScreen(int markX, int markY, bool attention, bool ruleExhibit, Grid*
 
 void exhibitDamage(int markX, int markY, int damageX, int damageY, bool attention, int damageHP, Grid** board, Emperor* handledCharacters) {
 	
-	PlayMusic("Imgs/Sound/Hit.wav", DX_PLAYTYPE_BACK);
-	SetVolumeMusic(250);
+	/*PlayMusic("Imgs/Sound/Hit.wav", DX_PLAYTYPE_BACK);
+	SetVolumeMusic(250);*/
 
 	Creature* damaged = board[damageX][damageY].creature;//被ダメージ側を一時保存。
 	board[damageX][damageY].creature = NULL;//一旦その場にキャラがいないことにする。

@@ -84,7 +84,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	int levelU = 0;
 	int px = 3;
-	int haight = 21;
+	int haight = 22;
 
 	while (game == TRUE) {
 		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける

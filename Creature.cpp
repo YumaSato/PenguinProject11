@@ -270,6 +270,9 @@ void Creature::DeleteCreature() {
 
 void Creature::incubate(int checkX, int checkY, Grid** board, Emperor* handledCharacters) {//指定地点に生物がいる前提。孵化の内容を実行。
 
+	PlayMusic("Imgs/Sound/FukaEgg.mp3", DX_PLAYTYPE_BACK);
+	SetVolumeMusic(250);
+
 	board[checkX][checkY].creature->status = NORMAL;
 	
 	board[checkX][checkY].creature->SETdirection(GETdirection());
@@ -278,6 +281,9 @@ void Creature::incubate(int checkX, int checkY, Grid** board, Emperor* handledCh
 
 
 int Creature::damage(int checkX, int checkY, Grid** board, Emperor* handledCharacters) {//指定地点に生物がいる前提。攻撃の内容を実行。
+
+	PlayMusic("Imgs/Sound/Hit.wav", DX_PLAYTYPE_BACK);
+	SetVolumeMusic(250);
 
 	int damageHP = 0;
 	if (board[checkX][checkY].creature->status == EGG) {//卵相手なら確実に殺す
