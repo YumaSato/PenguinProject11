@@ -16,7 +16,7 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 	this->status = EMPEROR;//ステータスを「皇帝」を意味する4に変更
 	this->team = ParentTeam;
 
-	giveExpPoint = 2000;
+	giveExpPoint = 1500;
 
 	if (ParentTeam == red) {//赤チーム(=1)の皇帝であれば赤皇帝を盤面上部にスポーン
 		this->name = "赤皇帝";
@@ -295,7 +295,7 @@ int Emperor::GetExpPoint(int expP) {
 		int selectDefenceX = FIELDSIZE * SQUARESIZE + 140;
 		int GoNextFlag = NULL;
 		bool clickedOrNot = FALSE;
-		int powerUp = GetRand(2) + 6;
+		int powerUp = GetRand(2) + 7;
 
 		
 

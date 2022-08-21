@@ -54,6 +54,6 @@ constexpr int CHARACTERNUM = 2;//操作可能なキャラクタ数
 
 const int WHITE = GetColor(255, 255, 255);
 
-const int mobLimit = 1024;
+const int mobLimit = 2048;
 
 const int FIELDSIZE = 17;

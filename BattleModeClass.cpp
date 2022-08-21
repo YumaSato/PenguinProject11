@@ -179,6 +179,7 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 			if (GameClear() == 0) {
 				return 0;
 			}
+			
 		}
 
 
@@ -222,16 +223,31 @@ int BattleMode_GameManager::BattleMode(int stageLevel) {
 
 
 int  BattleMode_GameManager::GameClear() {
-	mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！";
+	mainMsg = std::to_string(turnNum) + "ターン生き延びた！ ゲームクリア！ \nおめでとう！\nENTER:エンディング";
 	actionMsg = "戦わされた子ペンギンの数:" + std::to_string(num_penguinKids) + "\nモンスターの総数:" + std::to_string(num_bull);
 	exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
-	WaitKey();
-	if (ending() == FALSE) {
-		return FALSE;
+	
+	while (1) {
+		exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
+		WaitKey();
+		if (CheckHitKey(KEY_INPUT_RETURN) == TRUE) {
+			if (ending() == FALSE) {
+				return FALSE;
+			}
+			else {
+				break;
+			}
+		}
+
+		if (ProcessMessage() != 0) { //ウィンドウの閉じるボタンが押されるとループを抜ける
+			return FALSE;
+		}
+		WaitTimer(10);
 	}
 
-	exhibitScreen(0, 0, FALSE, FALSE, board, handledCharacters);
-	WaitKey();
+	
+
+	
 
 }
 
@@ -384,6 +400,10 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 				
 			}
 			if (CheckHitKey(KEY_INPUT_SPACE) == TRUE && pushingKey == FALSE) {//現在の押下状態がFALSEで、いまEnterが押された場合
+				pushingKey = 1;
+				return 1;
+			}
+			if (CheckHitKey(KEY_INPUT_SPACE) == TRUE && (CheckHitKey(KEY_INPUT_RSHIFT) == TRUE || CheckHitKey(KEY_INPUT_LSHIFT) == TRUE)) {//現在の押下状態がFALSEで、いまEnterが押された場合
 				pushingKey = 1;
 				return 1;
 			}
@@ -551,7 +571,19 @@ int BattleMode_GameManager::EnemyEnter(int turn, int level, PenguinKids* mobs_Pe
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
 
-	if ((turn == 46) || (90 < turn && turn < 100)|| (120 < turn && turn < 150)) {//青牛まみれ
+	if ((turn == 46) || (90 < turn && turn < 100)|| (110 < turn && turn < 150)) {//青牛まみれ
+		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+	if ((turn == 46) || (95 < turn && turn < 100) || (110 < turn && turn < 150)) {//青牛まみれ
+		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+	if ((turn == 46) || (110 < turn && turn < 120) || (125 < turn && turn < 150)) {//青牛まみれ
+		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+	if ((turn == 46) || (110 < turn && turn < 120) || (125 < turn && turn < 150)) {//青牛まみれ
+		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+	if ((turn == 46) || (110 < turn && turn < 120) || (125 < turn && turn < 150)) {//青牛まみれ
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
 
@@ -640,10 +672,10 @@ int BattleMode_GameManager::YieldEnemy(Status enemyType, Team enemyTeam, int dx,
 
 			Bull bull = Bull();
 			if (enemyTeam == red) {
-				bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 10 + 1, 400000, 0, 0, board, handledCharacters);
+				bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 18 + 1, 400000, 0, 0, board, handledCharacters);
 			}
 			if (enemyTeam == blue) {
-				bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 25 + 1, 400000, 0, 0, board, handledCharacters);
+				bull.setMobs(enemyTeam, dx, dy, cx, cy, turnNum / 12 + 1, 400000, 0, 0, board, handledCharacters);
 			}
 
 			mobs_Bull[num_bull] = bull;

@@ -281,6 +281,18 @@ bool Bull::attack( Grid** board, Emperor* handledCharacters) {
 			}
 		}
 
+		if (board[ix][iy].state == CASTLE) {
+			board[ix][iy].state = BROKENCASTLE;
+			actionMsg = "城が攻撃されて崩れそうだ！";
+			return TRUE;
+		}
+
+		if (board[ix][iy].state == BROKENCASTLE) {
+			board[ix][iy].state = VACANT;
+			actionMsg = "城を壊されてしまった。";
+			return TRUE;
+		}
+
 
 
 		if (board[ix][iy].creature == NULL && team == blue) {//マスが空白である場合
@@ -347,17 +359,7 @@ bool Bull::attack( Grid** board, Emperor* handledCharacters) {
 			}
 		}
 
-		if (board[ix][iy].state == CASTLE) {
-			board[ix][iy].state = BROKENCASTLE;
-			actionMsg = "城が攻撃されて崩れそうだ！";
-			return TRUE;
-		}
-
-		if (board[ix][iy].state == BROKENCASTLE) {
-			board[ix][iy].state = VACANT;
-			actionMsg = "城を壊されてしまった。";
-			return TRUE;
-		}
+		
 	}
 	return FALSE;
 }
