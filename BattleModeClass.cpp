@@ -386,7 +386,7 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 
 			ScreenMove(markX,markY);
 			DrawBox(FIELDSIZE * SQUARESIZE + 120, 700, FIELDSIZE * SQUARESIZE + 320, 785, GetColor(255, 183, 0), TRUE);
-			DrawString(FIELDSIZE * SQUARESIZE + 170, 720, "次へ進む\n(SPACE)",GetColor(20,0,40));
+			DrawString(FIELDSIZE * SQUARESIZE + 170, 720, "次へ進む\n(SPACE)\n全部とばす(Z)",GetColor(20,0,40));
 
 			//nextFlag = GetClickPlace(&xClick, &yClick);
 			//actionMsg = "afew=" + std::to_string(nextFlag);
@@ -403,7 +403,7 @@ int BattleMode_GameManager::GoNext(int markX, int markY) {
 				pushingKey = 1;
 				return 1;
 			}
-			if (CheckHitKey(KEY_INPUT_SPACE) == TRUE && (CheckHitKey(KEY_INPUT_RSHIFT) == TRUE || CheckHitKey(KEY_INPUT_LSHIFT) == TRUE)) {//現在の押下状態がFALSEで、いまEnterが押された場合
+			if ((CheckHitKey(KEY_INPUT_SPACE) == TRUE && (CheckHitKey(KEY_INPUT_RSHIFT) == TRUE || CheckHitKey(KEY_INPUT_LSHIFT) == TRUE))|| (CheckHitKey(KEY_INPUT_Z))) {//現在の押下状態がFALSEで、いまEnterが押された場合
 				pushingKey = 1;
 				return 1;
 			}
@@ -566,24 +566,26 @@ int BattleMode_GameManager::EnemyEnter(int turn, int level, PenguinKids* mobs_Pe
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
 
-
-	if (turn % 10 == 6 && level == 1) {//高い難易度の時だけ青牛を誕生させる
-		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	if (level == 1) {
+		if (turn % 10 == 6) {//高い難易度の時だけ青牛を誕生させる
+			if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+		}
+		if ((turn == 46) || (95 < turn && turn < 100) || (110 < turn && turn < 150)) {//青牛まみれ
+			if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+		}
 	}
+	
 
 	if ((turn == 46) || (90 < turn && turn < 100)|| (110 < turn && turn < 150)) {//青牛まみれ
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
-	if ((turn == 46) || (95 < turn && turn < 100) || (110 < turn && turn < 150)) {//青牛まみれ
+	if ((110 < turn && turn < 120) || (125 < turn && turn < 150)) {//青牛まみれ
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
-	if ((turn == 46) || (110 < turn && turn < 120) || (125 < turn && turn < 150)) {//青牛まみれ
+	if ((115 < turn && turn < 120) || (125 < turn && turn < 150)) {//青牛まみれ
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
-	if ((turn == 46) || (110 < turn && turn < 120) || (125 < turn && turn < 150)) {//青牛まみれ
-		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-	}
-	if ((turn == 46) || (110 < turn && turn < 120) || (125 < turn && turn < 150)) {//青牛まみれ
+	if ((115 < turn && turn < 140) || (135 < turn && turn < 145)) {//青牛まみれ
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
 
@@ -610,6 +612,30 @@ int BattleMode_GameManager::EnemyEnter(int turn, int level, PenguinKids* mobs_Pe
 		}
 
 	}
+
+	if ((turn % 13 == 0 && turn > 149)) {//絶望攻撃
+		int side = GetRand(3);
+		for (int i= 0; i < sizeX-2; i++) {
+
+			if (side == 0) {
+				if (YieldEnemy(BULL, blue, 0, 1, i+2, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+			}
+			if (side == 1) {
+				if (YieldEnemy(BULL, blue, 0, -1, i+2, GameBuf->sizeY - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+			}
+			if (side == 2) {
+				if (YieldEnemy(BULL, blue, 1, 0, 0, i + 2, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+			}
+			if (side == 3) {
+				if (YieldEnemy(BULL, blue, -1, 0, GameBuf->sizeX - 1, i + 2, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+			}
+		}
+			
+
+
+	}
+
+
 	//}
 	return 1;
 	

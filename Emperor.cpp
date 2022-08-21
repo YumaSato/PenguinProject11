@@ -30,8 +30,8 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 		this->HP_Limit = 50;
 		this->levelUp = 1;
 		this->expPoint = 0;
-		this->attackPower = 20;
-		this->defensePower = 35;
+		this->attackPower = 30;
+		this->defensePower = 45;
 		this->speed = 1001;
 		this->staminaRecoverAbility = 0;
 		this->num = 0;
@@ -55,8 +55,8 @@ void Emperor::setMobs(Team ParentTeam, int DirectionX, int DirectionY, int ix, i
 		this->HP_Limit = 50;
 		this->levelUp = 1;
 		this->expPoint = 0;
-		this->attackPower = 20;
-		this->defensePower = 35;
+		this->attackPower = 30;
+		this->defensePower = 45;
 		this->speed = 1000;
 		this->staminaRecoverAbility = 0;
 		this->num = 1;
@@ -295,7 +295,7 @@ int Emperor::GetExpPoint(int expP) {
 		int selectDefenceX = FIELDSIZE * SQUARESIZE + 140;
 		int GoNextFlag = NULL;
 		bool clickedOrNot = FALSE;
-		int powerUp = GetRand(2) + 7;
+		int powerUp = GetRand(2) + 5;
 
 		
 
