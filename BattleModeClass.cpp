@@ -330,9 +330,9 @@ int  BattleMode_GameManager::TurnFinal() {//素早さ順にmobが行動していく関数。
 				/*if (quitGame == TRUE) {
 					return FALSE;
 				}*/
-				if (quitGame == TRUE) {
+				/*if (quitGame == TRUE) {//ゲームが途中で勝手に落ちるのはこれが原因？消してみた。
 					return FALSE;
-				}
+				}*/
 
 				if (GoNext(mobsSpeedOrder[i]->x, mobsSpeedOrder[i]->y) ==FALSE) {
 					return FALSE;
@@ -493,116 +493,73 @@ bool speedOrder(Creature* a, Creature* b) {
 
 
 int BattleMode_GameManager::EnemyEnter(int turn, int level, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {//どのターンで敵が出現するかを決める。
-	int side = 0;
-	int place = 0;
-	int yieldReturnFlag = 0;
+	//int side = 0;
+	//int place = 0;
+	////int yieldReturnFlag = 0;
 
-	if (turn == 0) {//１ターン目から、敵が出現しない側を決定する。
-		randomSide = GetRand(3);
-	}
-	if (turn == 14) {//敵が出現しない側を決定する。
-		randomSide = GetRand(3);
-	}
-	if (turn == 40) {//敵が出現しない側を決定する。
-		randomSide = GetRand(3);
-	}
+	//if (turn == 0) {//１ターン目から、敵が出現しない側を決定する。
+	//	randomSide = GetRand(3);
+	//}
+	//if (turn == 14) {//敵が出現しない側を決定する。
+	//	randomSide = GetRand(3);
+	//}
+	//if (turn == 40) {//敵が出現しない側を決定する。
+	//	randomSide = GetRand(3);
+	//}
 
 
+	////if (GameBuf->sizeX == GameBuf->sizeY) {
+	//if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
+	//	if ((turn % 3 == 2 || turn % 3 == 0) || turn == 8) {
 
-	//if (GameBuf->sizeX == GameBuf->sizeY) {
-	if ((1 < turn && turn < 25) || (36 < turn && turn < 50)) {
+	//		side = GetRand(2);
+	//		if (side >= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
+	//			side += 1;
+	//		}
+
+	//		place = GetRand(GameBuf->sizeX - 3);
+
+	//		if (side == 0) {
+	//			if (YieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	//		}
+	//		if (side == 1) {
+	//			if (YieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->sizeY - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	//		}
+	//		if (side == 2) {
+	//			if (YieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	//		}
+	//		if (side == 3) {
+	//			if (YieldEnemy(BULL, red, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	//		}
+	//	}
+	//}
+
+
+	if ((1 < turn && turn < 25) || (36 < turn && turn < 50) || (28 < turn && turn < 32)) {//赤牛を誕生させる
 		if ((turn % 3 == 2 || turn % 3 == 0) || turn == 8) {
-
-			side = GetRand(2);
-			if (side >= randomSide) {//ランダムでとってきたsideの値が、敵出現なし側、つまり-1と定められてたら、方向番号を1増やす。
-				side += 1;
-			}
-
-			place = GetRand(GameBuf->sizeX - 3);
-
-			if (side == 0) {
-				if (YieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-			}
-			if (side == 1) {
-				if (YieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->sizeY - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-			}
-			if (side == 2) {
-				if (YieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-			}
-			if (side == 3) {
-				if (YieldEnemy(BULL, red, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-			}
+			if (EnemyCome(red, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 		}
 	}
 
-	if ((turn % 3 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 33)) {
+	if ((turn % 3 == 0 && turn > 16 && turn < 25) || (turn % 3 == 2 && turn > 33)) {//青牛を誕生させる。
 
-		side = GetRand(3);
-		place = GetRand(GameBuf->sizeX - 3);
-		if (side == 0) {
-			if (YieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (side == 1) {
-			if (YieldEnemy(BULL, blue, 0, -1, place + 1, GameBuf->sizeY - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (side == 2) {
-			if (YieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (side == 3) {
-			if (YieldEnemy(BULL, blue, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
+		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+
+
+	if (turn % 10 == 6 && level == 1) {//高い難易度の時だけ青牛を誕生させる
+		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+
+	if ((turn == 46) || (90 < turn && turn < 100)|| (120 < turn && turn < 150)) {//青牛まみれ
+		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
 
 
 
-
-	if (turn % 10 == 6 && level == 1) {
-
-		side = GetRand(3);
-		place = GetRand(GameBuf->sizeX - 3);
-		if (side == 0) {
-			if (YieldEnemy(BULL, blue, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (side == 1) {
-			if (YieldEnemy(BULL, blue, 0, -1, place + 1, GameBuf->sizeY - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (side == 2) {
-			if (YieldEnemy(BULL, blue, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (side == 3) {
-			if (YieldEnemy(BULL, blue, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-	}
-
-
-
-
-	if (turn == 28) {//敵が出現する側を決定する。1つの方向から集中攻撃がくるぞ！
-		randomSide = GetRand(3);
-	}
-	if ((28 < turn && turn < 34) || turn == 9) {
-
-		place = GetRand(GameBuf->sizeX - 3);
-		if (randomSide == 0) {
-			if (YieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (randomSide == 1) {
-			if (YieldEnemy(BULL, red, 0, -1, place + 1, GameBuf->sizeY - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (randomSide == 2) {
-			if (YieldEnemy(BULL, red, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-		if (randomSide == 3) {
-			if (YieldEnemy(BULL, red, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
-		}
-	}
-
-
-
-
-	if ((turn % 5 == 0 && turn > 12) || turn == 16) {//普通に赤が来る。半分の確率で反対側からも来る。
-		side = GetRand(3);
-		place = GetRand(GameBuf->sizeX - 3);
+	if ((turn % 5 == 0 && turn > 12) || turn == 16 || turn == 34 || (turn%2==0 && turn>47)) {//普通に赤が来る。半分の確率で反対側からも来る。
+		int side = GetRand(3);
+		int place = GetRand(GameBuf->sizeX - 3);
 		if (side == 0) {
 			if (YieldEnemy(BULL, red, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 			place = GetRand(GameBuf->sizeX - 3);
@@ -624,6 +581,29 @@ int BattleMode_GameManager::EnemyEnter(int turn, int level, PenguinKids* mobs_Pe
 	//}
 	return 1;
 	
+}
+
+
+
+int BattleMode_GameManager::EnemyCome(Team enemyType, PenguinKids* mobs_PenguinKids, Bull* mobs_Bull, Grid** board, Emperor* handledCharacters) {
+	int side = 0;
+	int place = 0;
+
+	side = GetRand(3);
+	place = GetRand(GameBuf->sizeX - 3);
+	if (side == 0) {
+		if (YieldEnemy(BULL, enemyType, 0, 1, place + 1, 0, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+	if (side == 1) {
+		if (YieldEnemy(BULL, enemyType, 0, -1, place + 1, GameBuf->sizeY - 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+	if (side == 2) {
+		if (YieldEnemy(BULL, enemyType, 1, 0, 0, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+	if (side == 3) {
+		if (YieldEnemy(BULL, enemyType, -1, 0, GameBuf->sizeX - 1, place + 1, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
+	}
+
 }
 
 

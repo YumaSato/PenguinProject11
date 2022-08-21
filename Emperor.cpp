@@ -295,7 +295,7 @@ int Emperor::GetExpPoint(int expP) {
 		int selectDefenceX = FIELDSIZE * SQUARESIZE + 140;
 		int GoNextFlag = NULL;
 		bool clickedOrNot = FALSE;
-		int powerUp = GetRand(3) + 2;
+		int powerUp = GetRand(2) + 6;
 
 		
 
