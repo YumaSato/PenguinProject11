@@ -576,16 +576,16 @@ int BattleMode_GameManager::EnemyEnter(int turn, int level, PenguinKids* mobs_Pe
 	}
 	
 
-	if ((turn == 46) || (90 < turn && turn < 100)|| (110 < turn && turn < 150)) {//Â‹‚Ü‚İ‚ê
+	if ((turn == 36) || (turn == 46) || (90 < turn && turn < 100)|| (110 < turn && turn < 150)) {//Â‹‚Ü‚İ‚ê
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
-	if ((110 < turn && turn < 120) || (125 < turn && turn < 150)) {//Â‹‚Ü‚İ‚ê
+	if ((105 < turn && turn < 112) || (125 < turn && turn < 150)) {//Â‹‚Ü‚İ‚ê
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
 	if ((115 < turn && turn < 120) || (125 < turn && turn < 145)) {//Â‹‚Ü‚İ‚ê
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
-	if ((115 < turn && turn < 130) || (135 < turn && turn < 140)) {//Â‹‚Ü‚İ‚ê
+	if ((115 < turn && turn < 120) || (140 < turn && turn < 150)) {//Â‹‚Ü‚İ‚ê
 		if (EnemyCome(blue, mobs_PenguinKids, mobs_Bull, board, handledCharacters) == 0) { return 0; }
 	}
 
